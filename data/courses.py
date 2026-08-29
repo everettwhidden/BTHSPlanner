@@ -2,10 +2,10 @@ MAJORS = {
     "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing", "Career & Financial Management (Online)"]},
     "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory", "Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
     "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling", "Career & Financial Management (Online)"]},
-    "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy)", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
+    "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
     "Civil Engineering": {"room": "1N8", "Junior": ["PLTW Civil Engineering & Architecture", "Engineering Statics"], "Senior": ["AutoCAD Certification", "American Concrete Institute Certification", "Surveying Certification", "Career & Financial Management (Online)"]},
-    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications – JAVA", "Fundamentals of IT Infrastructure / Big Data: Warehousing and Analytics (One semester each)"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development", "Career & Financial Management (Online)"]},
+    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications – JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development", "Career & Financial Management (Online)"]},
     "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", "Career & Financial Management (Online)"]},
     "Environmental Science": {"room": "3E12", "Junior": ["AP Environmental Science"], "Senior": ["AP Human Geography", "Environmental Sustainability"]},
     "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics (One Semester each)"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
@@ -122,7 +122,7 @@ COURSE_CATALOG = {
         "periods": 2,
         "credits": 1.0,
         "is_elective": True,
-        "grades": ["Junior"]
+        "grades": ["Junior", "Senior"]
     },
     "AP European History": {
         "description": "This college-level course surveys European political, economic, social, and intellectual history from roughly 1450 to the present, examining developments such as the Renaissance, Reformation, Enlightenment, industrialization, and the World Wars. Students practice document-based and long-essay historical argumentation in preparation for the AP exam.",
@@ -651,10 +651,19 @@ COURSE_CATALOG = {
         "grades": ["Sophomore", "Junior"],
         "color" : lang_color
     },
-    "Fundamentals of IT Infrastructure / Big Data: Warehousing and Analytics (One semester each)": {
-        "description": "This junior-year Software Engineering major sequence splits the year between IT infrastructure fundamentals, covering networks and systems configuration, and big data warehousing and analytics, covering how large datasets are stored, organized, and queried.",
+    "Fundamentals of IT Infrastructure": {
+        "description": "This junior-year Software Engineering major course covers IT infrastructure fundamentals, including networks and systems configuration.",
         "periods": 1,
-        "credits": 1.0,
+        "semesters" : 1,
+        "credits": 0.5,
+        "is_elective": False,
+        "grades": ["Junior"]
+    },
+    "Big Data: Warehousing and Analytics": {
+        "description": "This junior-year Software Engineering major course covers big data warehousing and analytics, including how large datasets are stored, organized, and queried.",
+        "periods": 1,
+        "semesters" : 1,
+        "credits": 0.5,
         "is_elective": False,
         "grades": ["Junior"]
     },

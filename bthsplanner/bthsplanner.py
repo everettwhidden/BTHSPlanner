@@ -584,7 +584,7 @@ class PlannerState(rx.State):
         return len(others) < 3
     @rx.var(cache = True)
     def major_has_aphg(self) -> bool:
-        return "AP Human Geography" in self.junior_major_courses
+        return "AP Human Geography" in self.junior_major_courses or "AP Human Geography" in self.senior_major_courses
 
     @rx.var(cache=True)
     def junior_major_courses(self) -> list[str]:
@@ -1192,10 +1192,12 @@ class DropdownOptions(PlannerState):
         return ["AP Calculus BC", "AP Calculus AB"]
     @rx.var
     def sn_math_opts(self) -> list[str]:
-        if not self.senior_math_override:
+        if self.major == "LIU Pharmacy":
             opts = ["Multivariable Calculus", "Linear Algebra", "AP Calculus BC"] if self.j_math == "AP Calculus AB" else ["Multivariable Calculus", "Linear Algebra"]
+        elif self.senior_math_override:
+            opts = ["Multivariable Calculus", "AP Calculus BC"] if self.j_math == "AP Calculus AB" else ["Multivariable Calculus"]    
         else:
-            opts = ["Multivariable Calculus", "AP Calculus BC"] if self.j_math == "AP Calculus AB" else ["Multivariable Calculus"]
+            opts = ["Multivariable Calculus", "Linear Algebra", "AP Calculus BC"] if self.j_math == "AP Calculus AB" else ["Multivariable Calculus", "Linear Algebra"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
         return _filter(opts, self.sn_math, False, prior)
     @rx.var
@@ -1595,8 +1597,6 @@ def index() -> rx.Component:
                     course_card("English Course", "English 9"),
                     rx.cond(PlannerState.major_has_aphg,
                         course_card("History Course", "Pre-AP World History"),
-                        
-                    
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
                     dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
                     dropdown_card("Math Course", ["Geometry", "Algebra II"], PlannerState.f_math, PlannerState.change_f_math),
