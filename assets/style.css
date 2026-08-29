@@ -1,0 +1,121 @@
+
+/* Global body layout colors */
+body {
+    background-color: #0e1117;
+    color: #fafafa;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Outer separation constraint */
+.card-spacing-wrapper {
+    margin-bottom: 15px !important;
+    display: block;
+    width: 100%;
+}
+
+/* Shared container layout for BOTH static cards and dropdown wrappers */
+.course-card, .dropdown-card-wrapper {
+    box-sizing: border-box;
+    background-color: #1e2025; 
+    border: 1px solid #31353f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    height: 72px;             /* Hard locks the outer frame sizes to match exactly */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+ 
+}
+
+/* Smooth lift and glow effect when hovering over cards/dropdowns */
+.course-card:hover, .dropdown-card-wrapper:hover {
+    transform: translateY(-2px);
+    border-color: #4683e5;    /* Techy purple glow */
+}
+
+/* Label text layout alignment */
+.card-label {
+    font-size: 13px;
+    color: rgba(250, 250, 250, 0.7);
+    font-weight: 500;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Text styles for static course titles */
+.card-title {
+    font-size: 15px;
+    color: #fafafa;
+    font-weight: 700;         /* Bumped to match dropdown intensity */
+    line-height: 1.2;
+}
+
+/* Custom Dropdown Select tuning over ghost variant */
+.reflex-dropdown-select {
+    width: 100% !important;
+    margin: 0 !important;
+    cursor: pointer;
+    
+    /* 🎯 TYPOGRAPHY SYNCHRONIZATION */
+    font-family: system-ui, -apple-system, sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;   /* Matches static bold title style exactly */
+    color: #fafafa !important;      /* Forces pure white color */
+    
+    /* 🎯 VERTICAL POSITIONING & PADDING RESET */
+    padding: 0px 24px 0px 0px !important; /* Clears any nested inner-top gaps */
+    line-height: 1.2 !important;
+    height: auto !important;
+    
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+
+    /* Pinned clean white SVG arrow graphic */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>") !important;
+    background-repeat: no-repeat !important;
+    background-position: right center !important;
+    background-size: 16px !important;
+}
+/* Overall popup menu container */
+.rt-SelectContent {
+    font-size: 16px !important;      /* bumps text size for all options */
+    min-width: 220px !important;     /* makes the popup wider */
+}
+
+/* Each individual option row inside the popup */
+.rt-SelectItem {
+    padding: 10px 22px !important;   /* taller/wider clickable rows */
+    font-size: 16px !important;
+}
+/* Force Radix inner value containers to adopt the same style traits */
+.dropdown-card-wrapper button,
+.dropdown-card-wrapper span {
+    font-family: system-ui, -apple-system, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #fafafa !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+/* ==========================================================================
+   🎯 DROPDOWN CHROME SELECT/OPEN FOCUS OVERRIDES 
+   ========================================================================== */
+
+/* 1. Turns the active/focused inner select trigger border to light grey */
+.dropdown-card-wrapper .rt-SelectTrigger:focus,
+.dropdown-card-wrapper .rt-SelectTrigger:focus-within,
+.dropdown-card-wrapper .rt-SelectTrigger[data-state="open"] {
+    border-color: #555861 !important;
+    box-shadow: 0 0 0 1px #555861 !important; /* Disables the native blue glow ring */
+    outline: none !important;
+}
+
+/* 2. Updates the background hover color inside the overlay dropdown list */
+.rt-SelectContent .rt-SelectItem:hover,
+.rt-SelectContent .rt-SelectItem[data-highlighted] {
+    background-color: #383c44 !important; /* Muted sleek grey */
+    color: #ffffff !important;
+}
