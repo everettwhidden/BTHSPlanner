@@ -541,13 +541,13 @@ class PlannerState(rx.State):
         )
     @rx.var(cache = True)
     def has_macro(self) -> bool:
-        return ("AP Macroeconomics" in self.junior_major_courses or "AP Macroeconomics" in self.senior_major_courses)
+        return ("AP Macroeconomics with Government" in self.junior_major_courses or "AP Macroeconomics with Government" in self.senior_major_courses)
 
     @rx.var(cache=True)
     def has_econ_gov_conflict(self) -> bool:
         #True if the student already has AP Macroeconomics or AP Macroeconomics / AP Microeconomics (One Semester each)
         conflict_courses = {
-            "AP Macroeconomics",
+            "AP Macroeconomics with Government",
             "AP Macroeconomics / AP Microeconomics (One Semester each)",
         }
         sources = (
@@ -1660,7 +1660,11 @@ def index() -> rx.Component:
                     ),
                     
                     
-                    dropdown_card("English Course", DropdownOptions.j_eng_opts, PlannerState.j_eng, PlannerState.change_j_eng),
+                    rx.cond(
+                        PlannerState.major != "LIU Pharmacy",
+                        dropdown_card("English Course", DropdownOptions.j_eng_opts, PlannerState.j_eng, PlannerState.change_j_eng),
+                        rx.fragment()
+                    ),
                     dropdown_card("History Course", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
                     rx.cond(
                         PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict,
@@ -1729,9 +1733,13 @@ def index() -> rx.Component:
                         ~PlannerState.chose_economics_jr & ~PlannerState.has_macro,
                         rx.fragment(
                             dropdown_card("History Course", DropdownOptions.sn_his_opts, PlannerState.sn_his, PlannerState.change_sn_his),
-                            rx.cond(((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, course_card("Economics Course", PlannerState.sn_ec)),
-                            rx.cond((PlannerState.sn_his == "Economics") & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict, dropdown_card("Government Course", DropdownOptions.sn_gov_opts, PlannerState.sn_gov, PlannerState.change_sn_gov)),
-                        )
+                            rx.cond(
+                                ((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, 
+                                course_card("Economics Course", PlannerState.sn_ec)),
+                            rx.cond(
+                                (PlannerState.sn_his == "Economics") & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict, 
+                                dropdown_card("Government Course", DropdownOptions.sn_gov_opts, PlannerState.sn_gov, PlannerState.change_sn_gov)),
+                        ),
                     ),
                 #NON-MAJOR MATH SLOT (Only displays for majors that DO NOT have math in their major requirements)
                     rx.cond(

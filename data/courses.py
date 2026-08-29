@@ -11,7 +11,7 @@ MAJORS = {
     "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics (One Semester each)"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
     "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification", "Career & Financial Management (Online)"]},
     "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP Comparative Government", "Constitutional Law I"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
-    "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
+    "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
     "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering I & II", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", "Career & Financial Management (Online)"]},
     "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography", "Career & Financial Management (Online)"]},
     "Neuroscience": {"room": "3N1", "Junior": ["AP Biology"], "Senior": ["AP Psychology", "Introduction to Neuroscience", "Bioorganic Chemistry"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
@@ -165,6 +165,7 @@ COURSE_CATALOG = {
         "description": "This college-level course covers macroeconomic principles including GDP, unemployment, inflation, aggregate supply and demand, and fiscal and monetary policy, examining how national economies function as a whole.",
         "periods": 1,
         "credits": 1.0,
+        "semesters" : 1,
         "is_elective": False,
         "grades": ["Senior"],
         "color" : history_color
