@@ -334,6 +334,14 @@ COURSE_CATALOG = {
         "grades": ["Sophomore"],
         "color" : math_color
     },
+    "Algebra I": {
+        "description": "This course covers foundational algebraic concepts including linear equations and inequalities, systems of equations, exponents, polynomials, and an introduction to functions. It builds the symbolic reasoning skills required for Geometry and the rest of the math sequence.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": False,
+        "grades": ["Freshman"],
+        "color": math_color
+    },
     "American Concrete Institute Certification": {
         "description": "This senior-year Civil Engineering major course prepares students for an American Concrete Institute (ACI) field testing certification, covering the properties of fresh and hardened concrete, mix design, and standardized testing procedures used in the school's materials testing lab.",
         "periods": 1,

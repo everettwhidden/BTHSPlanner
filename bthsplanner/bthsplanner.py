@@ -55,6 +55,14 @@ class PlannerState(rx.State):
     def toggle_pre_credit(self, credit: str, checked: bool):
         self.pre_credits[credit] = checked
 
+        if credit == "Geometry":
+            if checked:
+                self.j_math = "AP Calculus BC"
+                self.sn_math = "Multivariable Calculus"
+            else:
+                self.j_math = "Pre-Calculus"
+                self.sn_math = "AP Calculus BC"
+
     pre_language: str = "Spanish I"
 
     def change_pre_language(self, val: str):
@@ -208,6 +216,15 @@ class PlannerState(rx.State):
             data=buffer.getvalue(),
             filename="brooklyn_tech_plan.xlsx",
         )
+
+    @rx.var
+    def freshman_math_courses(self) -> list[str]:
+        if self.math_is_accelerated:
+            return ["Algebra II"]
+        if not self.pre_credits.get("Algebra I", False):
+            return ["Algebra I", "Geometry"]
+        return ["Geometry"]
+    
     def change_major(self, val: str):
         self.major = val
         # Reset all dropdowns and electives to defaults on major change
@@ -524,7 +541,7 @@ class PlannerState(rx.State):
     def major_note(self) -> str: return MAJORS[self.major].get("note", "")
 
     @rx.var(cache=True)
-    def math_is_accelerated(self) -> bool: return self.f_math == "Algebra II"
+    def math_is_accelerated(self) -> bool: return self.pre_credits.get("Geometry", False)
 
     @rx.var
     def took_ap_calc_bc_junior(self) -> bool:
@@ -664,8 +681,8 @@ class PlannerState(rx.State):
         if year == "Freshman":
             return set([
                 "Design & Drafting for Production (DDP)", "English 9",
-                self.f_hist, self.f_sci, self.f_math, self.f_lang,
-            ] + self.freshman_electives)
+                self.f_hist, self.f_sci, self.f_lang, 
+            ] + self.freshman_math_courses + self.freshman_electives)
 
         if year == "Sophomore":
             math = "Pre-Calculus" if self.math_is_accelerated else "Algebra II"
@@ -1613,7 +1630,7 @@ def index() -> rx.Component:
             rx.vstack(
                 rx.heading("Course Plan", font_size="35px", color="#fafafa", margin_bottom="12px"),
                 legend_bar(),
-                rx.text("Note: Gym and Lunch are unchangable and required, so they are not shown for simplicity. There are technically 10 periods in a day.", font_size = "18px", font_style = "italic")
+                rx.text("Note: Gym and Lunch are mandatory, so they are not shown for simplicity. There are technically 10 periods in a day.", font_size = "18px", font_style = "italic")
             ),
             rx.spacer(),
             rx.vstack(
@@ -1670,7 +1687,10 @@ def index() -> rx.Component:
                         course_card("History Course", "Pre-AP World History"),
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
                     dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
-                    dropdown_card("Math Course", ["Geometry", "Algebra II"], PlannerState.f_math, PlannerState.change_f_math),
+                    rx.foreach(
+                        PlannerState.freshman_math_courses,
+                        lambda course: course_card("Math Course", course)
+                    ),
                     dropdown_card("Language Course", language_opts, PlannerState.f_lang, PlannerState.change_f_lang),
                     course_card("Required Course", "Design & Drafting for Production (DDP)"),
                     rx.vstack(
