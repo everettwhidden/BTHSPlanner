@@ -69,11 +69,26 @@ class PlannerState(rx.State):
             elif self.j_his == "Economics":
                 self.j_his = "Regents United States History"
 
+        if credit in ("Biology/Living Environment", "Algebra I"):
+            self.sync_f_sci()
+
     pre_language: str = "Spanish I"
-
     def change_pre_language(self, val: str):
-        self.pre_language = val
+            self.pre_language = val
 
+    def sync_f_sci(self):
+        has_bio = self.pre_credits.get("Biology/Living Environment", False)
+        has_alg1 = self.pre_credits.get("Algebra I", False)
+        if not has_bio:
+            self.f_sci = "Regents Biology"
+        elif not has_alg1:
+            self.f_sci = "Regents Physics"
+        elif has_bio:
+            self.f_sci = "Regents Physics"
+        
+    
+
+    
 
     def change_tab(self, name: str):
         self.active_tab = name
@@ -1236,8 +1251,16 @@ class DropdownOptions(PlannerState):
         return _filter(opts, self.f_hist, self.freshman_ap_count >= 3, set())
     @rx.var
     def f_sci_opts(self) -> list[str]:
-        opts = ["Regents Physics", "Regents Biology", "AP Biology"]
+        has_bio = self.pre_credits.get("Biology/Living Environment", False)
+        has_alg1 = self.pre_credits.get("Algebra I", False) or self.pre_credits.get("Geometry", False)
+        if not has_bio:
+            opts = ["Regents Biology"]
+        elif has_alg1:
+            opts = ["Regents Physics", "AP Biology"]
+        else:
+            opts = ["Regents Physics"]
         return _filter(opts, self.f_sci, self.freshman_ap_count >= 3, set())
+
     @rx.var
     def so_eng_opts(self) -> list[str]:
         opts = ["English 10", "AP Capstone Seminar"]
@@ -1311,6 +1334,7 @@ class DropdownOptions(PlannerState):
         opts = ["AP US Government", "Participation in Government"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
         return _filter(opts, self.sn_gov, self.senior_ap_count >= 3, prior)
+
 
 
 MAJOR_COURSE_COLOR = req_courses
@@ -1693,7 +1717,11 @@ def index() -> rx.Component:
                     rx.cond(PlannerState.major_has_aphg,
                         course_card("History Course", "Pre-AP World History"),
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
-                    dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
+                    rx.cond(
+                        PlannerState.pre_credits["Biology/Living Environment"] & (PlannerState.pre_credits["Algebra I"] | PlannerState.pre_credits["Geometry"]),
+                        dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
+                        course_card("Science Course", PlannerState.f_sci),),
+                    
                     rx.foreach(
                         PlannerState.freshman_math_courses,
                         lambda course: course_card("Math Course", course)
