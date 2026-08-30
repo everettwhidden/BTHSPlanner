@@ -22,11 +22,14 @@ MAJORS = {
 
 english_color = "#9a831cdf"
 history_color =  "#7a00aadb"
-science_color = "#138431ff"
-math_color = "#1a528eff"
+science_color = "#0b9c32ff"
+math_color = "#0858adff"
 lang_color = "#894a17ff"
 req_courses = "#941c4aff"
-elective_color = "#1c8e94ff"
+elective_color = "#13a7afff"
+
+language_opts = ["Chinese I", "Chinese II", "French I", "French II", "German I", "German II", "Italian I", "Italian II", "Spanish I", "Spanish II"]
+
 COURSE_CATALOG = {
     "AP African American Studies": {
             "description": "AP African American Studies is an interdisciplinary high school course exploring the history, culture, and vital contributions of African Americans. Spanning from early African kingdoms to modern times, the curriculum blends history, literature, the arts, science, and political science.",

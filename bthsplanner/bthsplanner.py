@@ -15,12 +15,13 @@ from data.courses import science_color
 from data.courses import math_color
 from data.courses import history_color
 from data.courses import english_color
-
+from data.courses import language_opts
 import bthsplanner.theme as theme
 
 required_courses_labels = ["Major Course", "Required Course"]
 
 num_of_courses = str(len(COURSE_CATALOG))
+
 
 config = rx.Config(
     app_name="bthsplanner", 
@@ -44,8 +45,21 @@ class PlannerState(rx.State):
     modal_source: str = "planner"
     is_detail_open: bool = False
 
-    
-        
+    pre_credits: dict[str, bool] = {
+        "Algebra I": False,
+        "Geometry": False,
+        "US History" : False,
+        "Biology/Living Environment" : False,
+    }
+
+    def toggle_pre_credit(self, credit: str, checked: bool):
+        self.pre_credits[credit] = checked
+
+    pre_language: str = "Spanish I"
+
+    def change_pre_language(self, val: str):
+        self.pre_language = val
+
 
     def change_tab(self, name: str):
         self.active_tab = name
@@ -925,6 +939,28 @@ class PlannerState(rx.State):
     def dropdown_colors(self) -> dict[str, str]:
         return {name: data.get("color", "#1e2025") for name, data in COURSE_CATALOG.items()}
 
+def styled_select(options: list[str], value: rx.Var, on_change: any, font: str = "18px", width: str = "160px",) -> rx.Component:
+    return rx.select.root(
+        rx.select.trigger(
+            class_name="reflex-dropdown-select",
+            style={
+                "background_color": "#101827",
+                "padding": "8px 12px !important",
+                "border": "1px solid #434651",
+                "border_radius": "0.5rem",
+                "width": width,
+                "font_weight": "600 !important",
+                "background_image": "none !important",
+                "font_size" : font
+            },
+        ),
+        rx.select.content(
+            *[rx.select.item(opt, value=opt) for opt in options]
+        ),
+        value=value,
+        on_change=on_change,
+    )
+
 def legend_item(label: str, border_color: str) -> rx.Component:
     """Helper component for rendering a single legend item."""
     return rx.hstack(
@@ -972,6 +1008,26 @@ def legend_bar() -> rx.Component:
         padding="12px 0px",
         background_color="#0F172A",  # Dark background matching image
         border_radius="8px",
+    )
+def pre_credit_checkbox(label: str) -> rx.Component:
+    return rx.hstack(
+        rx.checkbox(
+            checked=PlannerState.pre_credits[label],
+            on_change=PlannerState.toggle_pre_credit(label),
+        ),
+        rx.text(label, color="#FFFFFF", font_size="18px", font_weight="600"),
+        align_items="center",
+        spacing="2",
+    )
+def pre_language_checkbox() -> rx.Component:
+    return rx.hstack(
+        rx.checkbox(
+            checked=PlannerState.pre_credits["Language"],
+            on_change=PlannerState.toggle_pre_credit("Language"),
+        ),
+        styled_select(language_opts, PlannerState.pre_language, PlannerState.change_pre_language),
+        align_items="center",
+        spacing="2",
     )
 def _grade_badges(is_elective: bool, grades: list, available_grades: list) -> list[str]:
     if grades:
@@ -1556,26 +1612,41 @@ def index() -> rx.Component:
         rx.hstack(
             rx.vstack(
                 rx.heading("Course Plan", font_size="35px", color="#fafafa", margin_bottom="12px"),
-                legend_bar()
+                legend_bar(),
+                rx.text("Note: Gym and Lunch are unchangable and required, so they are not shown for simplicity. There are technically 10 periods in a day.", font_size = "18px", font_style = "italic")
             ),
             rx.spacer(),
             rx.vstack(
                 rx.text("Select your major", class_name="card-label", color = "white", font_size = "15px", font_weight = "bold"),
-                rx.select(MAJOR_NAMES, value=PlannerState.major, on_change=PlannerState.change_major, class_name="reflex-dropdown-select", style={"background_color": "#101827", "padding": "14px !important", "border": "1px solid #434651", "border_radius": "0.5rem", "width": "100%", "font_size": "24px !important"}),
+                styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px"),
                 rx.box(rx.text("View majors ", rx.link("here", href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f", is_external=True, color="white", text_decoration="underline"),font_weight="600", color="white", as_="span", size="2")),
-                background_color=theme.lighter_aa_blue, padding="10px", border_radius="0.5rem", border="1px solid #31353f", width="230px", spacing="1",
+                background_color=theme.lighter_aa_blue, padding="10px", border_radius="0.5rem", border="1px solid #31353f", width="255px", spacing="1",
                 ),
         ),
-        
+        rx.hstack(
+            rx.text("Select which credits you already have:", font_weight="bold", color="white", font_size="20px"),
+            pre_credit_checkbox("Algebra I"),
+            pre_credit_checkbox("Geometry"),
+            pre_credit_checkbox("US History"),
+            pre_credit_checkbox("Biology/Living Environment"),
+            pre_language_checkbox(),
+
+            align_items="center",
+            spacing="5",
+            padding="12px 0px",
+            background_color="#0F172A",
+            border_radius="8px",
+            margin_top="10px",
+        ),
         rx.grid(
             
             rx.hstack(
                 
                 rx.vstack(
                     #rx.hstack((rx.text("English:\n8 semesters of English", white_space = "pre-wrap")),(rx.text("History:\n4 semesters of Global History\n2 semesters of US History\n1 semester of Economics\n1 semester of Government", white_space = "pre-wrap")),(rx.text("Mathematics:\n2 semesters of Algebra 1\n2 semesters of Geometry\n2 semesters of Algebra 2", white_space = "pre-wrap"))),
-                    rx.cond(PlannerState.major_note != "", rx.callout(PlannerState.major_note, icon="info", color_scheme="blue")),
-                    rx.cond(PlannerState.chose_economics_jr, rx.callout("*Taking Economics in junior year requires students to have already passed the United States History Regents exam.", icon="info", color_scheme="purple", margin_bottom="12px")),
-                    rx.cond(PlannerState.chose_african_jr, rx.callout("*Taking AP African American Studies in junior year requires students to have already passed the United States History Regents exam.", icon="info", color_scheme="purple", margin_bottom="12px")),
+                    rx.cond(PlannerState.major_note != "", rx.callout(rx.text(PlannerState.major_note, font_size = "16px"), icon="info", color_scheme="blue",)),
+                    rx.cond(PlannerState.chose_economics_jr, rx.callout(rx.text("*Taking Economics in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px", font_size = "16px")),
+                    rx.cond(PlannerState.chose_african_jr, rx.callout(rx.text("*Taking AP African American Studies in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px")),
                 ),
                 align="start",
                 spacing="3",
@@ -1600,7 +1671,7 @@ def index() -> rx.Component:
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
                     dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
                     dropdown_card("Math Course", ["Geometry", "Algebra II"], PlannerState.f_math, PlannerState.change_f_math),
-                    dropdown_card("Language Course", ["Chinese I", "Chinese II", "French I", "French II", "German I", "German II", "Italian I", "Italian II", "Spanish I", "Spanish II"], PlannerState.f_lang, PlannerState.change_f_lang),
+                    dropdown_card("Language Course", language_opts, PlannerState.f_lang, PlannerState.change_f_lang),
                     course_card("Required Course", "Design & Drafting for Production (DDP)"),
                     rx.vstack(
                         rx.foreach(
@@ -1762,7 +1833,8 @@ def index() -> rx.Component:
                                     ),
                                     style={"position": "relative", "margin_bottom": "0px", "width": "100%", "opacity": rx.cond(PlannerState.sn_math_active, "1.0", "0.4")}
                                 ),
-                                content = "Taking Math all four years is highly encouraged"
+                                content = "Taking Math all four years is highly encouraged",
+                                #style={"font_size": "20px !important"}
                             ),
                             dropdown_card("Math Course", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
                         )
@@ -2050,7 +2122,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Selecting Major",
-        "body": "Brooklyn Tech requires students to commit to a specific major track starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your Junior and Senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that path (e.g., Computer Engineering, Aerospace, etc.). Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 8 maximum periods, and more.",
+        "body": "Brooklyn Tech requires students to commit to a specific major track starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your junior and senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that major. Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 8 maximum periods, and more.",
     },
     {
         "heading": "Credits",
@@ -2111,7 +2183,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Period Limit",
-        "body": "A standard day cannot exceed 10 periods. Excluding a mandatory lunch period and gym rotation period (gym, lab, free period, advisory for a semester), each student has 8 available periods that can be spent in class. Classes can be 1 or 2 periods. To see class information, you can either click on the class card in your plan, or go through the explore page. Gym and lunch are not listed as periods for the sake of simplicity.",
+        "body": "A standard day cannot exceed 10 periods. Excluding a mandatory lunch period and gym rotation period (gym, lab, free period, advisory for a semester), each student has 8 available periods that can be spent in class. Classes can be 1 or 2 periods. To see class information, you can either click on the class card in your plan, or go through the Explore page. Gym and lunch are not listed as periods for the sake of simplicity.",
         "rule": True,
     },
     {

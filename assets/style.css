@@ -60,7 +60,7 @@ body {
     
     /* 🎯 TYPOGRAPHY SYNCHRONIZATION */
     font-family: system-ui, -apple-system, sans-serif !important;
-    font-size: 16px !important;
+    font-size: 20x !important;
     font-weight: 700 !important;   /* Matches static bold title style exactly */
     color: #fafafa !important;      /* Forces pure white color */
     
@@ -78,6 +78,10 @@ body {
     background-repeat: no-repeat !important;
     background-position: right center !important;
     background-size: 16px !important;
+}
+
+.lang-select-bold {
+    --font-weight-regular: 700 !important;
 }
 /* Overall popup menu container */
 .rt-SelectContent {
