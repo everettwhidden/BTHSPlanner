@@ -63,6 +63,12 @@ class PlannerState(rx.State):
                 self.j_math = "Pre-Calculus"
                 self.sn_math = "AP Calculus BC"
 
+        if credit == "US History":
+            if checked:
+                self.j_his = "Economics"
+            elif self.j_his == "Economics":
+                self.j_his = "Regents United States History"
+
     pre_language: str = "Spanish I"
 
     def change_pre_language(self, val: str):
@@ -1249,6 +1255,8 @@ class DropdownOptions(PlannerState):
     def j_his_opts(self) -> list[str]:
         opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies"]
         if self.has_econ_gov_conflict:
+            opts = [o for o in opts if o not in ("Economics", "AP African American Studies")]
+        if not self.pre_credits.get("US History", False):
             opts = [o for o in opts if o != "Economics"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
         return _filter(opts, self.j_his, self.junior_ap_count >= 3, prior)
@@ -1660,10 +1668,9 @@ def index() -> rx.Component:
             rx.hstack(
                 
                 rx.vstack(
-                    #rx.hstack((rx.text("English:\n8 semesters of English", white_space = "pre-wrap")),(rx.text("History:\n4 semesters of Global History\n2 semesters of US History\n1 semester of Economics\n1 semester of Government", white_space = "pre-wrap")),(rx.text("Mathematics:\n2 semesters of Algebra 1\n2 semesters of Geometry\n2 semesters of Algebra 2", white_space = "pre-wrap"))),
                     rx.cond(PlannerState.major_note != "", rx.callout(rx.text(PlannerState.major_note, font_size = "16px"), icon="info", color_scheme="blue",)),
-                    rx.cond(PlannerState.chose_economics_jr, rx.callout(rx.text("*Taking Economics in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px", font_size = "16px")),
-                    rx.cond(PlannerState.chose_african_jr, rx.callout(rx.text("*Taking AP African American Studies in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px")),
+                    #rx.cond(PlannerState.chose_economics_jr, rx.callout(rx.text("*Taking Economics in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px", font_size = "16px")),
+                    #rx.cond(PlannerState.chose_african_jr, rx.callout(rx.text("*Taking AP African American Studies in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px")),
                 ),
                 align="start",
                 spacing="3",
