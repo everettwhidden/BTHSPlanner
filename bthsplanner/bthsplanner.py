@@ -36,7 +36,22 @@ class User(rx.Model, table=True):
 
 MAJOR_NAMES = list(MAJORS.keys())
 
+def _next_lang_level(lang: str) -> str:
+    if lang.endswith(" I"):
+        return lang[:-1] + "II"
+    return lang  # already at level II, nothing higher to bump to
+def sync_so_eng_for_language(self):
+    if self.sophomore_ap_count > 3 and self.so_eng == "AP Capstone Seminar":
+        self.so_eng = "English 10"
+
+
+
+
 # ====================== STATE LOGIC ======================
+
+
+
+
 class PlannerState(rx.State):
     
     
@@ -51,7 +66,7 @@ class PlannerState(rx.State):
         "US History" : False,
         "Biology/Living Environment" : False,
     }
-
+    
     def toggle_pre_credit(self, credit: str, checked: bool):
         self.pre_credits[credit] = checked
 
@@ -72,10 +87,24 @@ class PlannerState(rx.State):
         if credit in ("Biology/Living Environment", "Algebra I"):
             self.sync_f_sci()
 
-    pre_language: str = "Spanish I"
-    def change_pre_language(self, val: str):
-            self.pre_language = val
+        if credit == "Language":
+            if checked:
+                self.f_lang = _next_lang_level(self.pre_language)
+            else:
+                self.f_lang = self.pre_language
 
+    pre_language: str = "Spanish I"
+
+    def change_pre_language(self, val: str):
+        self.pre_language = val
+        if self.pre_credits.get("Language", False):
+            self.f_lang = _next_lang_level(val)
+        else:
+            self.f_lang = val
+
+
+
+    
     def sync_f_sci(self):
         has_bio = self.pre_credits.get("Biology/Living Environment", False)
         has_alg1 = self.pre_credits.get("Algebra I", False)
@@ -163,7 +192,18 @@ class PlannerState(rx.State):
 
     #adnvaced lang courses electives, exclude spanish bc spanihs has advanced spanish
     ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
-    # NOW FULLY ACTIVATED FOR AUTOMATED GRADED FILTER ROUTING
+
+    @rx.var
+    def sophomore_ap_language(self) -> str:
+        if not self.lang_is_accelerated:
+            return ""
+        if self.language_base == "Spanish":
+            return "Advanced Spanish"
+        for name in self.ap_lotes:
+            if self.language_base in name:
+                return name
+        return ""
+   
     current_modal_grade: str = "Junior"
     
     @rx.var
@@ -708,10 +748,13 @@ class PlannerState(rx.State):
         if year == "Sophomore":
             math = "Pre-Calculus" if self.math_is_accelerated else "Algebra II"
             lang = (self.language_base + " III") if self.lang_is_accelerated else (self.language_base + " II")
-            return set([
+            courses = ([
                 "AP Computer Science Principles", "Health Education", self.so_eng, self.so_hist,
                 "Regents Chemistry", math, lang,
             ] + self.sophomore_electives)
+            if self.sophomore_ap_language:
+                courses.append(self.sophomore_ap_language)
+            return set(courses)
             
         if year == "Junior":
             math = "AP Calculus BC" if self.math_is_accelerated else self.j_math
@@ -1726,7 +1769,7 @@ def index() -> rx.Component:
                         PlannerState.freshman_math_courses,
                         lambda course: course_card("Math Course", course)
                     ),
-                    dropdown_card("Language Course", language_opts, PlannerState.f_lang, PlannerState.change_f_lang),
+                    course_card("Language Course", PlannerState.f_lang),
                     course_card("Required Course", "Design & Drafting for Production (DDP)"),
                     rx.vstack(
                         rx.foreach(
@@ -2173,15 +2216,15 @@ def explore_page() -> rx.Component:
 HOW_IT_WORKS_SECTIONS = [
     {
         "heading": "What is BTHS Planner?",
-        "body": "BTHS Planner is built for Brooklyn Technical High School students to accurately simulate their 4-year schedule. This tool uses required core classes, major specific tracks, and electives to calculate course count, period count, and AP count. BTHS Planner is designed to enforce the credits and classes necessary for Brooklyn Tech students to recieve a Brooklyn Tech Diploma (more down below), which sets them up for a rigorous schedule that allows them to excel and stand out to colleges and universities.",
+        "body": "BTHS Planner is built for Brooklyn Technical High School students to accurately simulate their 4-year schedule. This tool uses required classes, major specific classes, and electives to calculate course count, period count, and AP count. BTHS Planner is designed to enforce the credits and classes necessary for Brooklyn Tech students to recieve a Brooklyn Tech Diploma (more down below).",
     },
     {
         "heading": "Selecting Major",
-        "body": "Brooklyn Tech requires students to commit to a specific major track starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your junior and senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that major. Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 8 maximum periods, and more.",
+        "body": "Brooklyn Tech requires students to commit to a specific major starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your junior and senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that major. Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 8 maximum class periods, and more.",
     },
     {
         "heading": "Credits",
-        "body": "At Brooklyn Tech, students are expected to take rigorous courses throughout their four years. Students are scheduled to complete an advanced regents diploma, as well as take additional courses in order to earn their Brooklyn Tech Diploma. This means earning a total of 44 credits and passing regents exams. These can be done throughout middle school and high school. These credits are described below.\n\n1 credit = 1 semester\n2 semesters = 1 year",
+        "body": "At Brooklyn Tech, students are expected to take rigorous courses throughout their four years. Students are scheduled to complete an advanced regents diploma, as well as take additional courses in order to earn their Brooklyn Tech Diploma. This means earning a total of 44 credits and passing necessary regents exams. These can be done throughout middle school and high school. These credits are described below.\n\n1 credit = 1 semester\n2 semesters = 1 year",
         "rule": True,
     },
     {
