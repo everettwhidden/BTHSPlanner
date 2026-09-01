@@ -740,7 +740,7 @@ class PlannerState(rx.State):
             return set(courses)
             
         if year == "Junior":
-            math = "AP Calculus BC" if self.math_is_accelerated else self.j_math
+            math = self.j_math
             # Start with dropdowns and electives as a clean list
             courses = [self.j_eng, self.j_his.rstrip("*")] + self.junior_electives
             
