@@ -47,8 +47,8 @@ class PlannerState(rx.State):
     }
     
     def toggle_pre_credit(self, credit: str, checked: bool):
+        snapshot = self._export_progress_dict()
         self.pre_credits[credit] = checked
-
         if credit == "Geometry":
             if checked:
                 self.j_math = "AP Calculus BC"
@@ -56,21 +56,23 @@ class PlannerState(rx.State):
             else:
                 self.j_math = "Pre-Calculus"
                 self.sn_math = "AP Calculus BC"
-
         if credit == "US History":
             if checked:
                 self.j_his = "Economics"
             elif self.j_his == "Economics":
                 self.j_his = "Regents United States History"
-
-        if credit in ("Biology/Living Environment", "Algebra I"):
-            self.sync_f_sci()
-
         if credit == "Language":
             if checked:
                 self.f_lang = _next_lang_level(self.pre_language)
             else:
                 self.f_lang = self.pre_language
+            self.sync_so_eng_for_language()
+        if credit in ("Biology/Living Environment", "Algebra I"):
+            self.sync_f_sci()
+        self._enforce_ap_limits
+        self._evict_duplicates()
+        if not self._enforce_period_limits():
+            self._import_progress_dict(snapshot)
 
     pre_language: str = "Spanish I"
 
@@ -833,7 +835,7 @@ class PlannerState(rx.State):
             if "AP" in self.j_eng: self.j_eng = "English 11"
             if "AP" in self.j_his: self.j_his = "Regents United States History"
             if "AP" in self.j_phys: self.j_phys = "Regents Physics"
-            if "AP" in self.j_math: self.j_math = "Pre-Calculus"
+            if "AP" in self.j_math and not self.math_is_accelerated: self.j_math = "Pre-Calculus"
             while self.junior_ap_count > 3:
                 ap_els = [c for c in self.junior_electives if "AP" in c]
                 if not ap_els: break
