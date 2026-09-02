@@ -397,8 +397,8 @@ def explore_page() -> rx.Component:
             # Live Filter Search Field
             rx.input(
                 placeholder="Search titles, descriptions or keywords...",
-                on_change=PlannerState.set_search_query,
-                value=PlannerState.search_query,
+                on_change=PlannerState.set_explore_search_query,
+                value=PlannerState.explore_search_query,
                 width="100%",
                 max_width="800",
                 margin_top="12px",
@@ -410,13 +410,13 @@ def explore_page() -> rx.Component:
 
             
 
-            rx.text("Showing " + PlannerState.filtered_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
+            rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
         ), 
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.grid(
             rx.foreach(
-                PlannerState.filtered_catalog,
+                PlannerState.explore_catalog,
                 lambda course: rx.box(
                     rx.vstack(
                         # Header Row: Course Title on top, Badges side-by-side underneath

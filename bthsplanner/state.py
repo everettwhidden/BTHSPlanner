@@ -170,6 +170,44 @@ class PlannerState(rx.State):
         self.senior_electives = data.get("senior_electives", [])
 
     search_query: str = ""             # Live search text string
+
+    explore_search_query: str = ""
+
+    def set_explore_search_query(self, val: str):
+        self.explore_search_query = val
+
+    def compute_explore_catalog(self) -> list[dict]:
+        query = self.explore_search_query.lower().strip()
+        results = []
+        for name, data in COURSE_CATALOG.items():
+            if query not in name.lower() and query not in data.get("description", "").lower():
+                continue
+            results.append({
+                "name": name,
+                "description": data.get("description", ""),
+                "periods": data.get("periods", 1),
+                "semesters": data.get("semesters", 2),
+                "credits": f"{float(data.get('credits', 1.0)):.1f}",
+                "is_elective": data.get("is_elective", False),
+                "disabled": False,
+                "grade_badges": _grade_badges(
+                    data.get("is_elective", False),
+                    data.get("grades", []),
+                    data.get("available_grades", [])
+                ),
+            })
+        return results
+
+    @rx.var
+    def explore_catalog(self) -> list[dict]:
+        return self.compute_explore_catalog()
+
+    @rx.var
+    def explore_catalog_count(self) -> int:
+        return len(self.compute_explore_catalog())
+    
+
+
     active_modal_course: dict = {}     # Holds the course info for your detail popup
     is_detail_open: bool = False       # Controls the visibility of the global detail modal
 
@@ -900,67 +938,64 @@ class PlannerState(rx.State):
         available_headroom = 8 - current_periods
 
         for name, data in COURSE_CATALOG.items():
-            if self.active_tab == "Explore":
-                if query not in name.lower() and query not in data.get("description", "").lower():
+            
+            if not data.get("is_elective", False) or (name in active_courses and not data.get("allow_multiple", False)):
+                continue
+            
+            if name in ["AP Macroeconomics with Government", "AP Microeconomics with Government"]:
+                if not self.chose_economics_jr:
                     continue
+
+            if name == "Linear Algebra" and not self.took_ap_calc_bc_junior:
+                continue
+            if name == "Multivariable Calculus" and not self.took_ap_calc_bc_junior:
+                continue
+            if name == "AP Physics C: Mechanics":
+                if "AP Physics C: Electricity & Magnetism" in self._courses_for_year("Senior"):
+                    continue
+
+            if name == "AP Physics C: Electricity & Magnetism" and self.major == "Physics":  
+                continue
+            
+            if current_grade == "Junior" and self.language_base == "Spanish":
+                if name == "AP Spanish Language & Culture" and "Advanced Spanish" not in self._courses_for_year("Sophomore"):
+                    continue
+
+            if current_grade == "Junior" and self.language_base == "Chinese" and not self.lang_is_accelerated:
+                if name == "AP Chinese Language & Culture":
+                    continue
+            if current_grade == "Junior" and self.language_base == "German" and not self.lang_is_accelerated:
+                if name == "AP German Language & Culture":
+                    continue
+
+            if current_grade == "Junior" and self.language_base == "Italian" and not self.lang_is_accelerated:
+                if name == "AP Italian Language & Culture":
+                    continue
+            if current_grade == "Junior" and self.language_base == "French" and not self.lang_is_accelerated:
+                if name == "AP French Language & Culture":
+                    continue
+
+            if name in self.ap_lotes and self.language_base not in name:
+                continue
+
+            if name == "Advanced Spanish" and current_grade == "Junior":
+                if "Spanish III" not in self._courses_for_year("Sophomore"):
+                    continue
+
+            if name == "Advanced Spanish" and current_grade == "Senior":
+                if "Spanish III" not in self._courses_for_year("Junior"):
+                    continue
+
+            
+
+            if "available_grades" in data:
+                allowed = data["available_grades"]
+                if current_grade not in allowed:
+                    continue
+                
             else:
-                if not data.get("is_elective", False) or (name in active_courses and not data.get("allow_multiple", False)):
+                if current_grade in ["Freshman", "Sophomore"]:
                     continue
-                
-                if name in ["AP Macroeconomics with Government", "AP Microeconomics with Government"]:
-                    if not self.chose_economics_jr:
-                        continue
-
-                if name == "Linear Algebra" and not self.took_ap_calc_bc_junior:
-                    continue
-                if name == "Multivariable Calculus" and not self.took_ap_calc_bc_junior:
-                    continue
-                if name == "AP Physics C: Mechanics":
-                    if "AP Physics C: Electricity & Magnetism" in self._courses_for_year("Senior"):
-                        continue
-
-                if name == "AP Physics C: Electricity & Magnetism" and self.major == "Physics":  
-                    continue
-                
-                if current_grade == "Junior" and self.language_base == "Spanish":
-                    if name == "AP Spanish Language & Culture" and "Advanced Spanish" not in self._courses_for_year("Sophomore"):
-                        continue
-
-                if current_grade == "Junior" and self.language_base == "Chinese" and not self.lang_is_accelerated:
-                    if name == "AP Chinese Language & Culture":
-                        continue
-                if current_grade == "Junior" and self.language_base == "German" and not self.lang_is_accelerated:
-                    if name == "AP German Language & Culture":
-                        continue
-
-                if current_grade == "Junior" and self.language_base == "Italian" and not self.lang_is_accelerated:
-                    if name == "AP Italian Language & Culture":
-                        continue
-                if current_grade == "Junior" and self.language_base == "French" and not self.lang_is_accelerated:
-                    if name == "AP French Language & Culture":
-                        continue
-
-                if name in self.ap_lotes and self.language_base not in name:
-                    continue
-
-                if name == "Advanced Spanish" and current_grade == "Junior":
-                    if "Spanish III" not in self._courses_for_year("Sophomore"):
-                        continue
-
-                if name == "Advanced Spanish" and current_grade == "Senior":
-                    if "Spanish III" not in self._courses_for_year("Junior"):
-                        continue
-
-                
-
-                if "available_grades" in data:
-                    allowed = data["available_grades"]
-                    if current_grade not in allowed:
-                        continue
-                    
-                else:
-                    if current_grade in ["Freshman", "Sophomore"]:
-                        continue
 
             # ◄ RULE: Unless it explicitly says 2 periods, default it to 1 period
             raw_periods = data.get("periods", 1)
@@ -982,7 +1017,7 @@ class PlannerState(rx.State):
                     "semesters" : semesters,
                     "credits": credits_formatted,
                     "is_elective" : data.get("is_elective", False),
-                    "disabled": should_disable if self.active_tab != "Explore" else False,
+                    "disabled": should_disable,
                     "grade_badges": _grade_badges(
                         data.get("is_elective", False),
                         data.get("grades", []),
