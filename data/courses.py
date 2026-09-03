@@ -28,7 +28,7 @@ lang_color = "#894a17ff"
 req_courses = "#941c4aff"
 elective_color = "#13a7afff"
 
-language_opts = ["Chinese I", "Chinese II", "French I", "French II", "German I", "German II", "Italian I", "Italian II", "Spanish I", "Spanish II"]
+language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
 COURSE_CATALOG = {
     "AP African American Studies": {
@@ -263,6 +263,13 @@ COURSE_CATALOG = {
         "is_elective": True,
         "grades": ["Senior"]
     },
+    "AP Studio Art 2D": {
+        "description": "Students will create and evaluate works in all 3 aspects of the portfolio (quality, concentration, and breadth). Everyone will be required to submit portfolios for evaluation at the College Board set dates. During the development of this portfolio students will work both in and out of the classroom to experience a variety of concepts and techniques in creative problem solving. Students will also create a section of work that is of personal interest. Everyone will be encouraged to create solutions that are “outside the box” and will force both the innovator and the audience to see in a new way. We will explore many 2D materials including Photography, pencil, charcoal, design markers, collage mixed media as well as extensive drawing techniques.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": True,
+        "grades": ["Senior"]
+    },
     "AP US Government": {
         "description": "This college-level course examines the foundations of the U.S. government, including the Constitution, federalism, the three branches, civil rights and liberties, and political behavior such as parties, elections, and public opinion. Students analyze foundational documents and Supreme Court cases and practice argumentative writing in preparation for the AP exam.",
         "periods" : 1,
@@ -285,7 +292,7 @@ COURSE_CATALOG = {
         "description": "AP World History: Modern is a college-level course that examines the global processes, connections, and conflicts that shaped humanity from 1200 CE to the present. Students analyze historical evidence, discern patterns of change and continuity, and construct evidence-based arguments across diverse societies and eras. The curriculum moves beyond mere memorization. It emphasizes the development of critical thinking skills, such as analyzing primary sources, assessing context, and evaluating historical causation.",
         "periods" : 1,
         "credits": 1.0,
-        "semesters": 1,
+        "semesters": 2,
         "is_elective": False,
         "available_grades" : ["Sophomore"],
         "color" : history_color
@@ -1102,6 +1109,13 @@ COURSE_CATALOG = {
         "is_elective": True,
         "available_grades": ["Freshman", "Sophomore", "Junior", "Senior"],
         "allow_multiple": True
+    },
+    "Studio Art": {
+        "description": "Studio Art is a foundational, hands-on visual arts course that introduces students to essential drawing, painting, and design techniques while exploring the core elements of line, color, and composition. Through regular studio projects, sketchbook exercises, and group critiques, students learn to translate visual ideas into finished works, build technical proficiency across various traditional mediums, and develop their own personal artistic voice.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": True,
+        "grades": ["Junior","Senior"]
     },
     "Surveying Certification": {
         "description": "This senior-year Civil Engineering major course covers land surveying fundamentals, including coordinate systems, measurement instruments, and grading and site layout, preparing students for an industry-recognized surveying certification such as through the National Society of Professional Surveyors.",

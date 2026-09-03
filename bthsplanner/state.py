@@ -51,6 +51,7 @@ class PlannerState(rx.State):
         self.pre_credits[credit] = checked
         if credit == "Geometry":
             if checked:
+        
                 self.j_math = "AP Calculus BC"
                 self.sn_math = "Multivariable Calculus"
             else:
@@ -311,15 +312,18 @@ class PlannerState(rx.State):
         self.major = val
         # Reset all dropdowns and electives to defaults on major change
         self.f_hist = "Pre-AP World History"
-        self.f_sci = "Regents Physics"
+        self.sync_f_sci()
         self.f_math = "Geometry"
-        self.f_lang = "Spanish I"
+        if self.pre_credits.get("Language", False):
+            self.f_lang = _next_lang_level(self.pre_language)
+        else:
+            self.f_lang = self.pre_language
         self.so_eng = "English 10"
         self.so_hist = "AP European History"
         self.j_eng = "English 11"
         self.j_his = "Regents United States History"
         self.j_phys = "Regents Physics"
-        self.j_math = "Pre-Calculus"
+        self.j_math = self.j_math if self.math_is_accelerated else "Pre-Calculus"
         self.sn_eng = "Creative Writing"
         self.sn_his = "Participation in Government" if self.has_econ_gov_conflict else "Economics"
         self.sn_ec = "Economics"
@@ -328,8 +332,9 @@ class PlannerState(rx.State):
         self.sophomore_electives = []
         self.junior_electives = []
         self.senior_electives = []
-        self.j_math = "Pre-Calculus"
-        self.sn_math = "AP Calculus BC"
+        self.sn_math = "Multivariable Calculus" if self.math_is_accelerated else "AP Calculus BC"
+
+
     def change_f_hist(self, val: str):
         snapshot = self._export_progress_dict()
         self.f_hist = val
@@ -1052,8 +1057,10 @@ def _expand_taken(taken: set) -> set:
                     expanded.add(no_paren)
     return expanded
 
-def _filter(opts: list, current: str, at_limit: bool, taken: set) -> list:
+def _filter(opts: list, current: str, ap_count: int, taken: set) -> list:
     expanded = _expand_taken(taken)
+    other_ap_count = ap_count - (1 if "AP" in current else 0)
+    at_limit = other_ap_count >= 3
     return [
         o for o in opts
         if (o == current or o not in expanded)
@@ -1064,7 +1071,7 @@ class DropdownOptions(PlannerState):
     @rx.var
     def f_hist_opts(self) -> list[str]:
         opts = ["Pre-AP World History", "AP Human Geography"]
-        return _filter(opts, self.f_hist, self.freshman_ap_count >= 3, set())
+        return _filter(opts, self.f_hist, self.freshman_ap_count, set())
     @rx.var
     def f_sci_opts(self) -> list[str]:
         has_bio = self.pre_credits.get("Biology/Living Environment", False)
@@ -1075,21 +1082,21 @@ class DropdownOptions(PlannerState):
             opts = ["Regents Physics", "AP Biology"]
         else:
             opts = ["Regents Physics"]
-        return _filter(opts, self.f_sci, self.freshman_ap_count >= 3, set())
+        return _filter(opts, self.f_sci, self.freshman_ap_count , set())
 
     @rx.var
     def so_eng_opts(self) -> list[str]:
         opts = ["English 10", "AP Capstone Seminar"]
-        return _filter(opts, self.so_eng, self.sophomore_ap_count >= 3, self._courses_for_year("Freshman"))
+        return _filter(opts, self.so_eng, self.sophomore_ap_count , self._courses_for_year("Freshman"))
     @rx.var
     def so_hist_opts(self) -> list[str]:
         opts = ["AP European History", "AP World History", "Regents Global History"]
-        return _filter(opts, self.so_hist, self.sophomore_ap_count >= 3, self._courses_for_year("Freshman"))
+        return _filter(opts, self.so_hist, self.sophomore_ap_count , self._courses_for_year("Freshman"))
     @rx.var
     def j_eng_opts(self) -> list[str]:
         opts = ["AP English Language & Composition", "English 11"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
-        return _filter(opts, self.j_eng, self.junior_ap_count >= 3, prior)
+        return _filter(opts, self.j_eng, self.junior_ap_count , prior)
     @rx.var
     def j_his_opts(self) -> list[str]:
         opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies"]
@@ -1098,12 +1105,12 @@ class DropdownOptions(PlannerState):
         if not self.pre_credits.get("US History", False):
             opts = [o for o in opts if o != "Economics"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
-        return _filter(opts, self.j_his, self.junior_ap_count >= 3, prior)
+        return _filter(opts, self.j_his, self.junior_ap_count ,prior)
     @rx.var
     def j_math_opts(self) -> list[str]:
         opts = ["AP Calculus AB", "AP Calculus BC"] if self.math_is_accelerated else ["Pre-Calculus", "AP Calculus AB", "AP Calculus BC"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
-        return _filter(opts, self.j_math, self.junior_ap_count >= 3, prior)
+        return _filter(opts, self.j_math, self.junior_ap_count, prior)
     @rx.var
     def j_phys_opts(self) -> list[str]:
         return ["Regents Physics", "AP Physics I"]
@@ -1124,7 +1131,7 @@ class DropdownOptions(PlannerState):
     def sn_eng_opts(self) -> list[str]:
         opts = ["AP Capstone Research", "AP English Literature & Composition", "Creative Writing", "Film & Literature", "Graphic Novels", "Journalism", "Science Fiction & Fantasy", "Mystery, Horror & the Supernatural", "Live, Love, & Death", "Drama", "Yearbook"] if self.so_eng == "AP Capstone Seminar" else [ "AP English Literature & Composition", "Creative Writing", "Film & Literature", "Graphic Novels", "Journalism", "Science Fiction & Fantasy", "Mystery, Horror & the Supernatural", "Live, Love, & Death", "Drama", "Yearbook"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
-        return _filter(opts, self.sn_eng, self.senior_ap_count >= 3, prior)
+        return _filter(opts, self.sn_eng, self.senior_ap_count , prior)
     @rx.var
     def sn_his_opts(self) -> list[str]:
         if self.has_econ_gov_conflict:
@@ -1135,7 +1142,7 @@ class DropdownOptions(PlannerState):
             opts = [o for o in opts if o != "Participation in Government"]
     
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
-        return _filter(opts, self.sn_his, self.senior_ap_count >= 3, prior)
+        return _filter(opts, self.sn_his, self.senior_ap_count, prior)
             
       
     @rx.var
@@ -1144,12 +1151,12 @@ class DropdownOptions(PlannerState):
                 #"AP Microeconomics with Government", 
                 "Economics"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
-        return _filter(opts, self.sn_ec, self.senior_ap_count >= 3, prior)
+        return _filter(opts, self.sn_ec, self.senior_ap_count , prior)
     @rx.var
     def sn_gov_opts(self) -> list[str]:
         opts = ["AP US Government", "Participation in Government"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
-        return _filter(opts, self.sn_gov, self.senior_ap_count >= 3, prior)
+        return _filter(opts, self.sn_gov, self.senior_ap_count, prior)
 
 
 
