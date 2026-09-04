@@ -550,7 +550,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Credits",
-        "body": "At Brooklyn Tech, students are expected to take rigorous courses throughout their four years. Students are scheduled to complete an advanced regents diploma, as well as take additional courses in order to earn their Brooklyn Tech Diploma. This means earning a total of 44 credits and passing necessary regents exams. These can be done throughout middle school and high school. These credits are described below.\n\n1 credit = 1 semester\n2 semesters = 1 year",
+        "body": "At Brooklyn Tech, students are expected to take rigorous courses throughout their four years. Students are scheduled to complete an advanced regents diploma, as well as take additional courses in order to earn their Brooklyn Tech Diploma. This means earning a total of 44 credits and passing necessary Regents exams, which can be done throughout middle school and high school. These credits are described below.\n\n1 credit = 1 semester\n2 semesters = 1 year",
         "rule": True,
     },
     {
