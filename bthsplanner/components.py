@@ -17,6 +17,7 @@ from data.courses import (
     english_color,
     language_opts,
     req_courses,
+    gym_lunch_color
 )
 from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR
 
@@ -85,7 +86,8 @@ def legend_bar() -> rx.Component:
         legend_item("Math", math_color),  
         legend_item("Language", lang_color),   
         legend_item("Major/Required", req_courses),
-        legend_item("Elective", elective_color),  
+        legend_item("Elective", elective_color), 
+        legend_item("Gym/Lunch", gym_lunch_color),
 
         align_items="center",
         spacing="5",

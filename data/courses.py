@@ -27,7 +27,7 @@ math_color = "#0858adff"
 lang_color = "#894a17ff"
 req_courses = "#941c4aff"
 elective_color = "#13a7afff"
-lunch_gym_color = "#ffffffa4"
+gym_lunch_color = "#ffffffa4"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
@@ -1170,7 +1170,7 @@ COURSE_CATALOG = {
         "credits" : 0.0,
         "is_elective" : False,
         "grades" : ["Freshman", "Sophomore", "Junior", "Senior"],
-        "color" : lunch_gym_color,
+        "color" : gym_lunch_color,
         "lunch_or_gym" : True,
     },
 
@@ -1180,7 +1180,7 @@ COURSE_CATALOG = {
         "credits" : 0.0,
         "is_elective" : False,
         "grades" : ["Freshman", "Sophomore", "Junior", "Senior"],
-        "color" : lunch_gym_color,
+        "color" : gym_lunch_color,
         "lunch_or_gym" : True,
     }
 
