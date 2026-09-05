@@ -30,7 +30,6 @@ def index() -> rx.Component:
             rx.vstack(
                 rx.heading("Course Plan", font_size="35px", color="#fafafa", margin_bottom="12px"),
                 legend_bar(),
-                rx.text("Note: Gym and Lunch are mandatory, so they are not shown for simplicity. There are technically 10 periods in a day.", font_size = "18px", font_style = "italic")
             ),
             rx.spacer(),
             rx.vstack(
@@ -75,7 +74,7 @@ def index() -> rx.Component:
                     rx.hstack(
                         rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.freshman_periods.to(str) + "/8 periods", size="3", color="white", weight = "medium"),
+                        rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
                         rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", "white"), weight = "medium"),
                         spacing="2", margin_bottom="10px"
@@ -101,6 +100,8 @@ def index() -> rx.Component:
                             PlannerState.freshman_electives,
                             lambda course: elective_card(course, "Freshman")
                             ),
+                        course_card("Required Period", "Gym"),
+                        course_card("Required Period", "Lunch"),                            
                         course_search_modal(PlannerState.freshman_periods, "Freshman"),
                         width="100%", 
                         spacing="3",
@@ -115,7 +116,7 @@ def index() -> rx.Component:
                     rx.hstack(
                         rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.sophomore_periods.to(str) + "/8 periods", size="3", color="white", weight = "medium"),
+                        rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
                         rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", "white"), weight = "medium"),
                         spacing="2", margin_bottom="10px"
@@ -133,6 +134,8 @@ def index() -> rx.Component:
                             PlannerState.sophomore_electives,
                             lambda course: elective_card(course, "Sophomore")
                         ),
+                        course_card("Required Period", "Gym"),
+                        course_card("Required Period", "Lunch"),                        
                         course_search_modal(PlannerState.sophomore_periods, "Sophomore"),
                         width="100%", 
                         spacing="3",
@@ -147,7 +150,7 @@ def index() -> rx.Component:
                     rx.hstack(
                         rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.junior_periods.to(str) + "/8 periods", size="3", color="white", weight = "medium"),
+                        rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
                         rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", "white"), weight = "medium"),
                         spacing="2", margin_bottom="10px"
@@ -173,7 +176,7 @@ def index() -> rx.Component:
                         )
                     ),
                     
-                    # 2. 🎯 STANDALONE MATH SLOT: Safe fallback logic. Only shows up down here if it wasn't pulled into the major stack above!
+                    # 2. refular math card. safe fallback logic. Only shows up down here if it wasn't pulled into the major stack above!
                     rx.cond(
                         PlannerState.junior_math_override == "",
                         #rx.cond(
@@ -200,6 +203,8 @@ def index() -> rx.Component:
                             PlannerState.junior_electives,
                             lambda course: elective_card(course, "Junior")
                             ),
+                        course_card("Required Period", "Gym"),
+                        course_card("Required Period", "Lunch"),
                         course_search_modal(PlannerState.junior_periods, "Junior"),
                         width="100%", 
                         spacing="3",
@@ -216,7 +221,7 @@ def index() -> rx.Component:
                     rx.hstack(
                         rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.senior_periods.to(str) + "/8 periods", size="3", color="white", weight = "medium"),
+                        rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
                         rx.text("•", size="3", color="white"),
                         rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", "white"), weight = "medium"),
                         spacing="2", margin_bottom="10px"
@@ -354,6 +359,8 @@ def index() -> rx.Component:
                             PlannerState.senior_electives,
                             lambda course: elective_card(course, "Senior")
                             ),
+                        course_card("Required Period", "Gym"),
+                        course_card("Required Period", "Lunch"),
                         course_search_modal(PlannerState.senior_periods, "Senior"),
                         width="100%", 
                         spacing="3",
@@ -546,7 +553,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Selecting Major",
-        "body": "Brooklyn Tech requires students to commit to a specific major starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your junior and senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that major. Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 8 maximum class periods, and more.",
+        "body": "Brooklyn Tech requires students to commit to a specific major starting junior year. You can think of your major at Brooklyn Tech as the classes that you will be required to take during your junior and senior years. Use the drop-down menu at the top of the 'Plan' tab to pick a major. Changing your major will reset your junior and senior year schedules and swap them with the mandatory courses for that major. Swapping majors will also reset all other edited/added courses in order to meet the necessary constraints such as the 3 AP limit, 10 maximum periods, and more.",
     },
     {
         "heading": "Credits",
@@ -592,7 +599,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Physical Education (4 credits; 1 semester = 0.5 credits)",
-        "body": "• 8 semesters of PE",
+        "body": "• 8 semesters of PE (Gym)",
         "desc" : True
     },
     {
@@ -607,7 +614,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Period Limit",
-        "body": "A standard day cannot exceed 10 periods. Excluding a mandatory lunch period and gym rotation period (gym, lab, free period, advisory for a semester), each student has 8 available periods that can be spent in class. Classes can be 1 or 2 periods. To see class information, you can either click on the class card in your plan, or go through the Explore page. Gym and lunch are not listed as periods for the sake of simplicity.",
+        "body": "A standard day cannot exceed 10 periods. Excluding a mandatory lunch period and gym rotation period (gym, lab, free period, advisory for a semester), each student has 8 available periods that can be spent in class. Classes can be 1 or 2 periods. To see class information, you can either click on the class card in your plan, or go through the Explore page.",
         "rule": True,
     },
     {
@@ -617,7 +624,7 @@ HOW_IT_WORKS_SECTIONS = [
     },
     {
         "heading": "Electives",
-        "body": "Elective courses allow you to customize your schedule, but they can only be added if you have open periods left in your 8 period limit (excluding lunch & gym periods) after your mandatory major and required courses.",
+        "body": "Elective courses allow you to customize your schedule, but they can only be added if you have open periods left in your 10 period limit after your mandatory major and required courses.",
         "rule": True,
     },
 ]

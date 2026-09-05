@@ -545,7 +545,7 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
     )
 
     disabled_button = rx.button(
-        "Schedule Full (8/8 Pds)",
+        "Schedule Full (10/10 Pds)",
         width="100%", margin_top="0px",
         style={
             "background_color": "#2c2d30", "color": "#c3c3cf", 
@@ -557,7 +557,7 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
 
     return rx.dialog.root(
         rx.cond(
-            period_count >= 8,
+            period_count >= 10,
             disabled_button,
             active_button
         ),

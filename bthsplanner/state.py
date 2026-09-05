@@ -70,7 +70,7 @@ class PlannerState(rx.State):
             self.sync_so_eng_for_language()
         if credit in ("Biology/Living Environment", "Algebra I"):
             self.sync_f_sci()
-        self._enforce_ap_limits
+        self._enforce_ap_limits()
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
@@ -434,7 +434,7 @@ class PlannerState(rx.State):
                 self.selected_senior_physics.remove(course_name)
         else:
             self.selected_senior_physics.add(course_name)
-            if self.senior_periods > 8 or self.senior_ap_count > 3:
+            if self.senior_periods > 10 or self.senior_ap_count > 3:
                 self.selected_senior_physics.remove(course_name)
             
 
@@ -768,7 +768,7 @@ class PlannerState(rx.State):
         if year == "Freshman":
             return set([
                 "Design & Drafting for Production (DDP)", "English 9",
-                self.f_hist, self.f_sci, self.f_lang, 
+                self.f_hist, self.f_sci, self.f_lang, "Gym", "Lunch" 
             ] + self.freshman_math_courses + self.freshman_electives)
 
         if year == "Sophomore":
@@ -776,7 +776,7 @@ class PlannerState(rx.State):
             lang = (self.language_base + " III") if self.lang_is_accelerated else (self.language_base + " II")
             courses = ([
                 "AP Computer Science Principles", "Health Education", self.so_eng, self.so_hist,
-                "Regents Chemistry", math, lang,
+                "Regents Chemistry", math, lang, "Gym", "Lunch" 
             ] + self.sophomore_electives)
             if self.sophomore_ap_language:
                 courses.append(self.sophomore_ap_language)
@@ -785,7 +785,7 @@ class PlannerState(rx.State):
         if year == "Junior":
             math = self.j_math
             # Start with dropdowns and electives as a clean list
-            courses = [self.j_eng, self.j_his.rstrip("*")] + self.junior_electives
+            courses = [self.j_eng, self.j_his, "Gym", "Lunch"] + self.junior_electives
             
             # 🎯 If they chose Economics in Junior year, dynamically inject Government into Junior year active tracker
             if (self.j_his == "Economics" or (
@@ -810,7 +810,7 @@ class PlannerState(rx.State):
         if year == "Senior":
 
             math = self.sn_math if self.sn_math else "AP Calculus BC"
-            courses = [self.sn_eng] + self.senior_electives
+            courses = [self.sn_eng, "Gym", "Lunch"] + self.senior_electives
             
             if self.major == "Physics":
                 if math and self.sn_math_active:
@@ -856,7 +856,7 @@ class PlannerState(rx.State):
 
         if self.j_eng in prior_after_so:
             self.j_eng = "English 11"
-        if self.j_his.rstrip("*") in prior_after_so:
+        if self.j_his in prior_after_so:
             self.j_his = "Regents United States History"
         if self.j_his == "Economics" and self.has_econ_gov_conflict:
             self.j_his = "Regents United States History"
@@ -902,7 +902,7 @@ class PlannerState(rx.State):
         }
         ok = True
         for year, attr in year_to_electives.items():
-            while self._calculate_total_periods(year) > 8:
+            while self._calculate_total_periods(year) > 10:
                 electives = getattr(self, attr)
                 if not electives:
                     ok = False
@@ -940,7 +940,7 @@ class PlannerState(rx.State):
             current_periods = self.senior_periods
             ap_limit_reached = self.senior_ap_count >= 3
 
-        available_headroom = 8 - current_periods
+        available_headroom = 10 - current_periods
 
         for name, data in COURSE_CATALOG.items():
             
