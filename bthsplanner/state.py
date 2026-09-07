@@ -10,7 +10,7 @@ import math
 import re
 import openpyxl
 import reflex as rx
-
+from data.courses import double_alternates
 from data.courses import COURSE_CATALOG, MAJORS, req_courses
 
 MAJOR_NAMES = list(MAJORS.keys())
@@ -469,9 +469,6 @@ class PlannerState(rx.State):
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
 
-    # --- Dynamic Period, Course Count Calculators ---
-    # --- Dynamic Period Tracker Using Semester Pairing Logic ---
-    # --- Dynamic Period Tracker Using Semester Pairing Logic ---
     def _calculate_total_periods(self, year: str) -> int:
         courses = self._courses_for_year(year)
         full_year_periods = 0
@@ -490,7 +487,10 @@ class PlannerState(rx.State):
                     # Count how many 1 period semester classes they have
                     single_semester_1_pd += 1
             else:
-                full_year_periods += pds
+                if pds == 2 and c in double_alternates:
+                    full_year_periods += 1
+                else:
+                    full_year_periods += pds
                 
         # 1. Pair up 1-period semester classes: math.ceil(count / 2) -> each pair = 1 period
         # 2. Pair up 2-period semester classes: math.ceil(count / 2) * 2 -> each pair = 2 periods
@@ -1099,7 +1099,7 @@ class DropdownOptions(PlannerState):
         return _filter(opts, self.j_eng, self.junior_ap_count , prior)
     @rx.var
     def j_his_opts(self) -> list[str]:
-        opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies"]
+        opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year if needed)"]
         if self.has_econ_gov_conflict:
             opts = [o for o in opts if o not in ("Economics", "AP African American Studies")]
         if not self.pre_credits.get("US History", False):

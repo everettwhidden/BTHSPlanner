@@ -31,6 +31,8 @@ gym_lunch_color = "#ffffffa4"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
+double_alternates = ["English 9", "Design & Drafting for Production (DDP)", "Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"]
+
 COURSE_CATALOG = {
     "AP African American Studies": {
             "description": "AP African American Studies is an interdisciplinary high school course exploring the history, culture, and vital contributions of African Americans. Spanning from early African kingdoms to modern times, the curriculum blends history, literature, the arts, science, and political science.",
@@ -373,7 +375,7 @@ COURSE_CATALOG = {
     },
     "Architectural Drawing with AutoCAD": {
         "description": "This junior-year Architecture major course develops technical drafting skills, including plan and section views, structural framing details, and building-code-compliant drawings, using industry-standard AutoCAD software. It builds the manual and digital drafting foundation used throughout the Architecture major's design studio courses.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Junior"]
@@ -515,7 +517,7 @@ COURSE_CATALOG = {
     },
     "Design & Drafting for Production (DDP)": {
         "description": "This required freshman engineering course introduces students to the engineering design process through manual drafting and 3D CAD modeling in Autodesk Inventor. Students learn orthographic and isometric projection, dimensioning standards, and spatial reasoning skills by designing, modeling, and prototyping their own small products, building the drafting and design foundation used across every engineering major at Tech.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Freshman"],
@@ -605,7 +607,7 @@ COURSE_CATALOG = {
     },
     "English 9": {
         "description": "The first course in Tech's English sequence introduces students to major literary genres, including the short story, novel, drama, and poetry, while building foundational skills in grammar, vocabulary, and expository and analytical writing. Students learn to construct textual evidence-based arguments and develop close-reading habits that carry through the rest of the English curriculum.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Freshman"],
@@ -944,7 +946,7 @@ COURSE_CATALOG = {
     },
     "PLTW Civil Engineering & Architecture": {
         "description": "A Project Lead The Way specialization course, this class introduces the fundamentals of building and site design, having students apply math, science, and standard engineering practices to design residential and commercial projects. Students develop skills in engineering calculations, technical documentation, and 3D architectural modeling and design software as they work through structured design problems.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Junior"]
