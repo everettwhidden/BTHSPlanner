@@ -6,6 +6,7 @@ bthsplanner.py, not here.
 """
 import reflex as rx
 from data.courses import MAJORS
+
 import bthsplanner.theme as theme
 from bthsplanner.state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR
 from bthsplanner.components import (
@@ -13,13 +14,14 @@ from bthsplanner.components import (
     course_card,
     elective_card,
     dropdown_card,
-    deletable_dropdown_card,
+
     course_detail_modal,
     course_search_modal,
     legend_bar,
     pre_credit_checkbox,
     pre_language_checkbox,
     styled_select,
+    render_major_course
 )
 
 
@@ -200,8 +202,10 @@ def index() -> rx.Component:
                         dropdown_card("Major Course", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
                     ),
                                                 
-                    rx.foreach(PlannerState.filtered_junior_major_courses, lambda course: course_card("Major Course", course)),
-                              
+                
+                    rx.foreach(PlannerState.filtered_junior_major_courses, render_major_course),
+                        
+                
                     
                    
                     rx.vstack(
@@ -384,12 +388,7 @@ def index() -> rx.Component:
         rx.divider(margin_y="32px", border_color="#31353f"),
         
         
-        #rx.hstack(
-            #rx.vstack(rx.text("Total Courses Planned", color="rgba(250, 250, 250, 0.6)", size="2"), rx.heading(PlannerState.total_course_count.to(str), color="#fafafa", size="6"), align_items="start", spacing="1"),
-            #rx.vstack(rx.text("Total Credits Planned", color="rgba(250, 250, 250, 0.6)", size="2"), rx.heading(PlannerState.total_credit_count.to(str), color="#fafafa", size="6"), align_items="start", spacing="1"),
-            #rx.spacer(), rx.text("By Everett Whidden", size="2", color="rgba(250, 250, 250, 0.4)"), align_items="center", width="100%"
-            #not using these anymore tbh
-       # ),
+
 
         
         width="100%",

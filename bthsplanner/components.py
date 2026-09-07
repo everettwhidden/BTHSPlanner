@@ -319,38 +319,18 @@ def dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any)
         on_click=PlannerState.open_course_details(value),
         style={"cursor": "pointer"}, class_name="card-spacing-wrapper",
     )
-def deletable_dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any, on_delete: any) -> rx.Component:
-    color = MAJOR_COURSE_COLOR if label in required_courses_labels else PlannerState.dropdown_colors[value]
-    return rx.box(
-        rx.box(
-            rx.text(label, class_name="card-label", color = "rgba(250, 250, 250, 0.7)"),
-            rx.select(
-                options, value=value, on_change=on_change, variant="ghost",
-                class_name="reflex-dropdown-select", on_click=[rx.stop_propagation]
-            ),
-            class_name="dropdown-card-wrapper",
-            on_click=PlannerState.open_course_details(value),
-            style={
-                "cursor": "pointer",
-                "background_color": theme.lighter_aa_blue,
-                "border": f"1px solid color-mix(in srgb, {color} 60%, grey 40%)"
-            },
+
+def render_major_course(course: rx.Var[str]) -> rx.Component:
+    return rx.cond(
+        PlannerState.partner_map.contains(course),
+        rx.tooltip(
+            course_card("Major Course", course),
+            content=f"Double period, alternates daily with {PlannerState.partner_map[course]}",
         ),
-        rx.button(
-            "✕",
-            on_click=[rx.stop_propagation, on_delete],
-            variant="ghost",
-            size="1",
-            color_scheme="red",
-            style={
-                "position": "absolute", "top": "50%", "transform": "translateY(-50%)",
-                "right": "20px", "font_size": "20px", "cursor": "pointer",
-                "padding": "4px", "height": "auto", "z_index": "10"
-            }
-        ),
-        class_name="card-spacing-wrapper",
-        style={"position": "relative", "width": "100%"},
+        course_card("Major Course", course),
     )
+
+
 
 def course_detail_modal() -> rx.Component:
     return rx.dialog.root(

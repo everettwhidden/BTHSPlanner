@@ -32,6 +32,15 @@ def _grade_badges(is_elective: bool, grades: list, available_grades: list) -> li
     else:
         return []
 
+def _build_partner_map(pairs):
+    m = {}
+    for a, b in pairs:
+        m[a] = b
+        m[b] = a
+    return m
+
+
+    
 class PlannerState(rx.State):
     
     
@@ -46,7 +55,7 @@ class PlannerState(rx.State):
         "US History" : False,
         "Biology/Living Environment" : False,
     }
-    
+    partner_map: dict[str, str] = _build_partner_map(double_alternates)
     def toggle_pre_credit(self, credit: str, checked: bool):
         snapshot = self._export_progress_dict()
         self.pre_credits[credit] = checked
