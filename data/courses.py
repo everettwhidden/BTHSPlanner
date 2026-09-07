@@ -31,8 +31,8 @@ gym_lunch_color = "#ffffffa4"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
-double_alternates = ["English 9", "Design & Drafting for Production (DDP)", "Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"]
-
+double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture")]
+alternate_list = [course for pairs in double_alternates for course in pairs]
 COURSE_CATALOG = {
     "AP African American Studies": {
             "description": "AP African American Studies is an interdisciplinary high school course exploring the history, culture, and vital contributions of African Americans. Spanning from early African kingdoms to modern times, the curriculum blends history, literature, the arts, science, and political science.",

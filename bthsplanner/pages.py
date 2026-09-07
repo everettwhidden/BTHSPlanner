@@ -80,7 +80,10 @@ def index() -> rx.Component:
                         spacing="2", margin_bottom="10px"
                     ),
                     
-                    course_card("English Course", "English 9"),
+                    rx.tooltip(
+                        course_card("English Course", "English 9"),
+                        content = "Double period, alternates daily with DDP"
+                    ),
                     rx.cond(PlannerState.major_has_aphg,
                         course_card("History Course", "Pre-AP World History"),
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
@@ -94,7 +97,10 @@ def index() -> rx.Component:
                         lambda course: course_card("Math Course", course)
                     ),
                     course_card("Language Course", PlannerState.f_lang),
-                    course_card("Required Course", "Design & Drafting for Production (DDP)"),
+                    rx.tooltip(
+                        course_card("Required Course", "Design & Drafting for Production (DDP)"),
+                        content = "Double period, alternates daily with English 9"
+                    ),
                     rx.vstack(
                         rx.foreach(
                             PlannerState.freshman_electives,

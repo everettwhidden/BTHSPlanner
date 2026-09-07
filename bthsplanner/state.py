@@ -11,6 +11,7 @@ import re
 import openpyxl
 import reflex as rx
 from data.courses import double_alternates
+from data.courses import alternate_list
 from data.courses import COURSE_CATALOG, MAJORS, req_courses
 
 MAJOR_NAMES = list(MAJORS.keys())
@@ -487,7 +488,7 @@ class PlannerState(rx.State):
                     # Count how many 1 period semester classes they have
                     single_semester_1_pd += 1
             else:
-                if pds == 2 and c in double_alternates:
+                if pds == 2 and c in alternate_list:
                     full_year_periods += 1
                 else:
                     full_year_periods += pds
