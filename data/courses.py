@@ -883,11 +883,11 @@ COURSE_CATALOG = {
         "grades": ["Senior"]
     },
     "Modern Physics": {
-        "description": "This senior-year Physics major course moves beyond classical mechanics to cover 20th-century physics, including atomic structure, quantum behavior, and special relativity.",
+        "description": "This course moves beyond classical mechanics to cover 20th-century physics, including atomic structure, quantum behavior, and special relativity.",
         "periods": 1,
         "credits": 1.0,
-        "is_elective": False,
-        "grades": ["Senior"]
+        "is_elective": True,
+        "grades": ["Junior","Senior"]
     },
     "Multivariable Calculus": {
         "description": "Multivariable Calculus extends the core ideas of calculus, derivatives and integrals, into three-dimensional space by introducing functions of several variables. Students learn to model systems where multiple quantities change simultaneously, such as curved surfaces, vector fields, and fluid or spatial forces, using tools like partial derivatives, multiple integrals, and vector calculus. This college-level course is a common requirement for university tracks in engineering, physics, computer science, and data science.",

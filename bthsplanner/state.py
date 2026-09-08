@@ -225,17 +225,7 @@ class PlannerState(rx.State):
     #adnvaced lang courses electives, exclude spanish bc spanihs has advanced spanish
     ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
 
-    @rx.var
-    def sophomore_ap_language(self) -> str:
-        if not self.lang_is_accelerated:
-            return ""
-        if self.language_base == "Spanish":
-            return "Advanced Spanish"
-        for name in self.ap_lotes:
-            if self.language_base in name:
-                return name
-        return ""
-   
+
     current_modal_grade: str = "Junior"
     
     @rx.var
@@ -788,8 +778,7 @@ class PlannerState(rx.State):
                 "AP Computer Science Principles", "Health Education", self.so_eng, self.so_hist,
                 "Regents Chemistry", math, lang, "Gym", "Lunch" 
             ] + self.sophomore_electives)
-            if self.sophomore_ap_language:
-                courses.append(self.sophomore_ap_language)
+            
             return set(courses)
             
         if year == "Junior":
@@ -848,7 +837,10 @@ class PlannerState(rx.State):
                         courses.append(self.sn_gov)
 
             return set(courses)
-
+    @rx.var
+    def all_courses(self) -> set[str]:
+        return self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior") | self._courses_for_year("Senior") 
+    
     def _evict_duplicates(self):
         fr = self._courses_for_year("Freshman")
         so = self._courses_for_year("Sophomore")
@@ -1000,7 +992,8 @@ class PlannerState(rx.State):
             if name == "Advanced Spanish" and current_grade == "Senior":
                 if "Spanish III" not in self._courses_for_year("Junior"):
                     continue
-
+            if name == "AP Spanish Language & Culture" and "Advanced Spanish" not in self.all_courses:
+                continue
             
 
             if "available_grades" in data:
@@ -1109,7 +1102,7 @@ class DropdownOptions(PlannerState):
         return _filter(opts, self.j_eng, self.junior_ap_count , prior)
     @rx.var
     def j_his_opts(self) -> list[str]:
-        opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year if needed)"]
+        opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
         if self.has_econ_gov_conflict:
             opts = [o for o in opts if o not in ("Economics", "AP African American Studies")]
         if not self.pre_credits.get("US History", False):
