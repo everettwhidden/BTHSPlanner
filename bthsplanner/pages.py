@@ -170,7 +170,11 @@ def index() -> rx.Component:
                         dropdown_card("English Course", DropdownOptions.j_eng_opts, PlannerState.j_eng, PlannerState.change_j_eng),
                         rx.fragment()
                     ),
-                    dropdown_card("History Course", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
+                    rx.cond(
+                        PlannerState.j_his == "None (free period, econ senior year)",
+                        rx.fragment(),
+                        dropdown_card("History Course", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
+                    ),
                     rx.cond(
                         PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict,
                         course_card("Government Course", "Participation in Government")

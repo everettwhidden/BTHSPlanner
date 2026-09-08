@@ -224,7 +224,10 @@ class PlannerState(rx.State):
 
     #adnvaced lang courses electives, exclude spanish bc spanihs has advanced spanish
     ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
-
+    none_hisory_placeholders = {
+    "None (free period, econ senior year)",
+    "None (free period, econ junior year)",
+}
 
     current_modal_grade: str = "Junior"
     
@@ -386,13 +389,16 @@ class PlannerState(rx.State):
         snapshot = self._export_progress_dict()
         prev = self.j_his
         self.j_his = val
-        if prev == "Economics" and val != "Economics":
+        prev_needed_senior_econ = prev in ("Economics", "None (free period, econ senior year)")
+        if val == "None (free period, econ senior year)" or (prev_needed_senior_econ and val != "Economics"):
             self.sn_his = "Economics"
             if "AP Macroeconomics with Government" in self.senior_electives:
                 self.senior_electives.remove("AP Macroeconomics with Government")
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
+            if not self._enforce_period_limits():
+                self._import_progress_dict(snapshot)
 
     def change_j_phys(self, val: str):
         snapshot = self._export_progress_dict()
@@ -453,6 +459,8 @@ class PlannerState(rx.State):
     def change_sn_his(self, val: str):
         snapshot = self._export_progress_dict()
         self.sn_his = val
+        if val == "None (free period, econ junior year)" :
+            self.j_his = "Economics"
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
@@ -804,7 +812,7 @@ class PlannerState(rx.State):
                 courses.append(self.language_base + " III")
             if self.need_regents_physics_junior:
                 courses.append(self.j_phys)
-            return set(courses)
+            return set(c for c in courses if c not in self.none_hisory_placeholders)
         
         if year == "Senior":
 
@@ -836,7 +844,7 @@ class PlannerState(rx.State):
                     if self.sn_his == "Economics" and not self.has_gov_conflict:
                         courses.append(self.sn_gov)
 
-            return set(courses)
+            return set(c for c in courses if c not in self.none_hisory_placeholders)
     @rx.var
     def all_courses(self) -> set[str]:
         return self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior") | self._courses_for_year("Senior") 
@@ -1104,9 +1112,9 @@ class DropdownOptions(PlannerState):
     def j_his_opts(self) -> list[str]:
         opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
         if self.has_econ_gov_conflict:
-            opts = [o for o in opts if o not in ("Economics", "AP African American Studies")]
+            opts = [o for o in opts if o not in ("Economics", "AP African American Studies",)]
         if not self.pre_credits.get("US History", False):
-            opts = [o for o in opts if o != "Economics"]
+            opts = [o for o in opts if o not in ( "Economics", "None (free period, econ senior year)")]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
         return _filter(opts, self.j_his, self.junior_ap_count ,prior)
     @rx.var
@@ -1141,12 +1149,13 @@ class DropdownOptions(PlannerState):
             opts = ["AP US Government", "Participation in Government"]
         else:
             opts = ["AP Macroeconomics with Government", "AP Microeconomics with Government", "Economics", "AP US Government", "Participation in Government"]
+            if self.pre_credits.get("US History", False):
+                opts.append("None (free period, econ junior year)")
         if self.chose_government_jr:
             opts = [o for o in opts if o != "Participation in Government"]
-    
+
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
         return _filter(opts, self.sn_his, self.senior_ap_count, prior)
-            
       
     @rx.var
     def sn_ec_opts(self) -> list[str]:
