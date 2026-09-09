@@ -72,6 +72,8 @@ class PlannerState(rx.State):
                 self.j_his = "Economics"
             elif self.j_his == "Economics":
                 self.j_his = "Regents United States History"
+            else:
+                self.j_his = "Regents United States History"
         if credit == "Language":
             if checked:
                 self.f_lang = _next_lang_level(self.pre_language)
