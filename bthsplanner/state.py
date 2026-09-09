@@ -794,8 +794,11 @@ class PlannerState(rx.State):
         if year == "Junior":
             math = self.j_math
             # Start with dropdowns and electives as a clean list
-            courses = [self.j_eng, self.j_his, "Gym", "Lunch"] + self.junior_electives
-            
+            courses = [ self.j_his, "Gym", "Lunch"] + self.junior_electives
+
+            if self.major != "LIU Pharmacy":
+                courses.append(self.j_eng)
+
             # 🎯 If they chose Economics in Junior year, dynamically inject Government into Junior year active tracker
             if (self.j_his == "Economics" or (
                 "AP Macroeconomics / AP Microeconomics (One Semester each)" in self.junior_major_courses or 
