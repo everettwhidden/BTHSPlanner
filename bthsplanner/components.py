@@ -17,7 +17,8 @@ from data.courses import (
     english_color,
     language_opts,
     req_courses,
-    gym_lunch_color
+    gym_lunch_color,
+    alternates_with_gym
 )
 from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR
 
@@ -321,13 +322,22 @@ def dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any)
     )
 
 def render_major_course(course: rx.Var[str]) -> rx.Component:
+    
     return rx.cond(
         PlannerState.partner_map.contains(course),
         rx.tooltip(
             course_card("Major Course", course),
             content=f"Double period, alternates daily with {PlannerState.partner_map[course]}",
         ),
+        rx.cond(
+            rx.Var.create(alternates_with_gym).contains(course),
+            rx.tooltip(
+                course_card("Major Course", course),
+                content = "Double period, alternates daily with Gym"
+            ),
+        
         course_card("Major Course", course),
+        ),
     )
 
 

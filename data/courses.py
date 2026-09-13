@@ -5,7 +5,7 @@ MAJORS = {
     "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
     "Civil Engineering": {"room": "1N8", "Junior": ["PLTW Civil Engineering & Architecture", "Engineering Statics"], "Senior": ["AutoCAD Certification", "American Concrete Institute Certification", "Surveying Certification", "Career & Financial Management (Online)"]},
-    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications – JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development", "Career & Financial Management (Online)"]},
+    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications - JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development", "Career & Financial Management (Online)"]},
     "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", "Career & Financial Management (Online)"]},
     "Environmental Science": {"room": "3E12", "Junior": ["AP Environmental Science"], "Senior": ["AP Human Geography", "Environmental Sustainability"]},
     "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics (One Semester each)"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
@@ -33,6 +33,9 @@ language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I
 
 double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture")]
 alternate_list = [course for pairs in double_alternates for course in pairs]
+
+alternates_with_gym = ["PLTW Digital Electronics"]
+
 COURSE_CATALOG = {
     "AP African American Studies": {
             "description": "AP African American Studies is an interdisciplinary high school course exploring the history, culture, and vital contributions of African Americans. Spanning from early African kingdoms to modern times, the curriculum blends history, literature, the arts, science, and political science.",
@@ -960,7 +963,7 @@ COURSE_CATALOG = {
     },
     "PLTW Digital Electronics": {
         "description": "A Project Lead The Way specialization course for the Electrical Engineering major, this class covers digital logic design, including combinational and sequential circuits, using both simulation software and physical circuit-building. It's the junior-year entry point into the Electrical Engineering sequence, building directly on skills used in Digital Systems Design senior year.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Junior", "Senior"]

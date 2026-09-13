@@ -1,10 +1,4 @@
-"""
-State layer for BTHS Planner.
 
-Holds all app state (PlannerState) and every computed dropdown-option
-list (DropdownOptions). Nothing in this file renders UI — components.py
-and pages.py import from here, this file never imports from them.
-"""
 import io
 import math
 import re
@@ -13,6 +7,7 @@ import reflex as rx
 from data.courses import double_alternates
 from data.courses import alternate_list
 from data.courses import COURSE_CATALOG, MAJORS, req_courses
+from data.courses import alternates_with_gym
 
 MAJOR_NAMES = list(MAJORS.keys())
 
@@ -55,7 +50,11 @@ class PlannerState(rx.State):
         "US History" : False,
         "Biology/Living Environment" : False,
     }
+    
+
     partner_map: dict[str, str] = _build_partner_map(double_alternates)
+
+
     def toggle_pre_credit(self, credit: str, checked: bool):
         snapshot = self._export_progress_dict()
         self.pre_credits[credit] = checked
@@ -96,8 +95,6 @@ class PlannerState(rx.State):
         else:
             self.f_lang = val
 
-
-
     
     def sync_f_sci(self):
         has_bio = self.pre_credits.get("Biology/Living Environment", False)
@@ -117,7 +114,7 @@ class PlannerState(rx.State):
 
     def change_tab(self, name: str):
         self.active_tab = name
-    # --- Existing Grade Tracking ---
+    #initial courses and major
     major: str = "Aerospace Engineering"
     f_hist: str = "Pre-AP World History"
     f_sci: str = "Regents Physics"
@@ -136,17 +133,18 @@ class PlannerState(rx.State):
     sn_ec: str = "Economics"
     sn_gov: str = "Participation in Government"
 
-    # --- SPLIT ELECTIVE TRACKING LISTS ---
+    # elective tracking lists 
     freshman_electives: list[str] = []
     sophomore_electives: list[str] = []
-    junior_electives: list[str] = []   # Electives explicitly added to Junior year
-    senior_electives: list[str] = []   # Electives explicitly added to Senior year
+    junior_electives: list[str] = []   
+    senior_electives: list[str] = []   
     
 
     
         
     
-    # --- Helper Data Export/Import Functions ---
+    # import/export data functions
+
     def _export_progress_dict(self) -> dict:
         return {
             "major": self.major,
@@ -221,7 +219,7 @@ class PlannerState(rx.State):
     
 
 
-    active_modal_course: dict = {}     # Holds the course info for your detail popup
+    active_modal_course: dict = {}     # Holds the course info for detail popup
     is_detail_open: bool = False       # Controls the visibility of the global detail modal
 
     #adnvaced lang courses electives, exclude spanish bc spanihs has advanced spanish
@@ -266,7 +264,7 @@ class PlannerState(rx.State):
                 if i < len(courses):
                     ws.cell(row=row, column=col, value=courses[i])
 
-        # --- Summary rows: one blank row after the last course row ---
+        # lean rows that summarize the totals for eachb category
         summary_start = 4 + max_courses + 1
         ws.cell(row=summary_start, column=1, value="Courses")
         ws.cell(row=summary_start + 1, column=1, value="Periods")
@@ -496,6 +494,10 @@ class PlannerState(rx.State):
                 else:
                     # Count how many 1 period semester classes they have
                     single_semester_1_pd += 1
+
+            elif c in alternates_with_gym:
+                full_year_periods += (pds-1)
+
             else:
                 if pds == 2 and c in alternate_list:
                     full_year_periods += 1

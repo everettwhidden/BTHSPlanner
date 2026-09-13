@@ -357,7 +357,7 @@ def index() -> rx.Component:
                             ),                            
                             
                             
-                            rx.foreach(PlannerState.filtered_senior_major_courses, lambda course: course_card("Major Course", course)),
+                            rx.foreach(PlannerState.filtered_senior_major_courses, render_major_course),
                             
                             # If this major has a math requirement/override (e.g. Applied Math), place standard non-deletable dropdown inside Major Section
                             
