@@ -332,7 +332,7 @@ COURSE_CATALOG = {
         "description": "Algebra 1 is a foundational high school mathematics course that introduces students to the use of variables, symbols, and letters to represent unknown numbers and express relationships. Students learn how to write, solve, and graph linear equations and inequalities, work with polynomials and quadratic functions, and analyze data to solve practical, real-world problems.",
         "periods": 1,
         "credits": 1.0,
-        "is_elective": True,
+        "is_elective": False,
         "available_grades": ["Freshman"],
         "color" : math_color
     },
