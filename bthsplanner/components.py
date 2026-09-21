@@ -18,9 +18,10 @@ from data.courses import (
     language_opts,
     req_courses,
     gym_lunch_color,
-    alternates_with_gym
+    alternates_with_gym,
+    MAJORS
 )
-from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR
+from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES
 
 required_courses_labels = ["Major Course", "Required Course"]
 
@@ -567,3 +568,103 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
         )
     )
 
+GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
+ORDER_OPTIONS = ["Default", "A-Z"]
+
+
+def checkbox_option(label: str, checked: rx.Var, on_change: any) -> rx.Component:
+    return rx.hstack(
+        rx.checkbox(checked=checked, on_change=on_change),
+        rx.text(label, color="#FFFFFF", font_size="18px", font_weight="600"),
+        align_items="center",
+        spacing="2",
+    )
+
+
+def filter_popover(trigger_label, *items) -> rx.Component:
+    return rx.popover.root(
+        rx.popover.trigger(
+            rx.button(
+                trigger_label,
+                rx.icon("chevron-down", size=20),
+                
+                style={
+                    "background_color": theme.lighter_aa_blue,
+                    "border": "1px solid #434651",
+                    "color": "#FFFFFF",
+                    "font_weight": "600",
+                    "font_size" : "18px"
+
+                },
+            )
+        ),
+        rx.popover.content(
+            rx.vstack(*items, align="start", spacing="2"),
+            max_height="900px",
+            overflow_y="auto",
+            style={"background_color": theme.lighter_aa_blue, "border": "1px solid #434651"},
+        ),
+    )
+
+
+def order_option(label: str) -> rx.Component:
+    return rx.text(
+        rx.hstack(
+            rx.radio_group.item(value=label),
+            label,
+            align_items="center",
+            spacing="2",
+        ),
+        as_="label",
+        color="#FFFFFF",
+        font_size="18px",
+        font_weight="600",
+    )
+
+
+def order_dropdown() -> rx.Component:
+    return filter_popover(
+        rx.cond(PlannerState.order == "A-Z", "Order: A-Z", "Order"),
+        rx.radio_group.root(
+            rx.vstack(
+                *[order_option(o) for o in ORDER_OPTIONS],
+                align="start",
+                spacing="3",
+            ),
+            value=PlannerState.order,
+            on_change=PlannerState.set_order,
+            size="3",
+        ),
+    )
+
+def grade_dropdown() -> rx.Component:
+    count = PlannerState.selected_grades.length()
+    return filter_popover(
+        rx.cond(count > 0, "Grade (" + count.to_string() + ")", "Grade"),
+        *[
+            checkbox_option(g, PlannerState.selected_grades.contains(g), PlannerState.toggle_grade(g))
+            for g in GRADE_OPTIONS
+        ],
+    )
+
+
+def major_dropdown() -> rx.Component:
+    count = PlannerState.selected_majors.length()
+    return filter_popover(
+        rx.cond(count > 0, "Major (" + count.to_string() + ")", "Major"),
+        *[
+            checkbox_option(m, PlannerState.selected_majors.contains(m), PlannerState.toggle_major(m))
+            for m in MAJOR_NAMES
+        ],
+    )
+
+
+def filter_dropdowns() -> rx.Component:
+    return rx.hstack(
+        order_dropdown(),
+        grade_dropdown(),
+        major_dropdown(),
+        spacing="3",
+        align="center",
+        flex_shrink="0",
+    )

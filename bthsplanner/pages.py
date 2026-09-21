@@ -21,7 +21,8 @@ from bthsplanner.components import (
     pre_credit_checkbox,
     pre_language_checkbox,
     styled_select,
-    render_major_course
+    render_major_course,
+    filter_dropdowns
 )
 
 
@@ -411,23 +412,26 @@ def explore_page() -> rx.Component:
             rx.text("Search and browse through all academic offerings at Brooklyn Tech.", color="white", size="3"),
             
             # Live Filter Search Field
-            rx.input(
-                placeholder="Search titles, descriptions or keywords...",
-                on_change=PlannerState.set_explore_search_query,
-                value=PlannerState.explore_search_query,
+            rx.hstack(
+                rx.input(
+                    placeholder="Search titles, descriptions or keywords...",
+                    on_change=PlannerState.set_explore_search_query,
+                    value=PlannerState.explore_search_query,
+                    width="100%",
+                    max_width="800",
+                    margin_top="12px",
+                    margin_bottom="10px",
+                    size="3",
+                    background_color = theme.lighter_aa_blue
+                ),
+                filter_dropdowns(),
                 width="100%",
-                max_width="800",
-                margin_top="12px",
-                margin_bottom="10px",
-                size="3",
-        
-                background_color = theme.lighter_aa_blue
+                align="center",
             ),
-
-            
-
             rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
-        ), 
+            width="100%",
+            align="start",
+        ),
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.grid(

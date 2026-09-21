@@ -180,12 +180,37 @@ class PlannerState(rx.State):
         self.junior_electives = data.get("junior_electives", [])
         self.senior_electives = data.get("senior_electives", [])
 
+
+    #search and filter stuff
+
     search_query: str = ""             # Live search text string
+
 
     explore_search_query: str = ""
 
+    explore_search_query: str = ""
+
+    order: str = "Default"
+    selected_grades: list[str] = []
+    selected_majors: list[str] = []
+
     def set_explore_search_query(self, val: str):
         self.explore_search_query = val
+
+    def set_order(self, val: str):
+        self.order = val
+
+    def toggle_grade(self, grade: str, checked: bool):
+        if checked and grade not in self.selected_grades:
+            self.selected_grades.append(grade)
+        elif not checked and grade in self.selected_grades:
+            self.selected_grades.remove(grade)
+
+    def toggle_major(self, major_name: str, checked: bool):
+        if checked and major_name not in self.selected_majors:
+            self.selected_majors.append(major_name)
+        elif not checked and major_name in self.selected_majors:
+            self.selected_majors.remove(major_name)
 
     def compute_explore_catalog(self) -> list[dict]:
         query = self.explore_search_query.lower().strip()
@@ -193,6 +218,29 @@ class PlannerState(rx.State):
         for name, data in COURSE_CATALOG.items():
             if query not in name.lower() and query not in data.get("description", "").lower():
                 continue
+
+            badges = _grade_badges(
+                data.get("is_elective", False),
+                data.get("grades", []),
+                data.get("available_grades", [])
+            )
+
+            # grade filter, keep the course if it matches any picked grade
+            if self.selected_grades:
+                if not any(g in badges for g in self.selected_grades):
+                    continue
+
+            # major filter, keep the course if it's in any picked major
+            if self.selected_majors:
+                in_major = False
+                for m in self.selected_majors:
+                    major_data = MAJORS.get(m, {})
+                    if name in major_data.get("Junior", []) or name in major_data.get("Senior", []):
+                        in_major = True
+                        break
+                if not in_major:
+                    continue
+
             results.append({
                 "name": name,
                 "description": data.get("description", ""),
@@ -201,14 +249,13 @@ class PlannerState(rx.State):
                 "credits": f"{float(data.get('credits', 1.0)):.1f}",
                 "is_elective": data.get("is_elective", False),
                 "disabled": False,
-                "grade_badges": _grade_badges(
-                    data.get("is_elective", False),
-                    data.get("grades", []),
-                    data.get("available_grades", [])
-                ),
+                "grade_badges": badges,
             })
-        return results
 
+        if self.order == "A-Z":
+            results = sorted(results, key=lambda c: c["name"].lower())
+
+        return results
     @rx.var
     def explore_catalog(self) -> list[dict]:
         return self.compute_explore_catalog()
@@ -939,11 +986,6 @@ class PlannerState(rx.State):
         for yr in ["Freshman", "Sophomore", "Junior", "Senior"]:
             active_courses.update(self._courses_for_year(yr))
 
-        
-
-        
-    
-    
         current_grade = str(self.current_modal_grade).strip()
 
         # Headroom AND AP limit verification routing based on active modal view

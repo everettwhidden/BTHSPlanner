@@ -204,7 +204,7 @@ COURSE_CATALOG = {
         "color" : history_color
     },
     "AP Physics C: Electricity & Magnetism": {
-        "description": "This calculus-based, double-period senior course covers electrostatics, conductors and capacitors, dielectrics, DC and RC circuits, magnetic fields, and electromagnetic induction. It corresponds to a second-semester calculus-based college physics course and is typically taken alongside or after AP Physics C: Mechanics.",
+        "description": "This calculus-based, double-period senior course covers the AP Physics C: Mechanics curriculum during the first semester and the AP Physics C: Electricity & Magnetism curriculum during the second semester. The E&M curriculum covers electrostatics, conductors and capacitors, dielectrics, DC and RC circuits, magnetic fields, and electromagnetic induction. It corresponds to a second-semester calculus-based college physics course and is typically taken alongside or after AP Physics C: Mechanics.",
         "periods": 2,
         "credits": 1.0,
         "is_elective": True,
