@@ -385,6 +385,7 @@ class PlannerState(rx.State):
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
+
     def change_j_his(self, val: str):
         snapshot = self._export_progress_dict()
         prev = self.j_his
@@ -407,6 +408,7 @@ class PlannerState(rx.State):
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
+
     def change_j_math(self, val: str):
         snapshot = self._export_progress_dict()
         self.j_math = val
@@ -418,6 +420,7 @@ class PlannerState(rx.State):
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
+
     def change_sn_math(self, val: str):
         snapshot = self._export_progress_dict()
         self.sn_math = val
@@ -1119,7 +1122,7 @@ class DropdownOptions(PlannerState):
     def j_his_opts(self) -> list[str]:
         opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
         if self.has_econ_gov_conflict:
-            opts = [o for o in opts if o not in ("Economics", "AP African American Studies",)]
+            opts = [o for o in opts if o not in ("Economics",)]
         if not self.pre_credits.get("US History", False):
             opts = [o for o in opts if o not in ( "Economics", "None (free period, econ senior year)")]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
