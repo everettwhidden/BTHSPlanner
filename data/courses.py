@@ -195,14 +195,6 @@ COURSE_CATALOG = {
         "available_grades" : ["Senior"],
         "color" : history_color
     },
-    "AP Microeconomics with Government": {
-        "description": "This year-long senior course pairs AP Microeconomics in the first semester, covering supply and demand, consumer and producer theory, market structures, and market failures, with a second semester of Participation in Government, covering civic institutions, the legislative process, and how public policy is made and implemented.",
-        "periods": 1,
-        "credits": 2.0,
-        "is_elective": True,
-        "available_grades" : ["Senior"],
-        "color" : history_color
-    },
     "AP Physics C: Electricity & Magnetism": {
         "description": "This calculus-based, double-period senior course covers the AP Physics C: Mechanics curriculum during the first semester and the AP Physics C: Electricity & Magnetism curriculum during the second semester. The E&M curriculum covers electrostatics, conductors and capacitors, dielectrics, DC and RC circuits, magnetic fields, and electromagnetic induction. This course corresponds to a first and second-semester calculus-based college physics course. This course is viewed as the gold standard for students looking to go into engineering. Seats are limited, with physics majors getting automatic priority seating and very few non-physics major spots available.",
         "periods": 2,

@@ -1005,7 +1005,7 @@ class PlannerState(rx.State):
             if not data.get("is_elective", False) or (name in active_courses and not data.get("allow_multiple", False)):
                 continue
             
-            if name in ["AP Macroeconomics with Government", "AP Microeconomics with Government"]:
+            if name in ["AP Macroeconomics with Government"]:
                 if not self.chose_economics_jr:
                     continue
 
@@ -1191,7 +1191,7 @@ class DropdownOptions(PlannerState):
         if self.has_econ_gov_conflict:
             opts = ["AP US Government", "Participation in Government"]
         else:
-            opts = ["AP Macroeconomics with Government", "AP Microeconomics with Government", "Economics", "AP US Government", "Participation in Government"]
+            opts = ["AP Macroeconomics with Government", "Economics", "AP US Government", "Participation in Government"]
             if self.pre_credits.get("US History", False):
                 opts.append("None (free period, econ junior year)")
         if self.chose_government_jr:
@@ -1203,7 +1203,6 @@ class DropdownOptions(PlannerState):
     @rx.var
     def sn_ec_opts(self) -> list[str]:
         opts = [#"AP Macroeconomics with Government", 
-                #"AP Microeconomics with Government", 
                 "Economics"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
         return _filter(opts, self.sn_ec, self.senior_ap_count , prior)
