@@ -715,12 +715,13 @@ class PlannerState(rx.State):
     def chose_government_jr(self) -> bool:
         return (
             ("AP US Government" in self.junior_major_courses or 
-            "AP US Government" in self.junior_electives) or ("AP US Government" in self.senior_major_courses or "AP US Government" in self.senior_electives) or ("AP Comparative Government" in self.senior_major_courses)
+            "AP US Government" in self.junior_electives) or ("AP US Government" in self.senior_major_courses or "AP US Government" in self.senior_electives) or ("AP Comparative Government" in self.senior_electives or "AP Comparative Government" in self.junior_electives)
         )
     @rx.var(cache = True)
     def has_macro(self) -> bool:
         return ("AP Macroeconomics with Government" in self.junior_major_courses or "AP Macroeconomics with Government" in self.senior_major_courses)
 
+#----------------------------------------Gov / econ stuff-------------------------------------------
     @rx.var(cache=True)
     def has_econ_gov_conflict(self) -> bool:
         #True if the student already has AP Macroeconomics or AP Macroeconomics / AP Microeconomics (One Semester each)
@@ -735,16 +736,10 @@ class PlannerState(rx.State):
         return any(c in conflict_courses for c in sources)
     @rx.var(cache=True)
     def has_gov_conflict(self) -> bool:
-        """True if the student's major already includes AP Comparative Government 
-        as a required junior-year course (currently: LAS) — this conflicts with 
-        also taking Participation in Government junior year, since Comparative 
-        Government already satisfies the gov credit."""
-        return self.major == "Law & Society" or "AP Comparative Government" in MAJORS[self.major].get("Junior", [])
-    @rx.var(cache=True)
+        #if student is LAS major or taking ap us gov
+        return self.major == "Law & Society" or "AP US Government" in MAJORS[self.major].get("Junior", [])
 
-    def took_ap_hg_fr(self) -> bool:
-        return "AP Human Geography" in self._courses_for_year("Freshman")
-    
+#-------------------------------------------------------------------------------------------------
     @rx.var(cache=True)
     def has_ap_physics_junior(self) -> bool: return any("AP Physics I" in c for c in MAJORS[self.major].get("Junior", []))
 
