@@ -1,6 +1,6 @@
 MAJORS = {
     "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing", "Career & Financial Management (Online)"]},
-    "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory", "Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
+    "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
     "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling", "Career & Financial Management (Online)"]},
     "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
@@ -731,11 +731,11 @@ COURSE_CATALOG = {
         "grades": ["Sophomore", "Junior"],
         "color" : lang_color
     },
-    "Graph Theory": {
-        "description": "This one-semester Applied Mathematics major course introduces graph theory starting with Leonhard Euler's famous Bridges of Konigsberg problem, the historical starting point of the field, then moves into isomorphic graphs, adjacency matrices, and Eulerian and Hamiltonian graphs. Students complete a culminating group presentation on a real-world application of graph theory.",
+    "Graph Theory / Number Theory": {
+        "description": "This Applied Mathematics major course spends one semester on Graph Theory and one semester on Number Theory. Graph Theory introduces topics starting with Leonhard Euler's famous Bridges of Konigsberg problem, the historical starting point of the field, then moves into isomorphic graphs, adjacency matrices, and Eulerian and Hamiltonian graphs. Students complete a culminating group presentation on a real-world application of graph theory. Number theory covers the basics of number theory, tracing the field back to some of its oldest known studies in Ancient China, through topics like the Euclidean Algorithm, the Fundamental Theorem of Arithmetic, and modular arithmetic via Fermat's Little Theorem, Euler's Theorem, and Wilson's Theorem. Modern applications such as cryptography and internet security are woven throughout, with Python used to supplement the material, and students also learn counting techniques from combinatorics before completing a culminating group presentation.",
         "periods" : 1,
-        "credits": 1.0,
-        "semesters" : 1,
+        "credits": 2.0,
+        "semesters" : 2,
         "is_elective": False,
         "grades": ["Junior"]
     },
@@ -901,14 +901,6 @@ COURSE_CATALOG = {
         "grades": ["Senior"],
         "color" : english_color
     },  
-    "Number Theory": {
-        "description": "This one-semester Applied Mathematics major course covers the basics of number theory, tracing the field back to some of its oldest known studies in Ancient China, through topics like the Euclidean Algorithm, the Fundamental Theorem of Arithmetic, and modular arithmetic via Fermat's Little Theorem, Euler's Theorem, and Wilson's Theorem. Modern applications such as cryptography and internet security are woven throughout, with Python used to supplement the material, and students also learn counting techniques from combinatorics before completing a culminating group presentation.",
-        "periods": 1,
-        "credits": 1.0,
-        "semesters" : 1,
-        "is_elective": False,
-        "grades": ["Junior"]
-    },
     "Orchestra": {
         "description": "This pass/fail performing ensemble class develops string and instrumental technique through the rehearsal and performance of orchestral repertoire spanning classical and contemporary works. It's open to students in any grade and can be taken more than once.",
         "periods": 1,

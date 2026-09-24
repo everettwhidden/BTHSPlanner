@@ -1189,6 +1189,8 @@ class DropdownOptions(PlannerState):
             opts = ["AP Macroeconomics with Government", "Economics", "AP US Government", "Participation in Government"]
             if self.pre_credits.get("US History", False):
                 opts.append("None (free period, econ junior year)")
+            if self.major == "Law & Society":
+                opts.remove("AP US Government")
         if self.chose_government_jr:
             opts = [o for o in opts if o != "Participation in Government"]
 
