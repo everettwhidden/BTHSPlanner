@@ -621,7 +621,7 @@ HOW_IT_WORKS_SECTIONS = [
         "desc" : True
     },
     {
-        "heading": "Major Courses and Electives (3 credits)",
+        "heading": "Major Courses and Electives (7 credits)",
         "body": "• Varies by major\n• Major courses cover elective requirement",
         "desc" : True
     },
