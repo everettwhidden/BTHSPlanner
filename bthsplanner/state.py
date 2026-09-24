@@ -98,12 +98,10 @@ class PlannerState(rx.State):
     
     def sync_f_sci(self):
         has_bio = self.pre_credits.get("Biology/Living Environment", False)
-        has_alg1 = self.pre_credits.get("Algebra I", False)
+        
         if not has_bio:
             self.f_sci = "Regents Biology"
-        elif not has_alg1:
-            self.f_sci = "Regents Physics"
-        elif has_bio:
+        else:
             self.f_sci = "Regents Physics"
 
     def sync_so_eng_for_language(self):
@@ -1138,13 +1136,11 @@ class DropdownOptions(PlannerState):
     @rx.var
     def f_sci_opts(self) -> list[str]:
         has_bio = self.pre_credits.get("Biology/Living Environment", False)
-        has_alg1 = self.pre_credits.get("Algebra I", False) or self.pre_credits.get("Geometry", False)
+        
         if not has_bio:
             opts = ["Regents Biology"]
-        elif has_alg1:
-            opts = ["Regents Physics", "AP Biology"]
         else:
-            opts = ["Regents Physics"]
+            opts = ["Regents Physics", "AP Biology"]
         return _filter(opts, self.f_sci, self.freshman_ap_count , set())
 
     @rx.var

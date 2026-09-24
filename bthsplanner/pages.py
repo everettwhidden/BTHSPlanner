@@ -91,7 +91,7 @@ def index() -> rx.Component:
                         course_card("History Course", "Pre-AP World History"),
                         dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
                     rx.cond(
-                        PlannerState.pre_credits["Biology/Living Environment"] & (PlannerState.pre_credits["Algebra I"] | PlannerState.pre_credits["Geometry"]),
+                        PlannerState.pre_credits["Biology/Living Environment"],
                         dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
                         course_card("Science Course", PlannerState.f_sci),),
                     
