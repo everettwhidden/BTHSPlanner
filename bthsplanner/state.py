@@ -760,9 +760,7 @@ class PlannerState(rx.State):
         Regents Physics / AP Physics I swap slot itself."""
         others = [c for c in self._courses_for_year("Junior") if "AP" in c and c != self.j_phys]
         return len(others) < 3
-    @rx.var(cache = True)
-    def major_has_aphg(self) -> bool:
-        return "AP Human Geography" in self.junior_major_courses or "AP Human Geography" in self.senior_major_courses
+    
 
     @rx.var(cache=True)
     def junior_major_courses(self) -> list[str]:
@@ -1129,10 +1127,7 @@ def _filter(opts: list, current: str, ap_count: int, taken: set) -> list:
     ]
 
 class DropdownOptions(PlannerState):
-    @rx.var
-    def f_hist_opts(self) -> list[str]:
-        opts = ["Pre-AP World History", "AP Human Geography"]
-        return _filter(opts, self.f_hist, self.freshman_ap_count, set())
+    
     @rx.var
     def f_sci_opts(self) -> list[str]:
         has_bio = self.pre_credits.get("Biology/Living Environment", False)

@@ -87,9 +87,9 @@ def index() -> rx.Component:
                         course_card("English Course", "English 9"),
                         content = "Double period, alternates daily with DDP"
                     ),
-                    rx.cond(PlannerState.major_has_aphg,
-                        course_card("History Course", "Pre-AP World History"),
-                        dropdown_card("History Course", DropdownOptions.f_hist_opts, PlannerState.f_hist, PlannerState.change_f_hist),),
+                    
+                    course_card("History Course", "Pre-AP World History"),
+                        
                     rx.cond(
                         PlannerState.pre_credits["Biology/Living Environment"],
                         dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
