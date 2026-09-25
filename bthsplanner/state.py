@@ -68,8 +68,13 @@ class PlannerState(rx.State):
                 self.sn_math = "AP Calculus BC"
         if credit == "US History":
             if checked:
-                self.j_his = "Economics"
+                if self.major == "Finance":
+                    self.j_his = "Participation in Government"
+                else:
+                    self.j_his = "Economics"
             elif self.j_his == "Economics":
+                self.j_his = "Regents United States History"
+            elif self.j_his == "Participation in Government":
                 self.j_his = "Regents United States History"
             else:
                 self.j_his = "Regents United States History"
@@ -436,10 +441,19 @@ class PlannerState(rx.State):
         prev = self.j_his
         self.j_his = val
         prev_needed_senior_econ = prev in ("Economics", "None (free period, econ senior year)")
+        prev_needed_senior_gov = prev in ("Participation in Government", "None (free period, gov senior year)")
         if val == "None (free period, econ senior year)" or (prev_needed_senior_econ and val != "Economics"):
             self.sn_his = "Economics"
             if "AP Macroeconomics with Government" in self.senior_electives:
                 self.senior_electives.remove("AP Macroeconomics with Government")
+        if val == "None (free period, gov senior year)" or (prev_needed_senior_gov and val != "Participation in Government"):
+            self.sn_his = "Participation in Government" \
+            
+            if "AP US Government" in self.senior_electives:
+                self.senior_electives.remove("AP US Government")
+            if "AP Comparative Government" in self.senior_electives:
+                self.senior_electives.remove("AP Comparative Government")
+
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
@@ -507,8 +521,10 @@ class PlannerState(rx.State):
     def change_sn_his(self, val: str):
         snapshot = self._export_progress_dict()
         self.sn_his = val
-        if val == "None (free period, econ junior year)" :
+        if val == "None (free period, econ junior year)":
             self.j_his = "Economics"
+        if val == "None (free period, gov junior year)":
+            self.j_his = "Participation in Government"
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
@@ -738,6 +754,9 @@ class PlannerState(rx.State):
     def has_gov_conflict(self) -> bool:
         #if student is LAS major or taking ap us gov
         return self.major == "Law & Society" or "AP US Government" in MAJORS[self.major].get("Junior", [])
+    @rx.var(cache=True)
+    def chose_gov_jr_finance(self) -> bool:
+        return self.major == "Finance" and self.j_his == "Participation in Government"
 
 #-------------------------------------------------------------------------------------------------
     @rx.var(cache=True)
@@ -1148,11 +1167,18 @@ class DropdownOptions(PlannerState):
         return _filter(opts, self.j_eng, self.junior_ap_count , prior)
     @rx.var
     def j_his_opts(self) -> list[str]:
-        opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
+        if self.has_econ_gov_conflict: #finance majors have econ gov conflict, macro/micro leaves gov to be taken later or in the same year
+            opts = ["AP United States History", "Regents United States History", "Participation in Government", "AP African American Studies", "None (free period, gov senior year)"]
+        else:
+            opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
         if self.has_econ_gov_conflict:
             opts = [o for o in opts if o not in ("Economics",)]
+
         if not self.pre_credits.get("US History", False):
-            opts = [o for o in opts if o not in ( "Economics", "None (free period, econ senior year)")]
+            if self.major != "Finance":
+                opts = [o for o in opts if o not in ( "Economics", "None (free period, econ senior year)")]
+            else:
+                opts = [o for o in opts if o not in ( "Economics", "None (free period, gov senior year)")]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
         return _filter(opts, self.j_his, self.junior_ap_count ,prior)
     @rx.var
@@ -1185,10 +1211,13 @@ class DropdownOptions(PlannerState):
     def sn_his_opts(self) -> list[str]:
         if self.has_econ_gov_conflict:
             opts = ["AP US Government", "Participation in Government"]
+            if self.pre_credits.get("US History", False):
+                opts.append("None (free period, gov junior year)")
         else:
             opts = ["AP Macroeconomics with Government", "Economics", "AP US Government", "Participation in Government"]
             if self.pre_credits.get("US History", False):
                 opts.append("None (free period, econ junior year)")
+            
             if self.major == "Law & Society":
                 opts.remove("AP US Government")
         if self.chose_government_jr:

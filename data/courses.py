@@ -88,13 +88,14 @@ COURSE_CATALOG = {
         
     },
     "AP Comparative Government": {
-            "description": "AP Comparative Government and Politics introduces students to the rich diversity of political life outside the United States. The course uses a comparative approach to examine the political structures; policies; and political, economic, and social challenges of six selected countries: China, Iran, Mexico, Nigeria, Russia, and the United Kingdom. Students compare the effectiveness of approaches to many global issues by examining how different governments solve similar problems. They will also engage in disciplinary practices that require them to read and interpret data, make comparisons and applications, and develop evidence-based arguments.",
-            "periods": 1,
-            "credits": 1.0,
-            "is_elective": False,
-            "grades": ["Junior"],
-            "semesters" : 1
-        },
+        "description": "AP Comparative Government and Politics introduces students to the rich diversity of political life outside the United States. The course uses a comparative approach to examine the political structures; policies; and political, economic, and social challenges of six selected countries: China, Iran, Mexico, Nigeria, Russia, and the United Kingdom. Students compare the effectiveness of approaches to many global issues by examining how different governments solve similar problems. They will also engage in disciplinary practices that require them to read and interpret data, make comparisons and applications, and develop evidence-based arguments.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": False,
+        "grades": [ "Senior"],
+        "semesters" : 1,
+        "color" : history_color
+    },
     "AP Computer Science Applications - JAVA": {
         "description": "This is the core junior-year course for the Software Engineering major, teaching object-oriented programming in Java, including classes, arrays, and 2D array structures, alongside algorithm design and analysis. Students build a portfolio of Java programs while preparing for the AP Computer Science A exam.",
         "periods": 1,

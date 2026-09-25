@@ -172,7 +172,7 @@ def index() -> rx.Component:
                         rx.fragment()
                     ),
                     rx.cond(
-                        PlannerState.j_his == "None (free period, econ senior year)",
+                        (PlannerState.j_his == "None (free period, econ senior year)") | (PlannerState.j_his == "None (free period, gov senior year)"),
                         rx.fragment(),
                         dropdown_card("History Course", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
                     ),
@@ -244,7 +244,7 @@ def index() -> rx.Component:
                     
                     dropdown_card("English Course", DropdownOptions.sn_eng_opts, PlannerState.sn_eng, PlannerState.change_sn_eng),
                     rx.cond(
-                        ~PlannerState.chose_economics_jr & ~PlannerState.has_macro,
+                        ~PlannerState.chose_economics_jr & ~PlannerState.has_macro & ~PlannerState.chose_gov_jr_finance,
                         rx.fragment(
                             dropdown_card("History Course", DropdownOptions.sn_his_opts, PlannerState.sn_his, PlannerState.change_sn_his),
                             rx.cond(
