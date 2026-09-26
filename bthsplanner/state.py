@@ -272,7 +272,7 @@ class PlannerState(rx.State):
     active_modal_course: dict = {}     # Holds the course info for detail popup
     is_detail_open: bool = False       # Controls the visibility of the global detail modal
 
-    #adnvaced lang courses electives, exclude spanish bc spanihs has advanced spanish
+    #adnvaced language courses electives, exclude spanish because it has advanced spanish so logic is different
     ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
     none_hisory_placeholders = {
     "None (free period, econ senior year)",
@@ -1035,7 +1035,9 @@ class PlannerState(rx.State):
                 continue
             
             if current_grade == "Junior" and self.language_base == "Spanish":
-                if name == "AP Spanish Language & Culture" and "Advanced Spanish" not in self._courses_for_year("Sophomore"):
+                if name == "AP Spanish Language & Culture"  and "Spanish III" not in self._courses_for_year("Sophomore"):
+                    continue
+                if name == "Advanced Spanish" and "Spanish III" not in self._courses_for_year("Sophomore"):
                     continue
 
             if current_grade == "Junior" and self.language_base == "Chinese" and not self.lang_is_accelerated:
@@ -1055,15 +1057,13 @@ class PlannerState(rx.State):
             if name in self.ap_lotes and self.language_base not in name:
                 continue
 
-            if name == "Advanced Spanish" and current_grade == "Junior":
-                if "Spanish III" not in self._courses_for_year("Sophomore"):
-                    continue
+            
 
-            if name == "Advanced Spanish" and current_grade == "Senior":
-                if "Spanish III" not in self._courses_for_year("Junior"):
+            if current_grade == "Senior" and self.language_base == "Spanish":
+                if name == "Advanced Spanish" and "Spanish III" not in self.all_courses:         
                     continue
-            if name == "AP Spanish Language & Culture" and "Advanced Spanish" not in self.all_courses:
-                continue
+                if name == "AP Spanish Language & Culture" and "Spanish III" not in self.all_courses:
+                    continue
             
 
             if "available_grades" in data:
