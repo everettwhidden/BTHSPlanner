@@ -486,6 +486,8 @@ class PlannerState(rx.State):
         self._evict_duplicates()
         if not self._enforce_period_limits():
             self._import_progress_dict(snapshot)
+        if val in self.senior_electives:
+            self.senior_electives.remove(val)
     def toggle_sn_math(self):
         self.sn_math_active = not self.sn_math_active
 

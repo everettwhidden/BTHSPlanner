@@ -53,6 +53,13 @@ COURSE_CATALOG = {
         "grades" : ["Freshman", "Junior", "Senior"],
         "color" : science_color
     },
+    "AP Business with Personal Finance": {
+        "description": "This course introduces students to core business principles and personal financial literacy, covering topics such as entrepreneurship, marketing, economics, budgeting, credit, investing, and financial planning. It prepares students for the AP exam while building practical skills for managing personal finances.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": True,
+        "grades": ["Junior", "Senior"],
+    },
     "AP Calculus AB": {
         "description": "This college-level course covers differential and integral calculus of a single variable, including limits, derivatives and their applications, and an introduction to definite and indefinite integrals. It corresponds to a first-semester college calculus course and prepares students for the AP Calculus AB exam.",
         "periods": 1,
