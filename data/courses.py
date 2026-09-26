@@ -118,6 +118,13 @@ COURSE_CATALOG = {
         "grades" : ["Sophomore"],
         "color" : req_courses
     },
+    "AP Cybersecurity": {
+        "description": "This course provides an in-depth introduction to the principles and practices of modern cybersecurity. Students explore the fundamentals of computer networks, operating systems, and how these systems can be exploited or defended, covering topics such as cryptography, authentication, malware analysis, network defense, penetration testing, and digital forensics. The curriculum also addresses risk assessment and management, security policy design, and incident response protocols, while examining the legal, ethical, and societal implications of cybersecurity, including privacy law and responsible disclosure. Through hands-on labs and case studies, students develop practical skills in identifying system vulnerabilities, implementing security controls, and thinking critically about how to protect data and infrastructure in an increasingly connected world.",
+        "periods": 1,
+        "credits": 1.0,
+        "is_elective": True,
+        "grades": ["Junior", "Senior"],
+    },
     "AP English Language & Composition": {
         "description": "This college-level course focuses on rhetorical analysis and argumentative writing, primarily through nonfiction texts, speeches, and essays. Students practice synthesizing multiple sources, analyzing an author's rhetorical choices, and constructing their own persuasive, evidence-based essays under timed conditions in preparation for the AP exam.",
         "periods": 1,
