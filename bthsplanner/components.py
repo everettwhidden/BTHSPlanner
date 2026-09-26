@@ -570,8 +570,8 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
 ORDER_OPTIONS = ["Default", "A-Z"]
-ELECTIVE_OPTIONS = ["All", "Electives", "Non electives"]
-
+#ELECTIVE_OPTIONS = ["All", "Electives", "Non electives"]
+FILTER_OPTIONS = ["Electives"]
 def checkbox_option(label: str, checked: rx.Var, on_change: any) -> rx.Component:
     return rx.hstack(
         rx.checkbox(checked=checked, on_change=on_change),
@@ -639,18 +639,13 @@ def order_dropdown() -> rx.Component:
     )
 
 def elective_dropdown() -> rx.Component:
+    count = PlannerState.selected_filters.length()
     return filter_popover(
-        rx.cond(PlannerState.elective_filter == "All", "Filter", rx.cond(PlannerState.elective_filter == "Electives", "Electives", "Non electives")),
-        rx.radio_group.root(
-            rx.vstack(
-                *[order_option(o) for o in ELECTIVE_OPTIONS],
-                align="start",
-                spacing="3",
-            ),
-            value=PlannerState.elective_filter,
-            on_change=PlannerState.set_elective,
-            size="3",
-        ),
+        rx.cond(count > 0, "Filters (" + count.to_string() + ")", "Filter"),
+        *[
+            checkbox_option(f, PlannerState.selected_filters.contains(f), PlannerState.toggle_filter(f))
+            for f in FILTER_OPTIONS
+        ],
     )
 
 def grade_dropdown() -> rx.Component:
