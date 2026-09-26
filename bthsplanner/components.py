@@ -569,9 +569,9 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
     )
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
-ORDER_OPTIONS = ["Default", "A-Z"]
-#ELECTIVE_OPTIONS = ["All", "Electives", "Non electives"]
-FILTER_OPTIONS = ["Electives"]
+ORDER_OPTIONS = ["AP First", "A-Z"]
+FILTER_OPTIONS = ["Electives", "Non-electives"]
+
 def checkbox_option(label: str, checked: rx.Var, on_change: any) -> rx.Component:
     return rx.hstack(
         rx.checkbox(checked=checked, on_change=on_change),
@@ -625,7 +625,7 @@ def order_option(label: str) -> rx.Component:
 
 def order_dropdown() -> rx.Component:
     return filter_popover(
-        rx.cond(PlannerState.order == "A-Z", "Sort by: A-Z", "Sort by: Default"),
+        rx.cond(PlannerState.order == "A-Z", "Sort by: A-Z", "Sort by: AP First"),
         rx.radio_group.root(
             rx.vstack(
                 *[order_option(o) for o in ORDER_OPTIONS],
@@ -651,7 +651,7 @@ def elective_dropdown() -> rx.Component:
 def grade_dropdown() -> rx.Component:
     count = PlannerState.selected_grades.length()
     return filter_popover(
-        rx.cond(count > 0, "Grade (" + count.to_string() + ")", "Grade"),
+        rx.cond(count > 0, "Grades (" + count.to_string() + ")", "Grade"),
         *[
             checkbox_option(g, PlannerState.selected_grades.contains(g), PlannerState.toggle_grade(g))
             for g in GRADE_OPTIONS
@@ -662,7 +662,7 @@ def grade_dropdown() -> rx.Component:
 def major_dropdown() -> rx.Component:
     count = PlannerState.selected_majors.length()
     return filter_popover(
-        rx.cond(count > 0, "Major (" + count.to_string() + ")", "Major"),
+        rx.cond(count > 0, "Majors (" + count.to_string() + ")", "Major"),
         *[
             checkbox_option(m, PlannerState.selected_majors.contains(m), PlannerState.toggle_major(m))
             for m in MAJOR_NAMES

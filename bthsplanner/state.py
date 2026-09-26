@@ -193,7 +193,7 @@ class PlannerState(rx.State):
 
     explore_search_query: str = ""
 
-    order: str = "Default"
+    order: str = "AP First"
     selected_grades: list[str] = []
     selected_majors: list[str] = []
     selected_filters: list[str] = []
@@ -241,9 +241,13 @@ class PlannerState(rx.State):
             #generalize filter
             
             if self.selected_filters:
-                if "Electives" in self.selected_filters:
-                    if data.get("is_elective") == False:
-                        continue
+                if "Electives" in self.selected_filters and "Non-electives" in self.selected_filters:
+                    pass
+                elif "Electives" in self.selected_filters and data.get("is_elective") == False:
+                    continue
+                elif "Non-electives" in self.selected_filters and data.get("is_elective") == True:
+                    continue
+
                         
              
 
