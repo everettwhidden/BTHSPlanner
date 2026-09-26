@@ -22,6 +22,7 @@ from bthsplanner.components import (
     pre_language_checkbox,
     styled_select,
     render_major_course,
+    order_dropdown,
     filter_dropdowns
 )
 
@@ -412,6 +413,7 @@ def explore_page() -> rx.Component:
             rx.text("Search and browse through all academic offerings at Brooklyn Tech.", color="white", size="3"),
             
             # Live Filter Search Field
+            
             rx.hstack(
                 rx.input(
                     placeholder="Search titles, descriptions or keywords...",
@@ -424,10 +426,13 @@ def explore_page() -> rx.Component:
                     size="3",
                     background_color = theme.lighter_aa_blue
                 ),
-                filter_dropdowns(),
+                order_dropdown(),
                 width="100%",
                 align="center",
             ),
+        
+            filter_dropdowns(),
+
             rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
             width="100%",
             align="start",

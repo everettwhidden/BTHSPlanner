@@ -570,7 +570,7 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
 ORDER_OPTIONS = ["Default", "A-Z"]
-
+ELECTIVE_OPTIONS = ["All", "Electives", "Non electives"]
 
 def checkbox_option(label: str, checked: rx.Var, on_change: any) -> rx.Component:
     return rx.hstack(
@@ -622,9 +622,10 @@ def order_option(label: str) -> rx.Component:
     )
 
 
+
 def order_dropdown() -> rx.Component:
     return filter_popover(
-        rx.cond(PlannerState.order == "A-Z", "Order: A-Z", "Order"),
+        rx.cond(PlannerState.order == "A-Z", "Sort by: A-Z", "Sort by: Default"),
         rx.radio_group.root(
             rx.vstack(
                 *[order_option(o) for o in ORDER_OPTIONS],
@@ -633,6 +634,21 @@ def order_dropdown() -> rx.Component:
             ),
             value=PlannerState.order,
             on_change=PlannerState.set_order,
+            size="3",
+        ),
+    )
+
+def elective_dropdown() -> rx.Component:
+    return filter_popover(
+        rx.cond(PlannerState.elective_filter == "All", "Filter", rx.cond(PlannerState.elective_filter == "Electives", "Electives", "Non electives")),
+        rx.radio_group.root(
+            rx.vstack(
+                *[order_option(o) for o in ELECTIVE_OPTIONS],
+                align="start",
+                spacing="3",
+            ),
+            value=PlannerState.elective_filter,
+            on_change=PlannerState.set_elective,
             size="3",
         ),
     )
@@ -661,9 +677,10 @@ def major_dropdown() -> rx.Component:
 
 def filter_dropdowns() -> rx.Component:
     return rx.hstack(
-        order_dropdown(),
+        #order_dropdown(),
         grade_dropdown(),
         major_dropdown(),
+        elective_dropdown(),
         spacing="3",
         align="center",
         flex_shrink="0",

@@ -196,9 +196,13 @@ class PlannerState(rx.State):
     order: str = "Default"
     selected_grades: list[str] = []
     selected_majors: list[str] = []
+    elective_filter: str = "All"
 
     def set_explore_search_query(self, val: str):
         self.explore_search_query = val
+
+    def set_elective(self, val: str):
+        self.elective_filter = val
 
     def set_order(self, val: str):
         self.order = val
@@ -227,6 +231,16 @@ class PlannerState(rx.State):
                 data.get("grades", []),
                 data.get("available_grades", [])
             )
+
+            #elective filter, elective or not
+            
+            if self.elective_filter == "Electives":
+                if data.get("is_elective") == False:
+                    continue
+            if self.elective_filter == "Non electives":
+                if data.get("is_elective") == True:
+                    continue
+             
 
             # grade filter, keep the course if it matches any picked grade
             if self.selected_grades:
