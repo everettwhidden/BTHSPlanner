@@ -1132,8 +1132,8 @@ COURSE_CATALOG = {
         "description": "This senior-year Finance major course has students run a simulated company as part of the global Virtual Enterprises International network, taking on employee and executive roles to manage operations, finances, and marketing in a simulated marketplace. It's a hands-on, project-based capstone to the Finance major's business coursework.",
         "periods": 1,
         "credits": 1.0,
-        "is_elective": False,
-        "grades": ["Senior"]
+        "is_elective": True,
+        "grades": ["Junior", "Senior"]
     },
     "Web Development": {
         "description": "This senior-year Software Engineering major course covers front-end web development, including page layout, styling, and building interactive page components and user interfaces.",
