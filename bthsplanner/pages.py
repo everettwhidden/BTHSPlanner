@@ -249,7 +249,7 @@ def index() -> rx.Component:
                         rx.fragment(
                             dropdown_card("History Course", DropdownOptions.sn_his_opts, PlannerState.sn_his, PlannerState.change_sn_his),
                             rx.cond(
-                                ((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, 
+                                ((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government") | (PlannerState.sn_his == "AP Comparative Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, 
                                 course_card("Economics Course", PlannerState.sn_ec)),
                             rx.cond(
                                 (PlannerState.sn_his == "Economics") & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict, 
