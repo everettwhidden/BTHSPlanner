@@ -8,6 +8,7 @@ from data.courses import double_alternates
 from data.courses import alternate_list
 from data.courses import COURSE_CATALOG, MAJORS, req_courses
 from data.courses import alternates_with_gym
+from data.courses import language_opts
 
 MAJOR_NAMES = list(MAJORS.keys())
 
@@ -1039,9 +1040,21 @@ class PlannerState(rx.State):
 
         available_headroom = 10 - current_periods
 
+        # everything taken before the year we're looking at
+        prior_years = set()
+        for yr in ["Freshman", "Sophomore", "Junior"]:
+            if yr == current_grade:
+                break
+            prior_years |= self._courses_for_year(yr)
+
         for name, data in COURSE_CATALOG.items():
             
-            if not data.get("is_elective", False) or (name in active_courses and not data.get("allow_multiple", False)):
+            is_lang_opt = name in language_opts
+
+            # language I's aren't flagged as electives, so let them through separately
+            if not (data.get("is_elective", False) or is_lang_opt):
+                continue
+            if name in active_courses and not data.get("allow_multiple", False):
                 continue
             
             if name in ["AP Macroeconomics with Government"]:
@@ -1082,7 +1095,14 @@ class PlannerState(rx.State):
             if name in self.ap_lotes and self.language_base not in name:
                 continue
 
-            
+            if is_lang_opt:
+                # only junior/senior, and only if they already finished level III of their own language
+                if current_grade not in ("Junior", "Senior"):
+                    continue
+                if name.split()[0] == self.language_base:
+                    continue
+                if f"{self.language_base} III" not in prior_years:
+                    continue
 
             if current_grade == "Senior" and self.language_base == "Spanish":
                 if name == "Advanced Spanish" and "Spanish III" not in self.all_courses:         
@@ -1100,7 +1120,7 @@ class PlannerState(rx.State):
                 if current_grade in ["Freshman", "Sophomore"]:
                     continue
 
-            # ◄ RULE: Unless it explicitly says 2 periods, default it to 1 period
+            # Unless it explicitly says 2 periods, default it to 1 period
             raw_periods = data.get("periods", 1)
             semesters = data.get("semesters", 2)
             
@@ -1116,7 +1136,7 @@ class PlannerState(rx.State):
                 results.append({
                     "name": name, 
                     "description": data.get("description", ""),
-                    "periods": raw_periods, # ◄ FIX: This now passes '1' or '2' to the badge display
+                    "periods": raw_periods,
                     "semesters" : semesters,
                     "credits": credits_formatted,
                     "is_elective" : data.get("is_elective", False),

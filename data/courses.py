@@ -438,7 +438,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades": ["Freshman"],
+        "grades": ["Freshman", "Junior", "Senior"],
         "color" : lang_color
     },
     "Chinese II": {
@@ -656,7 +656,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades": ["Freshman"],
+        "grades": ["Freshman",  "Junior", "Senior"],
         "color" : lang_color
     },
     "French II": {
@@ -719,7 +719,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades": ["Freshman"],
+        "grades": ["Freshman", "Junior", "Senior"],
         "color" : lang_color
     },
     "German II": {
@@ -804,7 +804,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades": ["Freshman"],
+        "grades": ["Freshman",  "Junior", "Senior"],
         "color" : lang_color
     },
     "Italian II": {
@@ -1080,7 +1080,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades": ["Freshman"],
+        "grades": ["Freshman", "Junior", "Senior"],
         "color" : lang_color
     },
     "Spanish II": {
