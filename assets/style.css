@@ -166,11 +166,11 @@ html body[data-scroll-locked] {
   --math_color : rgb(14, 103, 198);
   --lang_color : rgb(223, 125, 45);
   --req_courses : rgb(205, 16, 88);
-  --elective_color : rgb(53, 223, 232);
+  --elective_color : rgb(34, 195, 203);
   --gym_lunch_color : #6b6767a3;
 }
 
 /* fade the swap instead of snapping */
 * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
