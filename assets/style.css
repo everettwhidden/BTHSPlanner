@@ -155,7 +155,7 @@ html body[data-scroll-locked] {
 }
 
 .light {
-  --illini-blue: #eef1f2;
+  --illini-blue: #f1f1f1;
   --lighter-aa-blue: #ffffff;
   --text: #050505;
   --text-dim: rgba(35, 36, 39, 0.6);
