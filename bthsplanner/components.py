@@ -31,9 +31,10 @@ def styled_select(options: list[str], value: rx.Var, on_change: any, font: str =
         rx.select.trigger(
             class_name="reflex-dropdown-select",
             style={
-                "background_color": "#101827",
+                "background_color": theme.illini_blue,
                 "padding": "8px 12px !important",
-                "border": "1px solid #434651",
+                "border": f"1px solid {theme.border}",
+                "box_shadow": "none",   
                 "border_radius": "0.5rem",
                 "width": width,
                 "font_weight": "600 !important",
@@ -62,7 +63,7 @@ def legend_item(label: str, border_color: str) -> rx.Component:
         # Label text
         rx.text(
             label,
-            color="#FFFFFF", 
+            color=theme.text, 
             font_size="18px",
             font_weight="600",
         ),
@@ -77,7 +78,7 @@ def legend_bar() -> rx.Component:
         rx.text(
             "Legend:",
             font_weight="bold",
-            color="white",
+            color=theme.text,
             font_size="20px",
             #margin_right="8px",
         ),
@@ -94,7 +95,7 @@ def legend_bar() -> rx.Component:
         align_items="center",
         spacing="5",
         padding="12px 0px",
-        background_color="#0F172A",  # Dark background matching image
+        background_color=theme.illini_blue,  # Dark background matching image
         border_radius="8px",
     )
 def pre_credit_checkbox(label: str) -> rx.Component:
@@ -103,7 +104,7 @@ def pre_credit_checkbox(label: str) -> rx.Component:
             checked=PlannerState.pre_credits[label],
             on_change=PlannerState.toggle_pre_credit(label),
         ),
-        rx.text(label, color="#FFFFFF", font_size="18px", font_weight="600"),
+        rx.text(label, color=theme.text, font_size="18px", font_weight="600"),
         align_items="center",
         spacing="2",
     )
@@ -117,8 +118,23 @@ def pre_language_checkbox() -> rx.Component:
         align_items="center",
         spacing="2",
     )
+def nav_link(label: str, href: str) -> rx.Component:
+    # one tab in the top nav, highlights when it's the active tab
+    is_active = PlannerState.active_tab == label
+    return rx.link(
+        rx.text(
+            label,
+            size="5",
+            color=rx.cond(is_active, theme.text, theme.text_dim),
+            weight=rx.cond(is_active, "medium", "normal"),
+        ),
+        href=href,
+        text_decoration="none",
+        padding_x="12px",
+        padding_y="8px",
+        border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
+    )
 
-    
 def navigation_layout(content: rx.Component) -> rx.Component:
     return rx.vstack(
         # Auth Modal Condition
@@ -132,92 +148,23 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                     rx.image(
                         src="/header_logo.png",
                         width="55px",
-                        height="auto",
+                        height="55px",
+                        object_fit="contain",
                         border_radius="4px",
-                    
                     ),
                     rx.text(
-                        "BTHS Planner", size="7", weight="bold", color="#fafafa", 
+                        "BTHS Planner", size="7", weight="bold", color=theme.text,
                     ),
                     spacing="3",
                     align_items="center",
                 ),
                 # Navigation Links
+                                
                 rx.hstack(
-                    rx.link(
-                        rx.text(
-                            "Plan", size = "5",
-                            color=rx.cond(
-                                PlannerState.active_tab == "Plan",
-                                "#fafafa",
-                                "rgba(250, 250, 250, 0.6)",
-                            
-                            ),
-                            weight=rx.cond(
-                                PlannerState.active_tab == "Plan",
-                                "medium",
-                                "normal",
-                            ),
-                            
-                        ),
-                        href="/",
-                        text_decoration="none",
-                        padding_x="12px",
-                        padding_y="8px",
-                        border_bottom=rx.cond(
-                            PlannerState.active_tab == "Plan",
-                            "2px solid #3b82f6",
-                            "2px solid transparent",
-                        ),
-                    ),
-                    rx.link(
-                        rx.text(
-                            "Explore", size = "5",
-                            color=rx.cond(
-                                PlannerState.active_tab == "Explore",
-                                "#fafafa",
-                                "rgba(250, 250, 250, 0.6)",
-                            ),
-                            weight=rx.cond(
-                                PlannerState.active_tab == "Explore",
-                                "medium",
-                                "normal",
-                            ),
-                        ),
-                        href="/explore",
-                        text_decoration="none",
-                        padding_x="12px",
-                        padding_y="8px",
-                        border_bottom=rx.cond(
-                            PlannerState.active_tab == "Explore",
-                            "2px solid #3b82f6",
-                            "2px solid transparent",
-                        ),
-                    ),
-                    rx.link(
-                        rx.text(
-                            "How It Works", size = "5",
-                            color=rx.cond(
-                                PlannerState.active_tab == "How It Works",
-                                "#fafafa",
-                                "rgba(250, 250, 250, 0.6)",
-                            ),
-                            weight=rx.cond(
-                                PlannerState.active_tab == "How It Works",
-                                "medium",
-                                "normal",
-                            ),
-                        ),
-                        href="/how-it-works",
-                        text_decoration="none",
-                        padding_x="12px",
-                        padding_y="8px",
-                        border_bottom=rx.cond(
-                            PlannerState.active_tab == "How It Works",
-                            "2px solid #3b82f6",
-                            "2px solid transparent",
-                        ),
-                    ),
+                    nav_link("Plan", "/"),
+                    nav_link("Explore", "/explore"),
+                    nav_link("How It Works", "/how-it-works"),
+                    nav_link("Settings", "/settings"),
                     spacing="4",
                     margin_left="24px",
                 ),
@@ -244,8 +191,8 @@ def navigation_layout(content: rx.Component) -> rx.Component:
             position="sticky",
             top="0",
             z_index="100",
-            background_color="#1f2937", # color of tab bar
-            border_bottom="1px solid #31353f",
+            background_color=theme.lighter_aa_blue,  # color of tab bar
+            border_bottom=f"1px solid {theme.border}",
             padding_x="40px",
             padding_y="16px",
             width="100%",
@@ -270,12 +217,12 @@ def course_card(label: str, course_name: str) -> rx.Component:
     color = MAJOR_COURSE_COLOR if label in required_courses_labels else PlannerState.dropdown_colors[course_name]
     return rx.box(
         rx.box(
-            rx.text(label, class_name="card-label", color = "rgba(250, 250, 250, 0.7)"),
+            rx.text(label, class_name="card-label", color = theme.text),
             rx.text(course_name, class_name="card-title"),
             class_name="course-card",
             style={
                 "background_color": theme.lighter_aa_blue,
-                "border": f"1px solid color-mix(in srgb, {color} 65%, grey 35%)"
+                "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"
             }
         ),
         on_click=PlannerState.open_course_details(course_name),
@@ -285,11 +232,11 @@ def elective_card(label: str, year: str) -> rx.Component:
     color = elective_color
     return rx.box(
         rx.box(
-            rx.text("Elective Course", class_name="card-label", color = "rgba(250, 250, 250, 0.7)"), 
+            rx.text("Elective Course", class_name="card-label", color = theme.text), 
             rx.text(label, class_name="card-title"),
             class_name="course-card", 
             on_click=PlannerState.open_course_details(label), 
-            style={"cursor": "pointer", "background_color" : theme.lighter_aa_blue, "border": f"1px solid color-mix(in srgb, {color} 60%, grey 40%)"}, 
+            style={"cursor": "pointer", "background_color" : theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"}, 
         ),
         rx.button(
             "✕", 
@@ -310,12 +257,12 @@ def dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any)
     color = MAJOR_COURSE_COLOR if label in required_courses_labels else PlannerState.dropdown_colors[value]
     return rx.box(
         rx.box(
-            rx.text(label, class_name="card-label", font_size="13px",color = "rgba(250, 250, 250, 0.7)"),
+            rx.text(label, class_name="card-label", font_size="13px",color = theme.text),
             rx.select(options, value=value, on_change=on_change, variant="ghost", class_name="reflex-dropdown-select", on_click=[rx.stop_propagation], font_size = "15px" ),
             class_name="dropdown-card-wrapper",
             style={
                 "background_color": theme.lighter_aa_blue,
-                "border": f"1px solid color-mix(in srgb, {color} 60%, grey 40%)"
+                "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"
             }
         ),
         on_click=PlannerState.open_course_details(value),
@@ -350,7 +297,7 @@ def course_detail_modal() -> rx.Component:
                 rx.vstack(
                     # 1. Top Header Row: Course Title & Close Button
                     rx.hstack(
-                        rx.text(PlannerState.active_modal_course["name"], font_size="25px", weight="bold", color="#fafafa"),
+                        rx.text(PlannerState.active_modal_course["name"], font_size="25px", weight="bold", color=theme.text),
                         rx.spacer(),
                         rx.button(
                             "✕", 
@@ -430,7 +377,7 @@ def course_detail_modal() -> rx.Component:
                     rx.text(
                         PlannerState.active_modal_course["description"], 
                         font_size="20px", 
-                        color="white", 
+                        color=theme.text, 
                         line_height="1.6",
                         margin_top="4px"
                     ),
@@ -443,8 +390,8 @@ def course_detail_modal() -> rx.Component:
                 ),
                 # Stretched layout style that mirrors the explore card structure beautifully but wider
                 style={
-                    "background_color": "#1f2937",   
-                    "border": "1px solid #25354c",     
+                    "background_color": theme.lighter_aa_blue,   
+                    "border": f"1px solid {theme.border}",     
                     "border_radius": "12px",
                     "padding": "24px",
                     "width": "100%",
@@ -487,7 +434,7 @@ def render_modal_course_row(course: dict, target_year: str) -> rx.Component:
             rx.box(
                 rx.vstack(
                     rx.hstack(
-                        rx.text(course["name"], font_weight="700", font_size="16px", color=rx.cond(course["disabled"], "#52525b", "#fafafa")), 
+                        rx.text(course["name"], font_weight="700", font_size="16px", color=rx.cond(course["disabled"], "#52525b", theme.text)), 
                         rx.badge(
                             rx.cond(
                                 course['periods'] == 1,
@@ -500,7 +447,7 @@ def render_modal_course_row(course: dict, target_year: str) -> rx.Component:
                         ),
                         spacing="2"
                     ),
-                    rx.text(course["description"], font_size="14px", color=rx.cond(course["disabled"], "#51515c", "#ffffff"), max_lines=1, margin_top="2px"),
+                    rx.text(course["description"], font_size="14px", color=rx.cond(course["disabled"], "#51515c", theme.text), max_lines=1, margin_top="2px"),
                     align_items="start",
                 ),
                 on_click=lambda: PlannerState.open_course_details(course["name"]),
@@ -519,7 +466,7 @@ def render_modal_course_row(course: dict, target_year: str) -> rx.Component:
             ),
             align_items="center", width="100%"
         ),
-        border_bottom="1px solid #1f2937", padding_y="10px", width="100%",
+        border_bottom=f"1px solid {theme.border}", padding_y="10px", width="100%",
         opacity=rx.cond(course["disabled"], "0.5", "1.0")
     )
 
@@ -541,7 +488,7 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
         "Schedule Full (10/10 Pds)",
         width="100%", margin_top="0px",
         style={
-            "background_color": "#2c2d30", "color": "#c3c3cf", 
+            "background_color": theme.lighter_aa_blue, "color": theme.text_dim, 
             "font_weight": "600", "cursor": "not-allowed",
             "opacity": "0.6",
             "font_size" : "16px"
@@ -564,7 +511,7 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
                 ),
                 style={"max_height": "400px"}
             ),
-            style={"max_width": "750px", "background_color": "#1f2937", "border": "1px solid #31353f", "padding": "20px"}
+            style={"max_width": "750px", "background_color": theme.illini_blue, "border": f"1px solid {theme.border}", "padding": "20px"}
         )
     )
 
@@ -575,7 +522,7 @@ FILTER_OPTIONS = ["Electives", "Non-electives"]
 def checkbox_option(label: str, checked: rx.Var, on_change: any) -> rx.Component:
     return rx.hstack(
         rx.checkbox(checked=checked, on_change=on_change),
-        rx.text(label, color="#FFFFFF", font_size="18px", font_weight="600"),
+        rx.text(label, color=theme.text, font_size="18px", font_weight="600"),
         align_items="center",
         spacing="2",
     )
@@ -590,8 +537,8 @@ def filter_popover(trigger_label, *items) -> rx.Component:
                 
                 style={
                     "background_color": theme.lighter_aa_blue,
-                    "border": "1px solid #434651",
-                    "color": "#FFFFFF",
+                    "border": f"1px solid {theme.border}",
+                    "color": theme.text,
                     "font_weight": "600",
                     "font_size" : "18px"
 
@@ -602,7 +549,7 @@ def filter_popover(trigger_label, *items) -> rx.Component:
             rx.vstack(*items, align="start", spacing="2"),
             max_height="900px",
             overflow_y="auto",
-            style={"background_color": theme.lighter_aa_blue, "border": "1px solid #434651"},
+            style={"background_color": theme.lighter_aa_blue, "border": f"1px solid {theme.border}"},
         ),
     )
 
@@ -616,7 +563,7 @@ def order_option(label: str) -> rx.Component:
             spacing="2",
         ),
         as_="label",
-        color="#FFFFFF",
+        color= theme.text,
         font_size="18px",
         font_weight="600",
     )

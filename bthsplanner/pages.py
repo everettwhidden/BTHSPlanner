@@ -32,19 +32,19 @@ def index() -> rx.Component:
     plan_content = rx.vstack(
         rx.hstack(
             rx.vstack(
-                rx.heading("Course Plan", font_size="35px", color="#fafafa", margin_bottom="12px"),
+                rx.heading("Course Plan", font_size="35px", color=theme.text, margin_bottom="12px"),
                 legend_bar(),
             ),
             rx.spacer(),
             rx.vstack(
-                rx.text("Select your major", class_name="card-label", color = "white", font_size = "15px", font_weight = "bold"),
+                rx.text("Select your major", class_name="card-label", color = theme.text, font_size = "15px", font_weight = "bold"),
                 styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px"),
-                rx.box(rx.text("View majors ", rx.link("here", href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f", is_external=True, color="white", text_decoration="underline"),font_weight="600", color="white", as_="span", size="2")),
-                background_color=theme.lighter_aa_blue, padding="10px", border_radius="0.5rem", border="1px solid #31353f", width="255px", spacing="1",
+                rx.box(rx.text("View majors ", rx.link("here", href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f", is_external=True, color=theme.text, text_decoration="underline"),font_weight="600", color=theme.text, as_="span", size="2")),
+                background_color=theme.lighter_aa_blue, padding="10px", border_radius="0.5rem", border=f"1px solid {theme.border}", width="255px", spacing="1",
                 ),
         ),
         rx.hstack(
-            rx.text("Select which credits you already have:", font_weight="bold", color="white", font_size="20px"),
+            rx.text("Select which credits you already have:", font_weight="bold", color=theme.text, font_size="20px"),
             pre_credit_checkbox("Algebra I"),
             pre_credit_checkbox("Geometry"),
             pre_credit_checkbox("US History"),
@@ -54,7 +54,7 @@ def index() -> rx.Component:
             align_items="center",
             spacing="5",
             padding="12px 0px",
-            background_color="#0F172A",
+            background_color=theme.illini_blue,
             border_radius="8px",
             margin_top="10px",
         ),
@@ -74,13 +74,13 @@ def index() -> rx.Component:
             rx.grid(
                 # --- FRESHMAN ---
                 rx.vstack(
-                    rx.heading("Freshman", size="7", margin_bottom="2px", color="#fafafa"),
+                    rx.heading("Freshman", size="7", margin_bottom="2px", color=theme.text),
                     rx.hstack(
-                        rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", "white"), weight = "medium"),
+                        rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                         spacing="2", margin_bottom="10px"
                     ),
                     
@@ -122,13 +122,13 @@ def index() -> rx.Component:
 
                 # --- SOPHOMORE ---
                 rx.vstack(
-                    rx.heading("Sophomore", size="7", margin_bottom="2px", color="#fafafa"),
+                    rx.heading("Sophomore", size="7", margin_bottom="2px", color=theme.text),
                     rx.hstack(
-                        rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", "white"), weight = "medium"),
+                        rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                         spacing="2", margin_bottom="10px"
                     ),
                     
@@ -156,13 +156,13 @@ def index() -> rx.Component:
 
                # --- JUNIOR ---
                 rx.vstack(
-                    rx.heading("Junior", size="7", margin_bottom="2px", color="#fafafa"),
+                    rx.heading("Junior", size="7", margin_bottom="2px", color=theme.text),
                     rx.hstack(
-                        rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", "white"), weight = "medium"),
+                        rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                         spacing="2", margin_bottom="10px"
                     ),
                     
@@ -233,13 +233,13 @@ def index() -> rx.Component:
                 # --- SENIOR ---
                 # --- SENIOR COLUMN ---
                 rx.vstack(
-                    rx.heading("Senior", size="7", margin_bottom="2px", color="#fafafa"),
+                    rx.heading("Senior", size="7", margin_bottom="2px", color=theme.text),
                     rx.hstack(
-                        rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color="white", weight = "medium"),
-                        rx.text("•", size="3", color="white"),
-                        rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", "white"), weight = "medium"),
+                        rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                        rx.text("•", size="3", color=theme.text),
+                        rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                         spacing="2", margin_bottom="10px"
                     ),
                     
@@ -295,7 +295,7 @@ def index() -> rx.Component:
                                         rx.text("AP Physics II", class_name="card-title"),
                                         class_name="course-card",
                                         on_click=PlannerState.open_course_details("AP Physics II"),
-                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"1px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, white 15%)"}
+                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, {theme.border} 15%)"}
                                     ),
                                     rx.button(
                                         rx.cond(PlannerState.selected_senior_physics.contains("AP Physics II"), "✕", "＋"),
@@ -320,7 +320,7 @@ def index() -> rx.Component:
                                         rx.text("AP Physics C: Electricity & Magnetism", class_name="card-title"),
                                         class_name="course-card", 
                                         on_click=PlannerState.open_course_details("AP Physics C: Electricity & Magnetism"), 
-                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"1px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, white 15%)"}
+                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, {theme.border} 15%)"}
                                     ),
                                     rx.button(
                                         rx.cond(PlannerState.selected_senior_physics.contains("AP Physics C: Electricity & Magnetism"), "✕", "＋"), 
@@ -391,7 +391,7 @@ def index() -> rx.Component:
         ),
 
         course_detail_modal(),
-        rx.divider(margin_y="32px", border_color="#31353f"),
+        rx.divider(margin_y="32px", border_color=theme.border),
         
         
 
@@ -409,8 +409,8 @@ def index() -> rx.Component:
 def explore_page() -> rx.Component:
     explore_content = rx.vstack(
         rx.vstack(
-            rx.heading("Explore Course Catalog", font_size="40px", color="#fafafa"),
-            rx.text("Search and browse through all academic offerings at Brooklyn Tech.", color="white", size="3"),
+            rx.heading("Explore Course Catalog", font_size="40px", color=theme.text),
+            rx.text("Search and browse through all academic offerings at Brooklyn Tech.", color=theme.text, size="3"),
             
             # Live Filter Search Field
             
@@ -447,7 +447,7 @@ def explore_page() -> rx.Component:
                         # Header Row: Course Title on top, Badges side-by-side underneath
                         rx.vstack(
                             # 1. Course Name (Top line)
-                            rx.text(course["name"], size="5", weight="bold", color="#fafafa"),
+                            rx.text(course["name"], size="5", weight="bold", color=theme.text),
                             
                             # 2. Badges Row (Bottom line, side-by-side)
                             rx.hstack(
@@ -495,7 +495,7 @@ def explore_page() -> rx.Component:
                             rx.text(
                                 course["description"], 
                                 size="2", 
-                                color="rgba(250, 250, 250, 0.7)", 
+                                color=theme.text, 
                                 margin_top="8px"
                             ),
                             # Gradient overlay fading  into the card color 
@@ -505,7 +505,7 @@ def explore_page() -> rx.Component:
                                 left="0",
                                 right="0",
                                 height="30px",
-                                background="linear-gradient(to bottom, rgba(30, 32, 37, 0) 0%, #1f2937 100%)",
+                                background=f"linear-gradient(to bottom, transparent 0%, {theme.lighter_aa_blue} 100%)",
                                 pointer_events="none",
                             ),
                             position="relative",
@@ -533,7 +533,7 @@ def explore_page() -> rx.Component:
                         spacing="2",
                     ),
                     background_color=theme.lighter_aa_blue,   # lighter aa blue for card bg
-                    border="1px solid #31353f",     # Seamless matching border lines
+                    border=f"1px solid {theme.border}",     # Seamless matching border lines
                     border_radius="12px",
                     padding="24px",
                     # Standardized explicit sizing constraints
@@ -654,10 +654,10 @@ def how_it_works_section(section: dict) -> rx.Component:
         rx.heading(
             section["heading"],
             font_size="22px" if is_desc else "28px",
-            color="#ffffff", #if is_rule else "#3b82f6",
+            color=theme.text,
             margin_bottom="8px",
         ),
-        rx.text(section["body"], color="#ffffffff") if section["body"] else rx.fragment(),
+        rx.text(section["body"], color=theme.text) if section["body"] else rx.fragment(),
         align_items="start",
         font_size = "20px",
         spacing="1",
@@ -672,10 +672,10 @@ def how_it_works_section(section: dict) -> rx.Component:
 def how_it_works_page() -> rx.Component:
     how_it_works_content = rx.vstack(
         # Page Header
-        rx.heading("How It Works", font_size="40px", margin_bottom="8px", color="#ffffff"),
+        rx.heading("How It Works", font_size="40px", margin_bottom="8px", color=theme.text),
         rx.text(
             "Welcome to BTHS Planner! Here is a quick guide on how to navigate the planner and successfully map out your Brooklyn Tech high school career.",
-            color="#ffffffff",
+            color=theme.text,
             margin_bottom="24px",
             font_size = "20px"
         ),
@@ -689,7 +689,40 @@ def how_it_works_page() -> rx.Component:
     )
     return navigation_layout(how_it_works_content)
 
+@rx.page(route="/settings", title="BTHS Planner - Settings", on_load=PlannerState.change_tab("Settings"))
+def settings_page() -> rx.Component:
+    settings_content = rx.vstack(
+        rx.heading("Settings", font_size="40px", color=theme.text, margin_bottom="8px"),
+        rx.spacer(),
 
+        # appearance section
+        rx.heading("Appearance", font_size="28px", color=theme.text, margin_bottom="8px"),
+        rx.hstack(
+            rx.vstack(
+                rx.text("Light mode", font_weight="bold", color=theme.text, font_size="18px"),
+                rx.text("Switch between the dark and light theme.", color=theme.text, size="3"),
+                align_items="start",
+                spacing="1",
+            ),
+            rx.spacer(),
+            rx.switch(
+                checked=rx.color_mode == "light",
+                on_change=rx.toggle_color_mode,
+            ),
+            background_color=theme.lighter_aa_blue,
+            padding="16px",
+            border_radius="0.5rem",
+            border=f"1px solid {theme.border}",
+            width="100%",
+            align="center",
+        ),
+
+        align_items="start",
+        width="100%",
+        max_width="900px",
+        padding_bottom="40px",
+    )
+    return navigation_layout(settings_content)
 hide_watermark_style = {
     "div.__reflex": {
         "display": "none !important",

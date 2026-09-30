@@ -20,14 +20,14 @@ MAJORS = {
    
 }
 
-english_color = "#9a831cdf"
-history_color =  "#7a00aadb"
-science_color = "#0b9c32ff"
-math_color = "#0858adff"
-lang_color = "#894a17ff"
-req_courses = "#941c4aff"
-elective_color = "#13a7afff"
-gym_lunch_color = "#ffffffa4"
+english_color = "var(--english_color)"
+history_color =  "var(--history_color)"
+science_color = "var(--science_color)"
+math_color = "var(--math_color)"
+lang_color = "var(--lang_color)"
+req_courses = "var(--req_courses)"
+elective_color = "var(--elective_color)"
+gym_lunch_color = "var(--gym_lunch_color)"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 

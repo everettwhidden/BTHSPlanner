@@ -1,2 +1,5 @@
-lighter_aa_blue = "#1f2937"
-illini_blue = "#101827"
+lighter_aa_blue = "var(--lighter-aa-blue)"
+illini_blue = "var(--illini-blue)"
+text = "var(--text)"
+text_dim = "var(--text-dim)"
+border = "var(--border)"

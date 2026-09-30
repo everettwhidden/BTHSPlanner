@@ -1,9 +1,10 @@
 import reflex as rx
 
-from bthsplanner.pages import index, explore_page, how_it_works_page
+from bthsplanner.pages import index, explore_page, how_it_works_page, settings_page
 
 config = rx.Config(
     app_name="bthsplanner",
+    default_color_mode = "dark",
 )
 
 
