@@ -13,7 +13,7 @@ from data.courses import language_opts
 MAJOR_NAMES = list(MAJORS.keys())
 # senior gov courses that all behave the same way (econ gets tacked on unless there's a conflict)
 SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
-
+PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
 def _next_lang_level(lang: str) -> str:
     if lang.endswith(" I"):
         return lang[:-1] + "II"
@@ -520,18 +520,27 @@ class PlannerState(rx.State):
 
     #for physcs majors physics II and or Physics c e and m
     selected_senior_physics: set[str] = {"AP Physics C: Electricity & Magnetism"}
-    
-        #selected_senior_physics.remove("AP Physics II")
+    # which C course the dropdown is on (mechanics or E&M)
+    sn_phys_c: str = "AP Physics C: Electricity & Magnetism"
+
     def toggle_senior_physics(self, course_name: str):
         #makes sure physics majors keep atleast one
         if course_name in self.selected_senior_physics:
             if len(self.selected_senior_physics) > 1:
                 self.selected_senior_physics.remove(course_name)
+                if course_name == "AP Physics II":
+                    self.change_sn_phys_c("AP Physics C: Electricity & Magnetism")
         else:
             self.selected_senior_physics.add(course_name)
             if self.senior_periods > 10 or self.senior_ap_count > 3:
                 self.selected_senior_physics.remove(course_name)
-            
+
+    def change_sn_phys_c(self, new_course: str):
+        # set has no index, so swap by remove + add (only if the old one was selected)
+        if self.sn_phys_c in self.selected_senior_physics:
+            self.selected_senior_physics.remove(self.sn_phys_c)
+            self.selected_senior_physics.add(new_course)
+        self.sn_phys_c = new_course
 
     def change_j_eng(self, val: str):
         snapshot = self._export_progress_dict()
@@ -1080,7 +1089,7 @@ class PlannerState(rx.State):
                 if "AP Physics C: Electricity & Magnetism" in self._courses_for_year("Senior"):
                     continue
 
-            if name == "AP Physics C: Electricity & Magnetism" and self.major == "Physics":  
+            if name in PHYSICS_MAJOR_SN_COURSES and self.major == "Physics":  
                 continue
             
             if current_grade == "Junior" and self.language_base == "Spanish":
@@ -1293,7 +1302,9 @@ class DropdownOptions(PlannerState):
         opts = ["AP US Government", "Participation in Government", "AP Comparative Government"]
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior")
         return _filter(opts, self.sn_gov, self.senior_ap_count, prior)
-
+    @rx.var
+    def sn_phys_c_opts(self) -> list[str]:
+        return ["AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism"]
 
 
 MAJOR_COURSE_COLOR = req_courses

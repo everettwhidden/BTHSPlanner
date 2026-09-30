@@ -23,7 +23,9 @@ from bthsplanner.components import (
     styled_select,
     render_major_course,
     order_dropdown,
-    filter_dropdowns
+    filter_dropdowns,
+    senior_physics_cards,
+    toggle_dropdown_card
 )
 
 
@@ -261,24 +263,14 @@ def index() -> rx.Component:
                         PlannerState.senior_math_override == "",
                         rx.cond(
                             PlannerState.took_ap_calc_bc_junior,
-                            rx.tooltip(
-                                rx.box(
-                                    dropdown_card("Math Course", DropdownOptions.sn_math_opts, PlannerState.sn_math, PlannerState.change_sn_math),
-                                    rx.button(
-                                        rx.cond(PlannerState.sn_math_active, "✕", "＋"),
-                                        on_click=PlannerState.toggle_sn_math,
-                                        variant="ghost", size="1",
-                                        color_scheme=rx.cond(PlannerState.sn_math_active, "red", "green"),
-                                        style={
-                                            "position": "absolute", "top": "40px", "transform": "translateY(-50%)",
-                                            "right": "20px", "font_size": "20px", "cursor": "pointer",
-                                            "padding": "4px", "height": "auto", "z_index": "10"
-                                        }
-                                    ),
-                                    style={"position": "relative", "margin_bottom": "0px", "width": "100%", "opacity": rx.cond(PlannerState.sn_math_active, "1.0", "0.4")}
-                                ),
-                                content = "Taking Math all four years is highly encouraged",
-                                #style={"font_size": "20px !important"}
+                            toggle_dropdown_card(
+                                "Math Course",
+                                DropdownOptions.sn_math_opts,
+                                PlannerState.sn_math,
+                                PlannerState.change_sn_math,
+                                selected=PlannerState.sn_math_active,
+                                on_toggle=PlannerState.toggle_sn_math,
+                                tooltip="Taking Math all four years is highly encouraged",
                             ),
                             dropdown_card("Math Course", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
                         )
@@ -286,61 +278,7 @@ def index() -> rx.Component:
                     # MAJOR COURSES SECTION
                     rx.cond(
                         PlannerState.major == "Physics",
-                        # Physics Major View (Kept intact)
-                        rx.vstack(
-                            rx.tooltip(
-                                rx.box(
-                                    rx.box(
-                                        rx.text("Major Course", class_name="card-label"),
-                                        rx.text("AP Physics II", class_name="card-title"),
-                                        class_name="course-card",
-                                        on_click=PlannerState.open_course_details("AP Physics II"),
-                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, {theme.border} 15%)"}
-                                    ),
-                                    rx.button(
-                                        rx.cond(PlannerState.selected_senior_physics.contains("AP Physics II"), "✕", "＋"),
-                                        on_click=lambda: PlannerState.toggle_senior_physics("AP Physics II"),
-                                        variant="ghost", size="1",
-                                        color_scheme=rx.cond(PlannerState.selected_senior_physics.contains("AP Physics II"), "red", "green"),
-                                        is_disabled=(PlannerState.selected_senior_physics.length() == 1) & PlannerState.selected_senior_physics.contains("AP Physics II"),
-                                        style={
-                                            "position": "absolute", "top": "40px", "transform": "translateY(-50%)",
-                                            "right": "20px", "font_size": "20px", "cursor": "pointer",
-                                            "padding": "4px", "height": "auto", "z_index": "10"
-                                        }
-                                    ),
-                                    style={"position": "relative", "margin_bottom": "15px", "width": "100%", "opacity": rx.cond(PlannerState.selected_senior_physics.contains("AP Physics II"), "1.0", "0.4")}
-                                ),
-                                content="You must keep at least one AP Physics",
-                            ),
-                            rx.tooltip(
-                                rx.box(
-                                    rx.box(
-                                        rx.text("Major Course", class_name="card-label"), 
-                                        rx.text("AP Physics C: Electricity & Magnetism", class_name="card-title"),
-                                        class_name="course-card", 
-                                        on_click=PlannerState.open_course_details("AP Physics C: Electricity & Magnetism"), 
-                                        style={"cursor": "pointer", "background_color": theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {MAJOR_COURSE_COLOR} 85%, {theme.border} 15%)"}
-                                    ),
-                                    rx.button(
-                                        rx.cond(PlannerState.selected_senior_physics.contains("AP Physics C: Electricity & Magnetism"), "✕", "＋"), 
-                                        on_click=lambda: PlannerState.toggle_senior_physics("AP Physics C: Electricity & Magnetism"),
-                                        variant="ghost", size="1", 
-                                        color_scheme=rx.cond(PlannerState.selected_senior_physics.contains("AP Physics C: Electricity & Magnetism"), "red", "green"),
-                                        is_disabled=(PlannerState.selected_senior_physics.length() == 1) & PlannerState.selected_senior_physics.contains("AP Physics C: Electricity & Magnetism"),
-                                        style={
-                                            "position": "absolute", "top": "40px", "transform": "translateY(-50%)", 
-                                            "right": "20px", "font_size": "20px", "cursor": "pointer", 
-                                            "padding": "4px", "height": "auto", "z_index": "10",
-                                        }
-                                    ),
-                                    style={"position": "relative", "margin_bottom": "15px", "width": "100%", "opacity": rx.cond(PlannerState.selected_senior_physics.contains("AP Physics C: Electricity & Magnetism"), "1.0", "0.4")}
-                                ),
-                                content="You must keep at least one AP Physics"
-                            ),
-                            course_card("Major Course", "Modern Physics"),
-                            width="100%", spacing="3", margin_top="0px"
-                        ),
+                        senior_physics_cards(),
 
                         # Math major/ liu pharm math is a major course 
                         rx.vstack(
@@ -356,13 +294,10 @@ def index() -> rx.Component:
                                         ),
                                     dropdown_card("Major Course", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
                                 )
-                            ),                            
-                            
-                            
+                            ),
+
                             rx.foreach(PlannerState.filtered_senior_major_courses, render_major_course),
-                            
-                            # If this major has a math requirement/override (e.g. Applied Math), place standard non-deletable dropdown inside Major Section
-                            
+
                             width="100%", spacing="3", margin_top="0px"
                         )
                     ),

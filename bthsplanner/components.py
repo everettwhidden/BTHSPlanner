@@ -21,7 +21,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES
+from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
 
 required_courses_labels = ["Major Course", "Required Course"]
 
@@ -269,6 +269,89 @@ def dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any)
         style={"cursor": "pointer"}, class_name="card-spacing-wrapper",
     )
 
+def toggle_card(
+    body: rx.Component,
+    selected: rx.Var,
+    on_toggle: any,
+    disabled: rx.Var | bool = False,
+    tooltip: str | None = None,
+    margin_bottom: str = "0px",
+) -> rx.Component:
+    # wraps any card with a +/x button, fades when not selected
+    wrapped = rx.box(
+        body,
+        rx.button(
+            rx.cond(selected, "✕", "＋"),
+            on_click=on_toggle,
+            variant="ghost",
+            size="1",
+            color_scheme=rx.cond(selected, "red", "green"),
+            disabled=disabled,
+            style={
+                "position": "absolute", "top": "40px", "transform": "translateY(-50%)",
+                "right": "20px", "font_size": "20px", "cursor": "pointer",
+                "padding": "4px", "height": "auto", "z_index": "10",
+            },
+        ),
+        style={
+            "position": "relative",
+            "margin_bottom": margin_bottom,
+            "width": "100%",
+            "opacity": rx.cond(selected, "1.0", "0.4"),
+        },
+    )
+    # tooltip is a normal python str, so a plain if works here
+    if tooltip:
+        return rx.tooltip(wrapped, content=tooltip)
+    return wrapped
+
+
+def toggle_dropdown_card(
+    label: str,
+    options: list[str],
+    value: rx.Var,
+    on_change: any,
+    **toggle_args,
+) -> rx.Component:
+    return toggle_card(dropdown_card(label, options, value, on_change), **toggle_args)
+
+
+def physics_toggle_args(course) -> dict:
+    # course can be a str or a Var
+    selected = PlannerState.selected_senior_physics.contains(course)
+    only_one_left = PlannerState.selected_senior_physics.length() == 1
+    return dict(
+        selected=selected,
+        on_toggle=PlannerState.toggle_senior_physics(course),
+        disabled=only_one_left & selected,
+        tooltip="You must keep at least one AP Physics",
+    
+    )
+
+
+def senior_physics_cards() -> rx.Component:
+    ap_ii = "AP Physics II"
+    return rx.vstack(
+        toggle_card(course_card("Major Course", ap_ii), **physics_toggle_args(ap_ii)),
+        rx.cond(
+            PlannerState.selected_senior_physics.contains(ap_ii),
+            # AP Physics II picked -> choose mechanics or E&M
+            toggle_dropdown_card(
+                "Major Course",
+                DropdownOptions.sn_phys_c_opts,
+                PlannerState.sn_phys_c,
+                PlannerState.change_sn_phys_c,
+                **physics_toggle_args(PlannerState.sn_phys_c),
+            ),
+            # otherwise just the regular card for whichever C is chosen
+            toggle_card(
+                course_card("Major Course", PlannerState.sn_phys_c),
+                **physics_toggle_args(PlannerState.sn_phys_c),
+            ),
+        ),
+        course_card("Major Course", "Modern Physics"),
+        width="100%", spacing="3", margin_top="0px",
+    )
 def render_major_course(course: rx.Var[str]) -> rx.Component:
     
     return rx.cond(
