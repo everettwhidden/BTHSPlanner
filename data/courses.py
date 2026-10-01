@@ -175,7 +175,7 @@ COURSE_CATALOG = {
         "periods": 1,
         "credits": 1.0,
         "is_elective": False,
-        "grades" : ["Freshman", "Junior", "Senior"],
+        "grades" : ["Junior", "Senior"],
         "color" : history_color
     },
     "AP Italian Language & Culture": {

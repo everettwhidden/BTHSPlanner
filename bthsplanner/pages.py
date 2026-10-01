@@ -280,9 +280,8 @@ def index() -> rx.Component:
                         PlannerState.major == "Physics",
                         senior_physics_cards(),
 
-                        # Math major/ liu pharm math is a major course 
+
                         rx.vstack(
-                            # Renders all major courses except math
                             rx.cond(
                                 PlannerState.senior_math_override != "",
                                 rx.cond(
