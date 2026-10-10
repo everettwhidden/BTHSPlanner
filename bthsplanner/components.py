@@ -352,10 +352,17 @@ def senior_physics_cards() -> rx.Component:
         course_card("Major Course", "Modern Physics"),
         width="100%", spacing="3", margin_top="0px",
     )
+
+digital_e_alt_w_gym_majors = ["Electrical Engineering"]
+
+def _has_partner_map(course: rx.Var[str]) -> rx.Var[bool]:
+    is_gym_alt_major = rx.Var.create(digital_e_alt_w_gym_majors).contains(PlannerState.major)
+    return PlannerState.partner_map.contains(course) & ~is_gym_alt_major
+
 def render_major_course(course: rx.Var[str]) -> rx.Component:
     
     return rx.cond(
-        PlannerState.partner_map.contains(course),
+        _has_partner_map(course),
         rx.tooltip(
             course_card("Major Course", course),
             content=f"Double period, alternates daily with {PlannerState.partner_map[course]}",

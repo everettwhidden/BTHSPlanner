@@ -1,19 +1,19 @@
 MAJORS = {
-    "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing", "Career & Financial Management (Online)"]},
+    "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing"]},
     "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
-    "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling", "Career & Financial Management (Online)"]},
+    "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling",]},
     "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
-    "Civil Engineering": {"room": "1N8", "Junior": ["PLTW Civil Engineering & Architecture", "Engineering Statics"], "Senior": ["AutoCAD Certification", "American Concrete Institute Certification", "Surveying Certification", "Career & Financial Management (Online)"]},
-    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications - JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development", "Career & Financial Management (Online)"]},
-    "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", "Career & Financial Management (Online)"]},
+    "Civil Engineering": {"room": "1N8", "Junior": ["PLTW Civil Engineering & Architecture", "Engineering Statics"], "Senior": ["AutoCAD Certification", "American Concrete Institute Certification", "Surveying Certification", ]},
+    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications - JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development",]},
+    "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", ]},
     "Environmental Science": {"room": "3E12", "Junior": ["AP Environmental Science"], "Senior": ["AP Human Geography", "Environmental Sustainability"]},
     "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics (One Semester each)"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
-    "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification", "Career & Financial Management (Online)"]},
+    "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification",]},
     "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP US Government/Constitutional Law"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
     "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
-    "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering I & II", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", "Career & Financial Management (Online)"]},
-    "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography", "Career & Financial Management (Online)"]},
+    "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering I & II", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", ]},
+    "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography",]},
     "Neuroscience": {"room": "3N1", "Junior": ["AP Biology"], "Senior": ["AP Psychology", "Introduction to Neuroscience", "Bioorganic Chemistry"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Physics": {"room": "2N1", "Junior": ["Astronomy & Astrophysics", "AP Physics I"], "Senior": ["Modern Physics", "AP Physics II", "AP Physics C: Electricity & Magnetism"]},
     "Social Science Research": {"room": "6N8", "Junior": ["Sociology", "AP Human Geography"], "Senior": ["Cultural & Physical Anthropology", "AP Psychology", "Social Science Research"]},
@@ -31,7 +31,7 @@ gym_lunch_color = "var(--gym_lunch_color)"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
-double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture")]
+double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"), ("PLTW Digital Electronics", "Robotics Engineering I & II")]
 alternate_list = [course for pairs in double_alternates for course in pairs]
 
 alternates_with_gym = ["PLTW Digital Electronics"]
@@ -426,13 +426,7 @@ COURSE_CATALOG = {
         "is_elective": False,
         "grades": ["Senior"]
     },
-    "Career & Financial Management (Online)": {
-        "description": "This online course covers practical personal-finance and career-readiness topics, including budgeting, taxes, credit, and job-search skills such as resumes and interviews. It's a required senior-year course for several CTE-endorsed majors and is completed independently outside the regular class schedule.",
-        "periods": 0,
-        "credits": 1.0,
-        "is_elective": False,
-        "grades": ["Senior"]
-    },
+
     "Chinese I": {
         "description": "An introduction to Mandarin Chinese focusing on modern Pinyin Romanization, basic character writing, and essential everyday vocabulary. Students build foundational speaking, listening, reading, and writing skills to navigate simple everyday conversations and explore core aspects of Chinese culture.",
         "periods": 1,
@@ -1048,7 +1042,7 @@ COURSE_CATALOG = {
     },
     "Robotics Engineering I & II": {
         "description": "This junior-year Mechatronics & Robotics major course is a multidisciplinary introduction to mechatronics, having students build robotic devices with VEX hardware while learning mechanical design, electronics, and control systems. Students program their robots using languages like C, Arduino, RobotC, and easyC, culminating in a mechatronic device that solves a real-world problem.",
-        "periods": 1,
+        "periods": 2,
         "credits": 1.0,
         "is_elective": False,
         "grades": ["Junior"]
