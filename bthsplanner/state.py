@@ -42,6 +42,10 @@ class PlannerState(rx.State):
     
     
     active_tab: str = "Plan"
+    sidebar_open: bool = True
+
+
+
     course_catalog: list[dict] = COURSE_CATALOG
     modal_source: str = "planner"
     is_detail_open: bool = False
@@ -56,6 +60,8 @@ class PlannerState(rx.State):
 
     partner_map: dict[str, str] = _build_partner_map(double_alternates)
 
+    def toggle_sidebar(self):
+        self.sidebar_open = not self.sidebar_open
 
     def toggle_pre_credit(self, credit: str, checked: bool):
         snapshot = self._export_progress_dict()

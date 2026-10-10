@@ -71,33 +71,91 @@ def legend_item(label: str, border_color: str) -> rx.Component:
         spacing="2",
     )
 
-def legend_bar() -> rx.Component:
-    """Main horizontal legend bar component."""
-    return rx.hstack(
-        # Main label
-        rx.text(
-            "Legend:",
-            font_weight="bold",
-            color=theme.text,
-            font_size="20px",
-            #margin_right="8px",
-        ),
-        # Color indicator items matching your image
-        legend_item("English", english_color),  
-        legend_item("History", history_color),   
-        legend_item("Science", science_color),    
-        legend_item("Math", math_color),  
-        legend_item("Language", lang_color),   
+def legend_list() -> rx.Component:
+    # vertical version of the legend for the sidebar
+    return rx.vstack(
+        legend_item("English", english_color),
+        legend_item("History", history_color),
+        legend_item("Science", science_color),
+        legend_item("Math", math_color),
+        legend_item("Language", lang_color),
         legend_item("Major/Required", req_courses),
-        legend_item("Elective", elective_color), 
+        legend_item("Elective", elective_color),
         legend_item("Gym/Lunch", gym_lunch_color),
-
-        align_items="center",
-        spacing="5",
-        padding="12px 0px",
-        background_color=theme.illini_blue,  # Dark background matching image
-        border_radius="8px",
+        align_items="start",
+        spacing="2",
     )
+
+
+def sidebar_section_title(label: str) -> rx.Component:
+    return rx.text(label, font_weight="bold", color=theme.text, font_size="18px")
+
+
+def plan_sidebar() -> rx.Component:
+    return rx.box(
+        rx.vstack(
+            sidebar_section_title("Legend"),
+            legend_list(),
+            rx.divider(border_color=theme.border),
+
+            sidebar_section_title("Select your major"),
+            styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px", "100%"),
+            rx.text(
+                "View majors ",
+                rx.link(
+                    "here",
+                    href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f",
+                    is_external=True,
+                    color=theme.text,
+                    text_decoration="underline",
+                ),
+                color=theme.text,
+                size="2",
+                font_weight="600",
+            ),
+            rx.divider(border_color=theme.border),
+
+            sidebar_section_title("Credits you already have"),
+            pre_credit_checkbox("Algebra I"),
+            pre_credit_checkbox("Geometry"),
+            pre_credit_checkbox("US History"),
+            pre_credit_checkbox("Biology/Living Environment"),
+            pre_language_checkbox(),
+
+            align_items="start",
+            spacing="4",
+            width="280px",          # fixed so content doesn't rewrap while sliding
+            padding="16px",
+        ),
+        # outer box does the sliding
+        width=rx.cond(PlannerState.sidebar_open, "280px", "0px"),
+        margin_right=rx.cond(PlannerState.sidebar_open, "24px", "0px"),
+        opacity=rx.cond(PlannerState.sidebar_open, "1", "0"),
+        overflow="hidden",
+        flex_shrink="0",
+        transition="width 0.25s ease, margin 0.25s ease, opacity 0.2s ease",
+        position="sticky",
+        top="80px",
+        align_self="flex-start",
+        background_color=theme.lighter_aa_blue,
+        border_radius="0.5rem",
+        border=rx.cond(PlannerState.sidebar_open, f"1px solid {theme.border}", "1px solid transparent"),
+    )
+
+
+def sidebar_toggle_button() -> rx.Component:
+    return rx.icon_button(
+        rx.cond(
+            PlannerState.sidebar_open,
+            rx.icon("panel-left-close", size=22),
+            rx.icon("panel-left-open", size=22),
+        ),
+        on_click=PlannerState.toggle_sidebar,
+        variant="soft",
+        size="3",
+        style={"cursor": "pointer"},
+    )
+
 def pre_credit_checkbox(label: str) -> rx.Component:
     return rx.hstack(
         rx.checkbox(
