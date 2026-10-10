@@ -124,13 +124,13 @@ def nav_link(label: str, href: str) -> rx.Component:
     return rx.link(
         rx.text(
             label,
-            size="5",
+            size="3",
             color=rx.cond(is_active, theme.text, theme.text_dim),
             weight=rx.cond(is_active, "medium", "normal"),
         ),
         href=href,
         text_decoration="none",
-        padding_x="12px",
+        padding_x="10px",
         padding_y="8px",
         border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
     )
@@ -147,13 +147,13 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                 rx.hstack(
                     rx.image(
                         src="/header_logo.png",
-                        width="55px",
-                        height="55px",
+                        width="40px",
+                        height="40px",
                         object_fit="contain",
                         border_radius="4px",
                     ),
                     rx.text(
-                        "BTHS Planner", size="7", weight="bold", color=theme.text,
+                        "BTHS Planner", size="6", weight="bold", color=theme.text,
                     ),
                     spacing="3",
                     align_items="center",
@@ -176,7 +176,7 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                         "Export to Excel",
                         on_click=PlannerState.export_to_excel,
                         color_scheme="blue",
-                        size="3",
+                        size="2",
                     ),
                     
                     
@@ -185,16 +185,15 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                 ),
                 align_items="center",
                 width="100%",
-                max_width="1400px",
-                margin="0 auto",
+                
             ),
             position="sticky",
             top="0",
             z_index="100",
             background_color=theme.lighter_aa_blue,  # color of tab bar
             border_bottom=f"1px solid {theme.border}",
-            padding_x="40px",
-            padding_y="16px",
+            padding_x="16px",
+            padding_y="8px",
             width="100%",
         ),
         # Page Content Container
