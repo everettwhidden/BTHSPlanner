@@ -1,0 +1,114 @@
+import reflex as rx
+
+import bthsplanner.theme as theme
+
+from bthsplanner.old_state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
+
+required_courses_labels = ["Major Course", "Required Course"]
+
+def nav_link(label: str, href: str) -> rx.Component:
+    # one tab in the top nav, highlights when it's the active tab
+    is_active = PlannerState.active_tab == label
+    return rx.link(
+        rx.text(
+            label,
+            size="3",
+            color=rx.cond(is_active, theme.text, theme.text_dim),
+            weight=rx.cond(is_active, "medium", "normal"),
+        ),
+        href=href,
+        text_decoration="none",
+        padding_x="10px",
+        padding_y="8px",
+        border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
+    )
+
+def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Component:
+    return rx.vstack(
+        # Navigation Bar
+        rx.box(
+            rx.hstack(
+                # Logo & Brand
+                rx.hstack(
+                    rx.image(
+                        src="/header_logo.png",
+                        width="40px",
+                        height="40px",
+                        object_fit="contain",
+                        border_radius="4px",
+                    ),
+                    rx.text(
+                        "BTHS Planner", size="6", weight="bold", color=theme.text,
+                    ),
+                    spacing="3",
+                    align_items="center",
+                ),
+                # Navigation Links
+                rx.hstack(
+                    nav_link("Plan", "/"),
+                    nav_link("Explore", "/explore"),
+                    nav_link("How It Works", "/how-it-works"),
+                    nav_link("Settings", "/settings"),
+                    spacing="4",
+                    margin_left="24px",
+                ),
+                rx.spacer(),
+                # Action Buttons
+                rx.hstack(
+                    # Clickable Theme Toggle Icon Button
+                    rx.icon_button(
+                        rx.cond(
+                            rx.color_mode == "light",
+                            rx.icon("sun", size=20),  # Shown during light mode (click to go dark)
+                            rx.icon("moon", size=20),   # Shown during dark mode (click to go light)
+                        ),
+                        on_click=rx.toggle_color_mode,
+                        variant="ghost",
+                        color_scheme="gray",
+                        size="2",
+                        style={
+                            "cursor": "pointer",
+                            "color": theme.text,
+                            "background_color": "transparent",
+                            "border": "none",
+                            "box_shadow": "none",
+                            "outline": "none",
+                            "transition": "all 0s ease",
+                            "_hover": {"background_color": "rgba(128, 128, 128, 0.25)"},
+                        },
+                    ),
+                    rx.button(
+                        "Export to Excel",
+                        on_click=PlannerState.export_to_excel,
+                        color_scheme="blue",
+                        size="2",
+                    ),
+                    spacing="3",
+                    align_items="center",
+                ),
+                align_items="center",
+                width="100%",
+            ),
+            position="sticky",
+            top="0",
+            z_index="100",
+            background_color=theme.lighter_aa_blue,
+            border_bottom=f"1px solid {theme.border}",
+            padding_x="16px",
+            padding_y="8px",
+            width="100%",
+        ),
+        # Page Content Container
+        rx.box(
+            content,
+            padding_x="0px" if full_width else "32px",
+            padding_y="0px" if full_width else "25px",
+            width="100%",
+            max_width="none" if full_width else "1400px",
+            margin="0" if full_width else "0 auto",
+        ),
+        width="100%",
+        min_height="100vh",
+        background_color=theme.illini_blue,
+        spacing="0",
+    )

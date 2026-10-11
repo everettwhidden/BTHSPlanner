@@ -21,7 +21,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
+from bthsplanner.old_state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
 
 required_courses_labels = ["Major Course", "Required Course"]
 

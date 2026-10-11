@@ -8,7 +8,7 @@ import reflex as rx
 from data.courses import MAJORS
 
 import bthsplanner.theme as theme
-from bthsplanner.state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR
+from bthsplanner.old_state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR
 from bthsplanner.components import (
     navigation_layout,
     course_card,
