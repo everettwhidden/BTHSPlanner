@@ -28,11 +28,11 @@ def senior_column():
     rx.vstack(
         rx.heading("Senior", size="5", margin_bottom="2px", color=theme.text),
         rx.hstack(
-            rx.text(PlannerState.senior_course_count.to(str) + " courses", size="2", color=theme.text, weight = "bold"),
-            rx.text("•", size="2", color=theme.text),
-            rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="2", color=theme.text, weight = "bold"),
-            rx.text("•", size="2", color=theme.text),
-            rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="2", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+            rx.text(PlannerState.senior_course_count.to(str) + " courses", font_size="13px", color=theme.text, weight = "bold"),
+            rx.text("•", font_size="13px", color=theme.text),
+            rx.text(PlannerState.senior_periods.to(str) + "/10 periods", font_size="13px", color=theme.text, weight = "bold"),
+            rx.text("•", font_size="13px", color=theme.text),
+            rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", font_size="13px", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
             spacing="2", margin_bottom="10px"
         ),
         
@@ -108,6 +108,7 @@ def senior_column():
             margin_top="0px"
         ),
         align_items="stretch",
-        spacing="3"
+        spacing="3",
+        **theme.year_box
     ),
 )

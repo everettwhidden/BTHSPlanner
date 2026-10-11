@@ -13,7 +13,7 @@ def course_card(label: str, course_name: str) -> rx.Component:
             rx.text(course_name, class_name="card-title"),
             class_name="course-card",
             style={
-                "background_color": theme.lighter_aa_blue,
+                "background_color": theme.illini_blue,
                 "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"
             }
         ),
@@ -28,7 +28,7 @@ def elective_card(label: str, year: str) -> rx.Component:
             rx.text(label, class_name="card-title"),
             class_name="course-card", 
             on_click=PlannerState.open_course_details(label), 
-            style={"cursor": "pointer", "background_color" : theme.lighter_aa_blue, "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"}, 
+            style={"cursor": "pointer", "background_color" : theme.illini_blue, "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"}, 
         ),
         rx.button(
             "✕", 
@@ -53,7 +53,7 @@ def dropdown_card(label: str, options: list[str], value: rx.Var, on_change: any)
             rx.select(options, value=value, on_change=on_change, variant="ghost", class_name="reflex-dropdown-select", on_click=[rx.stop_propagation], font_size = "15px" ),
             class_name="dropdown-card-wrapper",
             style={
-                "background_color": theme.lighter_aa_blue,
+                "background_color": theme.illini_blue,
                 "border": f"2px solid color-mix(in srgb, {color} 85%, {theme.border} 15%)"
             }
         ),

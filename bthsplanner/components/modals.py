@@ -204,10 +204,10 @@ def course_search_modal(period_count: rx.Var, target_year: str) -> rx.Component:
         "Schedule Full (10/10 Pds)",
         width="100%", margin_top="0px",
         style={
-            "background_color": theme.lighter_aa_blue, "color": theme.text_dim, 
+            "background_color": theme.illini_blue, "color": theme.text_dim, 
             "font_weight": "600", "cursor": "not-allowed",
             "opacity": "0.6",
-            "font_size" : "16px"
+            "font_size" : "14px"
         }
     )
 
