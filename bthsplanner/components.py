@@ -91,63 +91,84 @@ def sidebar_section_title(label: str) -> rx.Component:
     return rx.text(label, font_weight="bold", color=theme.text, font_size="18px")
 
 
+def sidebar_toggle_button() -> rx.Component:
+    return rx.icon_button(
+        rx.cond(
+            PlannerState.sidebar_open,
+            rx.icon("panel-left-close", size=20),
+            rx.icon("panel-left-open", size=20),
+        ),
+        on_click=PlannerState.toggle_sidebar,
+        variant="ghost",
+        color_scheme="gray",
+        size="3",
+        style={
+            "cursor": "pointer",
+            "color": theme.text,
+            "background_color": "transparent",
+            "border": "none",
+            "box_shadow": "none",
+            "outline": "none",
+            "border_radius": "0.5rem",
+            "margin": "0 !important",
+            "_hover": {"background_color": "rgba(128, 128, 128, 0.25)"},
+        },
+    )
+
 def plan_sidebar() -> rx.Component:
     return rx.box(
-        rx.vstack(
-            # header row with the toggle, always visible, even when collapsed
-            rx.box(
-                sidebar_toggle_button(),
-                padding="8px",
-                width="100%",
-                border_bottom=f"1px solid {theme.border}",
-            ),
-            # everything else fades out when collapsed
-            rx.box(
-                rx.vstack(
-                    sidebar_section_title("Legend"),
-                    legend_list(),
-                    rx.divider(border_color=theme.border),
-
-                    sidebar_section_title("Select your major"),
-                    styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px", "100%"),
-                    rx.text(
-                        "View majors ",
-                        rx.link(
-                            "here",
-                            href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f",
-                            is_external=True,
-                            color=theme.text,
-                            text_decoration="underline",
-                        ),
+        # content fades out when collapsed
+        rx.box(
+            rx.vstack(
+                sidebar_section_title("Major selection"),
+                
+                styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px", "100%"),
+                rx.text(
+                    "View majors ",
+                    rx.link(
+                        "here",
+                        href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f",
+                        is_external=True,
                         color=theme.text,
-                        size="2",
-                        font_weight="600",
+                        text_decoration="underline",
                     ),
-                    rx.divider(border_color=theme.border),
-
-                    sidebar_section_title("Credits you already have"),
-                    pre_credit_checkbox("Algebra I"),
-                    pre_credit_checkbox("Geometry"),
-                    pre_credit_checkbox("US History"),
-                    pre_credit_checkbox("Biology/Living Environment"),
-                    pre_language_checkbox(),
-
-                    align_items="start",
-                    spacing="4",
-                    width="280px",      # fixed so it doesn't rewrap while sliding
-                    padding="16px",
+                    color=theme.text,
+                    size="2",
+                    font_weight="600",
                 ),
-                opacity=rx.cond(PlannerState.sidebar_open, "1", "0"),
-                pointer_events=rx.cond(PlannerState.sidebar_open, "auto", "none"),
-                transition="opacity 0.2s ease",
-                overflow_y="auto",
-                flex="1",
-                width="100%",
+                rx.divider(border_color=theme.border),
+                
+                sidebar_section_title("Legend"),
+                legend_list(),
+                rx.divider(border_color=theme.border),
+
+                sidebar_section_title("Credits you have"),
+                pre_credit_checkbox("Algebra I"),
+                pre_credit_checkbox("Geometry"),
+                pre_credit_checkbox("US History"),
+                pre_credit_checkbox("Biology/Living Environment"),
+                pre_language_checkbox(),
+
+                align_items="start",
+                spacing="4",
+                width="280px",      # fixed so it doesn't rewrap while sliding
+                padding="16px",
             ),
-            spacing="0",
-            align_items="start",
-            height="100%",
+            opacity=rx.cond(PlannerState.sidebar_open, "1", "0"),
+            pointer_events=rx.cond(PlannerState.sidebar_open, "auto", "none"),
+            transition="opacity 0.2s ease",
+            overflow_y="auto",
+            overflow_x="hidden",
             width="100%",
+            height="100%",
+        ),
+        # toggle sits inside the sidebar, pinned to its right edge
+        rx.box(
+            sidebar_toggle_button(),
+            position="absolute",
+            top="12px",
+            right="12px",
+            z_index="20",
         ),
         width=rx.cond(PlannerState.sidebar_open, "280px", "56px"),
         height="calc(100vh - 57px)",    # 57px is the nav bar height
@@ -159,20 +180,6 @@ def plan_sidebar() -> rx.Component:
         transition="width 0.25s ease",
         background_color=theme.lighter_aa_blue,
         border_right=f"1px solid {theme.border}",
-    )
-
-
-def sidebar_toggle_button() -> rx.Component:
-    return rx.icon_button(
-        rx.cond(
-            PlannerState.sidebar_open,
-            rx.icon("panel-left-close", size=22),
-            rx.icon("panel-left-open", size=22),
-        ),
-        on_click=PlannerState.toggle_sidebar,
-        variant="soft",
-        size="3",
-        style={"cursor": "pointer"},
     )
 
 def pre_credit_checkbox(label: str) -> rx.Component:
@@ -300,7 +307,7 @@ def elective_card(label: str, year: str) -> rx.Component:
     color = elective_color
     return rx.box(
         rx.box(
-            rx.text("Elective Course", class_name="card-label", color = theme.text), 
+            rx.text("Elective", class_name="card-label", color = theme.text), 
             rx.text(label, class_name="card-title"),
             class_name="course-card", 
             on_click=PlannerState.open_course_details(label), 

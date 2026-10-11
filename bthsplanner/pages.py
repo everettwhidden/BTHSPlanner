@@ -31,291 +31,281 @@ from bthsplanner.components import (
 
 @rx.page(route="/", title="BTHS Planner - Plan", on_load=PlannerState.change_tab("Plan")) 
 def index() -> rx.Component:
-    plan_content = rx.vstack(
-        rx.hstack(
-            plan_sidebar(),
-            rx.box(
-                rx.vstack(
-                    rx.heading("Course Plan", font_size="35px", color=theme.text),
-                    rx.cond(
-                        PlannerState.major_note != "",
-                        rx.callout(rx.text(PlannerState.major_note, font_size="16px"), icon="info", color_scheme="blue"),
-                    ),
-                    rx.grid(
-                            
-                        rx.vstack(
-                            rx.cond(PlannerState.major_note != "", rx.callout(rx.text(PlannerState.major_note, font_size = "16px"), icon="info", color_scheme="blue",)),
-                            #rx.cond(PlannerState.chose_economics_jr, rx.callout(rx.text("*Taking Economics in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px", font_size = "16px")),
-                            #rx.cond(PlannerState.chose_african_jr, rx.callout(rx.text("*Taking AP African American Studies in junior year requires students to have already passed the United States History Regents exam.", font_size = "16px"), icon="info", color_scheme="purple", margin_bottom="12px")),
+    plan_content = rx.hstack(
+        plan_sidebar(),
+        rx.box(
+            rx.vstack(
+                rx.heading("Course Plan", font_size="35px", color=theme.text),
+                rx.cond(
+                    PlannerState.major_note != "",
+                    rx.callout(rx.text(PlannerState.major_note, font_size="16px"), icon="info", color_scheme="blue"),
+                ),
+                rx.grid(
+                    # --- FRESHMAN ---
+                    rx.vstack(
+                        rx.heading("Freshman", size="7", margin_bottom="2px", color=theme.text),
+                        rx.hstack(
+                            rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            spacing="2", margin_bottom="10px"
                         ),
-                        align="start",
-                        spacing="3",
-                    ),
-
-                    rx.grid(
-                        # --- FRESHMAN ---
+                        
+                        rx.tooltip(
+                            course_card("English", "English 9"),
+                            content = "Double period, alternates daily with DDP"
+                        ),
+                        
+                        course_card("History", "Pre-AP World History"),
+                            
+                        rx.cond(
+                            PlannerState.pre_credits["Biology/Living Environment"],
+                            dropdown_card("Science", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
+                            course_card("Science", PlannerState.f_sci),),
+                        
+                        rx.foreach(
+                            PlannerState.freshman_math_courses,
+                            lambda course: course_card("Math", course)
+                        ),
+                        course_card("Language", PlannerState.f_lang),
+                        rx.tooltip(
+                            course_card("Required", "Design & Drafting for Production (DDP)"),
+                            content = "Double period, alternates daily with English 9"
+                        ),
                         rx.vstack(
-                            rx.heading("Freshman", size="7", margin_bottom="2px", color=theme.text),
-                            rx.hstack(
-                                rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
-                                spacing="2", margin_bottom="10px"
-                            ),
-                            
-                            rx.tooltip(
-                                course_card("English Course", "English 9"),
-                                content = "Double period, alternates daily with DDP"
-                            ),
-                            
-                            course_card("History Course", "Pre-AP World History"),
-                                
-                            rx.cond(
-                                PlannerState.pre_credits["Biology/Living Environment"],
-                                dropdown_card("Science Course", DropdownOptions.f_sci_opts, PlannerState.f_sci, PlannerState.change_f_sci),
-                                course_card("Science Course", PlannerState.f_sci),),
-                            
                             rx.foreach(
-                                PlannerState.freshman_math_courses,
-                                lambda course: course_card("Math Course", course)
-                            ),
-                            course_card("Language Course", PlannerState.f_lang),
-                            rx.tooltip(
-                                course_card("Required Course", "Design & Drafting for Production (DDP)"),
-                                content = "Double period, alternates daily with English 9"
-                            ),
-                            rx.vstack(
-                                rx.foreach(
-                                    PlannerState.freshman_electives,
-                                    lambda course: elective_card(course, "Freshman")
-                                    ),
-                                course_card("Required Period", "Gym"),
-                                course_card("Required Period", "Lunch"),                            
-                                course_search_modal(PlannerState.freshman_periods, "Freshman"),
-                                width="100%", 
-                                spacing="3",
-                                margin_top="0px"
-                            ),
-                            align_items="stretch"
-                        ),
-
-                        # --- SOPHOMORE ---
-                        rx.vstack(
-                            rx.heading("Sophomore", size="7", margin_bottom="2px", color=theme.text),
-                            rx.hstack(
-                                rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
-                                spacing="2", margin_bottom="10px"
-                            ),
-                            
-                            dropdown_card("English Course", DropdownOptions.so_eng_opts, PlannerState.so_eng, PlannerState.change_so_eng),
-                            dropdown_card("History Course", DropdownOptions.so_hist_opts, PlannerState.so_hist, PlannerState.change_so_hist),
-                            course_card("Science Course", "Regents Chemistry"),
-                            rx.cond(PlannerState.math_is_accelerated, course_card("Math Course", "Pre-Calculus"), course_card("Math Course", "Algebra II")),
-                            rx.cond(PlannerState.lang_is_accelerated, course_card("Language Course", PlannerState.language_base + " III"), course_card("Language Course", PlannerState.language_base + " II")),
-                            course_card("Required Course", "AP Computer Science Principles"),
-                            course_card("Required Course", "Health Education"),
-                            rx.vstack(
-                                rx.foreach(
-                                    PlannerState.sophomore_electives,
-                                    lambda course: elective_card(course, "Sophomore")
+                                PlannerState.freshman_electives,
+                                lambda course: elective_card(course, "Freshman")
                                 ),
-                                course_card("Required Period", "Gym"),
-                                course_card("Required Period", "Lunch"),                        
-                                course_search_modal(PlannerState.sophomore_periods, "Sophomore"),
-                                width="100%", 
-                                spacing="3",
-                                margin_top="0px"
-                            ),
-                            align_items="stretch"
+                            course_card("Required", "Gym"),
+                            course_card("Required", "Lunch"),                            
+                            course_search_modal(PlannerState.freshman_periods, "Freshman"),
+                            width="100%", 
+                            spacing="3",
+                            margin_top="0px"
                         ),
-
-                    # --- JUNIOR ---
-                        rx.vstack(
-                            rx.heading("Junior", size="7", margin_bottom="2px", color=theme.text),
-                            rx.hstack(
-                                rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
-                                spacing="2", margin_bottom="10px"
-                            ),
-                            
-                            
-                            rx.cond(
-                                PlannerState.major != "LIU Pharmacy",
-                                dropdown_card("English Course", DropdownOptions.j_eng_opts, PlannerState.j_eng, PlannerState.change_j_eng),
-                                rx.fragment()
-                            ),
-                            rx.cond(
-                                (PlannerState.j_his == "None (free period, econ senior year)") | (PlannerState.j_his == "None (free period, gov senior year)"),
-                                rx.fragment(),
-                                dropdown_card("History Course", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
-                            ),
-                            rx.cond(
-                                PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict,
-                                course_card("Government Course", "Participation in Government")
-                            ),
-                            rx.cond(
-                                PlannerState.need_regents_physics_junior,
-                                rx.cond(
-                                    PlannerState.junior_ap_room_for_physics,
-                                    dropdown_card("Science Course", DropdownOptions.j_phys_opts, PlannerState.j_phys, PlannerState.change_j_phys),
-                                    course_card("Science Course", "Regents Physics")
-                                )
-                            ),
-                            
-                            # 2. refular math card. safe fallback logic. Only shows up down here if it wasn't pulled into the major stack above!
-                            rx.cond(
-                                PlannerState.junior_math_override == "",
-                                #rx.cond(
-                                    #PlannerState.math_is_accelerated,
-                                    #course_card("Math Course", "AP Calculus BC"),
-                                dropdown_card("Math Course", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
-                                
-                            ),
-                            
-                            rx.cond(~PlannerState.lang_is_accelerated, course_card("Language Course", PlannerState.language_base + " III")),
-                            
-        # 1. 🎯 MAJOR SEQUENCE SLOTS: Only pulls math up if a major math requirement exists
-                            rx.cond(
-                                PlannerState.junior_math_override != "",
-                                dropdown_card("Major Course", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
-                            ),
-                                                        
-                        
-                            rx.foreach(PlannerState.filtered_junior_major_courses, render_major_course),
-                                
-                        
-                            
-                        
-                            rx.vstack(
-                                rx.foreach(
-                                    PlannerState.junior_electives,
-                                    lambda course: elective_card(course, "Junior")
-                                    ),
-                                course_card("Required Period", "Gym"),
-                                course_card("Required Period", "Lunch"),
-                                course_search_modal(PlannerState.junior_periods, "Junior"),
-                                width="100%", 
-                                spacing="3",
-                                margin_top="0px"
-                            ),
-                            align_items="stretch"
-                        ),
-
-                        
-                        # --- SENIOR ---
-                        # --- SENIOR COLUMN ---
-                        rx.vstack(
-                            rx.heading("Senior", size="7", margin_bottom="2px", color=theme.text),
-                            rx.hstack(
-                                rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                                rx.text("•", size="3", color=theme.text),
-                                rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
-                                spacing="2", margin_bottom="10px"
-                            ),
-                            
-                            dropdown_card("English Course", DropdownOptions.sn_eng_opts, PlannerState.sn_eng, PlannerState.change_sn_eng),
-                            rx.cond(
-                                ~PlannerState.chose_economics_jr & ~PlannerState.has_macro & ~PlannerState.chose_gov_jr_finance,
-                                rx.fragment(
-                                    dropdown_card("History Course", DropdownOptions.sn_his_opts, PlannerState.sn_his, PlannerState.change_sn_his),
-                                    rx.cond(
-                                        ((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government") | (PlannerState.sn_his == "AP Comparative Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, 
-                                        course_card("Economics Course", PlannerState.sn_ec)),
-                                    rx.cond(
-                                        (PlannerState.sn_his == "Economics") & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict, 
-                                        dropdown_card("Government Course", DropdownOptions.sn_gov_opts, PlannerState.sn_gov, PlannerState.change_sn_gov)),
-                                ),
-                            ),
-                        #NON-MAJOR MATH SLOT (Only displays for majors that DO NOT have math in their major requirements)
-                            rx.cond(
-                                PlannerState.senior_math_override == "",
-                                rx.cond(
-                                    PlannerState.took_ap_calc_bc_junior,
-                                    toggle_dropdown_card(
-                                        "Math Course",
-                                        DropdownOptions.sn_math_opts,
-                                        PlannerState.sn_math,
-                                        PlannerState.change_sn_math,
-                                        selected=PlannerState.sn_math_active,
-                                        on_toggle=PlannerState.toggle_sn_math,
-                                        tooltip="Taking Math all four years is highly encouraged",
-                                    ),
-                                    dropdown_card("Math Course", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
-                                )
-                            ),
-                            # MAJOR COURSES SECTION
-                            rx.cond(
-                                PlannerState.major == "Physics",
-                                senior_physics_cards(),
-
-
-                                rx.vstack(
-                                    rx.cond(
-                                        PlannerState.senior_math_override != "",
-                                        rx.cond(
-                                            PlannerState.took_ap_calc_bc_junior,
-                                            rx.cond(
-                                                PlannerState.sn_math != "",
-                                                dropdown_card("Major Course", DropdownOptions.sn_math_opts, PlannerState.sn_math, PlannerState.change_sn_math),
-                                                rx.fragment()
-                                                ),
-                                            dropdown_card("Major Course", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
-                                        )
-                                    ),
-
-                                    rx.foreach(PlannerState.filtered_senior_major_courses, render_major_course),
-
-                                    width="100%", spacing="3", margin_top="0px"
-                                )
-                            ),
-
-                            
-
-                            # ELECTIVES SECTION
-                            rx.vstack(
-                                rx.foreach(
-                                    PlannerState.senior_electives,
-                                    lambda course: elective_card(course, "Senior")
-                                    ),
-                                course_card("Required Period", "Gym"),
-                                course_card("Required Period", "Lunch"),
-                                course_search_modal(PlannerState.senior_periods, "Senior"),
-                                width="100%", 
-                                spacing="3",
-                                margin_top="0px"
-                            ),
-                            align_items="stretch",
-                            spacing="3"
-                        ),
-                        columns={"initial": "1", "sm": "2", "md": "4"}, spacing="4", width="100%"
+                        align_items="stretch"
                     ),
+
+                    # --- SOPHOMORE ---
+                    rx.vstack(
+                        rx.heading("Sophomore", size="7", margin_bottom="2px", color=theme.text),
+                        rx.hstack(
+                            rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            spacing="2", margin_bottom="10px"
+                        ),
+                        
+                        dropdown_card("English", DropdownOptions.so_eng_opts, PlannerState.so_eng, PlannerState.change_so_eng),
+                        dropdown_card("History", DropdownOptions.so_hist_opts, PlannerState.so_hist, PlannerState.change_so_hist),
+                        course_card("Science", "Regents Chemistry"),
+                        rx.cond(PlannerState.math_is_accelerated, course_card("Math", "Pre-Calculus"), course_card("Math", "Algebra II")),
+                        rx.cond(PlannerState.lang_is_accelerated, course_card("Language", PlannerState.language_base + " III"), course_card("Language", PlannerState.language_base + " II")),
+                        course_card("Required", "AP Computer Science Principles"),
+                        course_card("Required", "Health Education"),
+                        rx.vstack(
+                            rx.foreach(
+                                PlannerState.sophomore_electives,
+                                lambda course: elective_card(course, "Sophomore")
+                            ),
+                            course_card("Required", "Gym"),
+                            course_card("Required", "Lunch"),                        
+                            course_search_modal(PlannerState.sophomore_periods, "Sophomore"),
+                            width="100%", 
+                            spacing="3",
+                            margin_top="0px"
+                        ),
+                        align_items="stretch"
+                    ),
+
+                # --- JUNIOR ---
+                    rx.vstack(
+                        rx.heading("Junior", size="7", margin_bottom="2px", color=theme.text),
+                        rx.hstack(
+                            rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            spacing="2", margin_bottom="10px"
+                        ),
+                        
+                        
+                        rx.cond(
+                            PlannerState.major != "LIU Pharmacy",
+                            dropdown_card("English", DropdownOptions.j_eng_opts, PlannerState.j_eng, PlannerState.change_j_eng),
+                            rx.fragment()
+                        ),
+                        rx.cond(
+                            (PlannerState.j_his == "None (free period, econ senior year)") | (PlannerState.j_his == "None (free period, gov senior year)"),
+                            rx.fragment(),
+                            dropdown_card("History", DropdownOptions.j_his_opts, PlannerState.j_his, PlannerState.change_j_his),
+                        ),
+                        rx.cond(
+                            PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict,
+                            course_card("Government", "Participation in Government")
+                        ),
+                        rx.cond(
+                            PlannerState.need_regents_physics_junior,
+                            rx.cond(
+                                PlannerState.junior_ap_room_for_physics,
+                                dropdown_card("Science", DropdownOptions.j_phys_opts, PlannerState.j_phys, PlannerState.change_j_phys),
+                                course_card("Science", "Regents Physics")
+                            )
+                        ),
+                        
+                        # 2. refular math card. safe fallback logic. Only shows up down here if it wasn't pulled into the major stack above!
+                        rx.cond(
+                            PlannerState.junior_math_override == "",
+                            #rx.cond(
+                                #PlannerState.math_is_accelerated,
+                                #course_card("Math", "AP Calculus BC"),
+                            dropdown_card("Math", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
+                            
+                        ),
+                        
+                        rx.cond(~PlannerState.lang_is_accelerated, course_card("Langauge", PlannerState.language_base + " III")),
+                        
+    # 1. 🎯 MAJOR SEQUENCE SLOTS: Only pulls math up if a major math requirement exists
+                        rx.cond(
+                            PlannerState.junior_math_override != "",
+                            dropdown_card("Major", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
+                        ),
+                                                    
+                    
+                        rx.foreach(PlannerState.filtered_junior_major_courses, render_major_course),
+                            
+                    
                         
                     
-                    flex="1",
-                    min_width="0",   # lets the grid shrink instead of overflowing
-                ),
-            ),
-            align="start",
-            spacing="0",
-            width="100%",
-        ),
+                        rx.vstack(
+                            rx.foreach(
+                                PlannerState.junior_electives,
+                                lambda course: elective_card(course, "Junior")
+                                ),
+                            course_card("Required", "Gym"),
+                            course_card("Required", "Lunch"),
+                            course_search_modal(PlannerState.junior_periods, "Junior"),
+                            width="100%", 
+                            spacing="3",
+                            margin_top="0px"
+                        ),
+                        align_items="stretch"
+                    ),
 
-        course_detail_modal(),
-        rx.divider(margin_y="32px", border_color=theme.border),
-        
+                    
+                    # --- SENIOR ---
+                    # --- SENIOR COLUMN ---
+                    rx.vstack(
+                        rx.heading("Senior", size="7", margin_bottom="2px", color=theme.text),
+                        rx.hstack(
+                            rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
+                            rx.text("•", size="3", color=theme.text),
+                            rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            spacing="2", margin_bottom="10px"
+                        ),
+                        
+                        dropdown_card("English", DropdownOptions.sn_eng_opts, PlannerState.sn_eng, PlannerState.change_sn_eng),
+                        rx.cond(
+                            ~PlannerState.chose_economics_jr & ~PlannerState.has_macro & ~PlannerState.chose_gov_jr_finance,
+                            rx.fragment(
+                                dropdown_card("History", DropdownOptions.sn_his_opts, PlannerState.sn_his, PlannerState.change_sn_his),
+                                rx.cond(
+                                    ((PlannerState.sn_his == "AP US Government") | (PlannerState.sn_his == "Participation in Government") | (PlannerState.sn_his == "AP Comparative Government")) & ~PlannerState.chose_economics_jr & ~PlannerState.has_econ_gov_conflict, 
+                                    course_card("Economics", PlannerState.sn_ec)),
+                                rx.cond(
+                                    (PlannerState.sn_his == "Economics") & ~PlannerState.chose_government_jr & ~PlannerState.has_gov_conflict, 
+                                    dropdown_card("Government", DropdownOptions.sn_gov_opts, PlannerState.sn_gov, PlannerState.change_sn_gov)),
+                            ),
+                        ),
+                    #NON-MAJOR MATH SLOT (Only displays for majors that DO NOT have math in their major requirements)
+                        rx.cond(
+                            PlannerState.senior_math_override == "",
+                            rx.cond(
+                                PlannerState.took_ap_calc_bc_junior,
+                                toggle_dropdown_card(
+                                    "Math",
+                                    DropdownOptions.sn_math_opts,
+                                    PlannerState.sn_math,
+                                    PlannerState.change_sn_math,
+                                    selected=PlannerState.sn_math_active,
+                                    on_toggle=PlannerState.toggle_sn_math,
+                                    tooltip="Taking Math all four years is highly encouraged",
+                                ),
+                                dropdown_card("Math", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
+                            )
+                        ),
+                        # MajorS SECTION
+                        rx.cond(
+                            PlannerState.major == "Physics",
+                            senior_physics_cards(),
+
+
+                            rx.vstack(
+                                rx.cond(
+                                    PlannerState.senior_math_override != "",
+                                    rx.cond(
+                                        PlannerState.took_ap_calc_bc_junior,
+                                        rx.cond(
+                                            PlannerState.sn_math != "",
+                                            dropdown_card("Major", DropdownOptions.sn_math_opts, PlannerState.sn_math, PlannerState.change_sn_math),
+                                            rx.fragment()
+                                            ),
+                                        dropdown_card("Major", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
+                                    )
+                                ),
+
+                                rx.foreach(PlannerState.filtered_senior_major_courses, render_major_course),
+
+                                width="100%", spacing="3", margin_top="0px"
+                            )
+                        ),
+
+                        
+
+                        # ELECTIVES SECTION
+                        rx.vstack(
+                            rx.foreach(
+                                PlannerState.senior_electives,
+                                lambda course: elective_card(course, "Senior")
+                                ),
+                            course_card("Required", "Gym"),
+                            course_card("Required", "Lunch"),
+                            course_search_modal(PlannerState.senior_periods, "Senior"),
+                            width="100%", 
+                            spacing="3",
+                            margin_top="0px"
+                        ),
+                        align_items="stretch",
+                        spacing="3"
+                    ),
+                    columns={"initial": "1", "sm": "2", "md": "2", "lg": "4"},
+                    spacing="4",
+                    width="100%",
+                ),
+                course_detail_modal(),
+                spacing="5",
+                width="100%",
+                align_items="stretch",
+            ),
+            # these belong on the box, not the vstack
+            flex="1",
+            min_width="0",
+            padding_top="32px",       # gap between nav bar and the heading / cards
+            padding_bottom="32px",
+            padding_left="32px",      # gap between sidebar and the cards
+            padding_right="32px",
+        ),
+        align="start",
+        spacing="0",
         width="100%",
-        align_items="stretch"
     )
     return navigation_layout(plan_content, full_width=True)
 
@@ -543,8 +533,8 @@ HOW_IT_WORKS_SECTIONS = [
         "desc" : True
     },
     {
-        "heading": "Major Courses and Electives (7 credits)",
-        "body": "• Varies by major\n• Major courses cover elective requirement",
+        "heading": "Majors and Electives (7 credits)",
+        "body": "• Varies by major\n• Majors cover elective requirement",
         "desc" : True
     },
     {
