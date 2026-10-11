@@ -190,6 +190,16 @@ def explore_page() -> rx.Component:
             justify_items="start",                  # Standardizes columns alignment
         ),
         pagination_bar(),
+        rx.text(
+            "All course information and data is found through online sources or from personal knowledge. Please contact your guidance counselor if you are unsure about any course data. Additionally, AI was used to summarize each course and create it's description. Because AI can make mistakes, some descriptions may be incorrect or inaccurate. If you notice any mistakes, please contact us directly.",
+            color=theme.text_dim,
+            size="1",
+            text_align="left",
+            width="100%",
+            max_width="600px",
+            margin_x="0px",
+            margin_top="16px",
+        ),
         course_detail_modal(),
         
         align_items="start",

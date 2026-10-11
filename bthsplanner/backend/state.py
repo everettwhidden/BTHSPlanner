@@ -199,7 +199,7 @@ class PlannerState(rx.State):
 
     explore_search_query: str = ""
 
-    order: str = "AP First"
+    order: str = "A-Z"
     selected_grades: list[str] = []
     selected_majors: list[str] = []
     selected_filters: list[str] = []
@@ -208,7 +208,7 @@ class PlannerState(rx.State):
     explore_page_num: int = 1
 
     def clear_filters(self):
-        self.order = "AP First"
+        self.order = "A-Z"
         self.selected_grades = []
         self.selected_filters = []
         self.selected_majors = []

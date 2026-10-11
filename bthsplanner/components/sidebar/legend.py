@@ -33,7 +33,7 @@ def legend_item(label: str, border_color: str) -> rx.Component:
         rx.text(
             label,
             color=theme.text, 
-            font_size="15px",
+            font_size="14px",
             font_weight="600",
         ),
         align_items="center",
@@ -41,16 +41,17 @@ def legend_item(label: str, border_color: str) -> rx.Component:
     )
 
 def legend_list() -> rx.Component:
-    # vertical version of the legend for the sidebar
-    return rx.vstack(
+    # two columns for the sidebar
+    return rx.grid(
         legend_item("English", english_color),
         legend_item("History", history_color),
         legend_item("Science", science_color),
         legend_item("Math", math_color),
         legend_item("Language", lang_color),
-        legend_item("Major/Required", req_courses),
+        legend_item("Required", req_courses),
         legend_item("Elective", elective_color),
         legend_item("Gym/Lunch", gym_lunch_color),
-        align_items="start",
+        columns="2",
         spacing="2",
+        width="100%",
     )
