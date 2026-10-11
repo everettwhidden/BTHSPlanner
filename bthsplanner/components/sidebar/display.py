@@ -14,7 +14,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.old_state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR, MAJOR_NAMES
+from bthsplanner.backend import *
 
 from .styled_select import styled_select
 from .credit_checkboxes import (pre_language_checkbox, pre_credit_checkbox)

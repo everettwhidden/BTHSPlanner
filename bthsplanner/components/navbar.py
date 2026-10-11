@@ -2,7 +2,7 @@ import reflex as rx
 
 import bthsplanner.theme as theme
 
-from bthsplanner.old_state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
+from bthsplanner.backend import *
 
 required_courses_labels = ["Major Course", "Required Course"]
 

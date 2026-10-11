@@ -79,8 +79,8 @@ def index() -> rx.Component:
                                 PlannerState.freshman_electives,
                                 lambda course: elective_card(course, "Freshman")
                                 ),
-                            course_card("Required", "Gym"),
-                            course_card("Required", "Lunch"),                            
+                            course_card("Gym/Lunch", "Gym"),
+                            course_card("Gym/Lunch", "Lunch"),                            
                             course_search_modal(PlannerState.freshman_periods, "Freshman"),
                             width="100%", 
                             spacing="3",
@@ -113,8 +113,8 @@ def index() -> rx.Component:
                                 PlannerState.sophomore_electives,
                                 lambda course: elective_card(course, "Sophomore")
                             ),
-                            course_card("Required", "Gym"),
-                            course_card("Required", "Lunch"),                        
+                            course_card("Gym/Lunch", "Gym"),
+                            course_card("Gym/Lunch", "Lunch"),                        
                             course_search_modal(PlannerState.sophomore_periods, "Sophomore"),
                             width="100%", 
                             spacing="3",
@@ -188,8 +188,8 @@ def index() -> rx.Component:
                                 PlannerState.junior_electives,
                                 lambda course: elective_card(course, "Junior")
                                 ),
-                            course_card("Required", "Gym"),
-                            course_card("Required", "Lunch"),
+                            course_card("Gym/Lunch", "Gym"),
+                            course_card("Gym/Lunch", "Lunch"),
                             course_search_modal(PlannerState.junior_periods, "Junior"),
                             width="100%", 
                             spacing="3",
@@ -276,8 +276,8 @@ def index() -> rx.Component:
                                 PlannerState.senior_electives,
                                 lambda course: elective_card(course, "Senior")
                                 ),
-                            course_card("Required", "Gym"),
-                            course_card("Required", "Lunch"),
+                            course_card("Gym/Lunch", "Gym"),
+                            course_card("Gym/Lunch", "Lunch"),
                             course_search_modal(PlannerState.senior_periods, "Senior"),
                             width="100%", 
                             spacing="3",
