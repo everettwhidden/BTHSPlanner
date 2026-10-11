@@ -87,9 +87,9 @@ class DropdownOptions(PlannerState):
     @rx.var
     def j_his_opts(self) -> list[str]:
         if self.has_econ_gov_conflict: #finance majors have econ gov conflict, macro/micro leaves gov to be taken later or in the same year
-            opts = ["AP United States History", "Regents United States History", "Participation in Government", "AP African American Studies", "None (free period, gov senior year)"]
+            opts = ["AP US History", "Regents US History", "Participation in Government", "AP African American Studies", "None (free period, gov senior year)"]
         else:
-            opts = ["AP United States History", "Regents United States History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
+            opts = ["AP US History", "Regents US History", "Economics", "AP African American Studies", "None (free period, econ senior year)"]
         if self.has_econ_gov_conflict:
             opts = [o for o in opts if o not in ("Economics",)]
 

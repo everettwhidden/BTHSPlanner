@@ -77,11 +77,11 @@ class PlannerState(rx.State):
                 else:
                     self.j_his = "Economics"
             elif self.j_his == "Economics":
-                self.j_his = "Regents United States History"
+                self.j_his = "Regents US History"
             elif self.j_his == "Participation in Government":
-                self.j_his = "Regents United States History"
+                self.j_his = "Regents US History"
             else:
-                self.j_his = "Regents United States History"
+                self.j_his = "Regents US History"
         if credit == "Language":
             if checked:
                 self.f_lang = _next_lang_level(self.pre_language)
@@ -130,7 +130,7 @@ class PlannerState(rx.State):
     so_eng: str = "English 10"
     so_hist: str = "AP European History"
     j_eng: str = "English 11"
-    j_his: str = "Regents United States History"
+    j_his: str = "Regents US History"
     j_phys: str = "Regents Physics"
     j_math: str = "Pre-Calculus"
     sn_math: str = "AP Calculus BC"
@@ -404,7 +404,7 @@ class PlannerState(rx.State):
         self.so_eng = "English 10"
         self.so_hist = "AP European History"
         self.j_eng = "English 11"
-        self.j_his = "Regents United States History"
+        self.j_his = "Regents US History"
         self.j_phys = "Regents Physics"
         self.j_math = self.j_math if self.math_is_accelerated else "Pre-Calculus"
         self.sn_eng = "Creative Writing"
@@ -985,9 +985,9 @@ class PlannerState(rx.State):
         if self.j_eng in prior_after_so:
             self.j_eng = "English 11"
         if self.j_his in prior_after_so:
-            self.j_his = "Regents United States History"
+            self.j_his = "Regents US History"
         if self.j_his == "Economics" and self.has_econ_gov_conflict:
-            self.j_his = "Regents United States History"
+            self.j_his = "Regents US History"
             self.sn_his = "Economics"
         self.junior_electives = [c for c in self.junior_electives if c not in prior_after_so or COURSE_CATALOG.get(c, {}).get("allow_multiple", False)]
 
@@ -1004,7 +1004,7 @@ class PlannerState(rx.State):
     def _enforce_ap_limits(self):
         if self.junior_ap_count > 3:
             if "AP" in self.j_eng: self.j_eng = "English 11"
-            if "AP" in self.j_his: self.j_his = "Regents United States History"
+            if "AP" in self.j_his: self.j_his = "Regents US History"
             if "AP" in self.j_phys: self.j_phys = "Regents Physics"
             if "AP" in self.j_math and not self.math_is_accelerated: self.j_math = "Pre-Calculus"
             while self.junior_ap_count > 3:

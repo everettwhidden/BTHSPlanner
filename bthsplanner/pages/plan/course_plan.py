@@ -45,7 +45,7 @@ def index() -> rx.Component:
                     senior_column(),
             
                     columns={"initial": "1", "sm": "2", "md": "2", "lg": "4"},
-                    spacing="4",
+                    spacing="3",
                     width="100%",
                 ),
                 course_detail_modal(),
@@ -58,8 +58,8 @@ def index() -> rx.Component:
             min_width="0",
             padding_top="32px",       # gap between nav bar and the heading / cards
             padding_bottom="32px",
-            padding_left="32px",      # gap between sidebar and the cards
-            padding_right="32px",
+            padding_left="20px",      # gap between sidebar and the cards
+            padding_right="20px",
         ),
         align="start",
         spacing="0",

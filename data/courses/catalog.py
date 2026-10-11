@@ -265,7 +265,7 @@ COURSE_CATALOG = {
         "color" : history_color,
 
     },
-    "AP United States History": {
+    "AP US History": {
         "description": "This college-level course surveys U.S. history from pre-Columbian societies through the present, covering major political, social, economic, and cultural developments. Students build skills in historical thinking, primary-source analysis, and essay writing aligned to the College Board's APUSH framework.",
         "periods": 1,
         "credits": 1.0,
@@ -1004,7 +1004,7 @@ COURSE_CATALOG = {
         "grades": ["Freshman", "Junior"],
         "color" : science_color
     },
-    "Regents United States History": {
+    "Regents US History": {
         "description": "The United States History Regents course is a mandatory, year-long 11th-grade class that explores the major political, economic, and social turning points that shaped America from the colonial era to the modern day. Following the New York State Social Studies Framework, the curriculum focuses on key historical eras, including the American Revolution, the Civil War, industrialization, the World Wars, and modern civil rights movements. Rather than relying on simple memorization, students develop critical historical thinking skills by analyzing primary sources, evaluating conflicting perspectives, and tracking continuity and change over time. The course actively builds the reading, source-analysis, and essay-writing skills required to pass the mandatory New York State Regents Examination at the end of the school year.",
         "periods": 1,
         "credits": 1.0,
