@@ -29,7 +29,7 @@ from bthsplanner.components import (
 )
 
 
-@rx.page(route="/", title="BTHS Planner - Plan", on_load=PlannerState.change_tab("Plan")) 
+@rx.page(route="/", title="BTHS Planner - Plan Your Courses", description="Simulate and plan your 4-year high school course schedule at Brooklyn Tech.", on_load=PlannerState.change_tab("Plan")) 
 def index() -> rx.Component:
     plan_content = rx.hstack(
         plan_sidebar(),
@@ -312,7 +312,7 @@ def index() -> rx.Component:
 
 
 
-@rx.page(route="/explore", title="BTHS Planner - Explore Courses", on_load=PlannerState.change_tab("Explore")) 
+@rx.page(route="/explore", title="BTHS Planner - Explore Courses", description="Explore through all of the course offerings at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Explore")) 
 def explore_page() -> rx.Component:
     explore_content = rx.vstack(
         # Live Filter Search Field
@@ -568,7 +568,7 @@ def how_it_works_section(section: dict) -> rx.Component:
     )
 
 
-@rx.page(route="/how-it-works", title="BTHS Planner - How It Works", on_load=PlannerState.change_tab("How It Works"))
+@rx.page(route="/how-it-works", title="BTHS Planner - How It Works", description="Learn about how BTHS Planner works.",on_load=PlannerState.change_tab("How It Works"))
 def how_it_works_page() -> rx.Component:
     how_it_works_content = rx.vstack(
         # Page Header
@@ -589,7 +589,7 @@ def how_it_works_page() -> rx.Component:
     )
     return navigation_layout(how_it_works_content)
 
-@rx.page(route="/settings", title="BTHS Planner - Settings", on_load=PlannerState.change_tab("Settings"))
+@rx.page(route="/settings", title="BTHS Planner - Settings", description="Provide Feedback • Change display • Settings", on_load=PlannerState.change_tab("Settings"))
 def settings_page() -> rx.Component:
     settings_content = rx.vstack(
         rx.heading("Settings", font_size="30px", color=theme.text, margin_bottom="8px"),
