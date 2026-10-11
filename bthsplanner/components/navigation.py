@@ -29,6 +29,8 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
         rx.box(
             rx.hstack(
                 # Logo & Brand
+                            rx.hstack(
+                # Logo & Brand
                 rx.hstack(
                     rx.image(
                         src="/header_logo.png",
@@ -43,6 +45,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
                     spacing="3",
                     align_items="center",
                 ),
+                rx.spacer(),
                 # Navigation Links
                 rx.hstack(
                     nav_link("Plan", "/"),
@@ -50,17 +53,16 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
                     nav_link("How It Works", "/how-it-works"),
                     nav_link("Settings", "/settings"),
                     spacing="4",
-                    margin_left="24px",
+                    margin_right="16px",
                 ),
-                rx.spacer(),
                 # Action Buttons
                 rx.hstack(
                     # Clickable Theme Toggle Icon Button
                     rx.icon_button(
                         rx.cond(
                             rx.color_mode == "light",
-                            rx.icon("moon", size=20),  # Shown during light mode (click to go dark)
-                            rx.icon("sun", size=20),   # Shown during dark mode (click to go light)
+                            rx.icon("moon", size=20),
+                            rx.icon("sun", size=20),
                         ),
                         on_click=rx.toggle_color_mode,
                         variant="ghost",
@@ -111,4 +113,5 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
         min_height="100vh",
         background_color=theme.illini_blue,
         spacing="0",
+    ),
     )
