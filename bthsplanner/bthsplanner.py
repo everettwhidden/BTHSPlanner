@@ -1,6 +1,6 @@
 import reflex as rx
 
-from bthsplanner.old_pages import index, explore_page, how_it_works_page, settings_page
+from bthsplanner.pages import *
 
 config = rx.Config(
     app_name="bthsplanner",

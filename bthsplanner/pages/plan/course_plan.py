@@ -39,10 +39,10 @@ def index() -> rx.Component:
                     rx.callout(rx.text(PlannerState.major_note, font_size="16px"), icon="info", color_scheme="blue"),
                 ),
                 rx.grid(
-                    freshman_column,
-                    sophomore_column,
-                    junior_column,
-                    senior_column,
+                    freshman_column(),
+                    sophomore_column(),
+                    junior_column(),
+                    senior_column(),
             
                     columns={"initial": "1", "sm": "2", "md": "2", "lg": "4"},
                     spacing="4",

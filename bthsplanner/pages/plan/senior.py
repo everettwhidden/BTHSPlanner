@@ -2,7 +2,7 @@ import reflex as rx
 from data.courses import MAJORS
 
 import bthsplanner.theme as theme
-from bthsplanner.old_state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR
+from bthsplanner.backend import *
 from bthsplanner.components import (
     navigation_layout,
     course_card,
@@ -100,8 +100,8 @@ def senior_column():
                 PlannerState.senior_electives,
                 lambda course: elective_card(course, "Senior")
                 ),
-            course_card("Required", "Gym"),
-            course_card("Required", "Lunch"),
+            course_card("Gym/Lunch", "Gym"),
+            course_card("Gym/Lunch", "Lunch"),
             course_search_modal(PlannerState.senior_periods, "Senior"),
             width="100%", 
             spacing="3",

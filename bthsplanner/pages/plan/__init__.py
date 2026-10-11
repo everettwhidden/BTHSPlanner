@@ -1,0 +1,1 @@
+from .course_plan import index
