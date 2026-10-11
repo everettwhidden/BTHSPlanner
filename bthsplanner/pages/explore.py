@@ -11,17 +11,54 @@ from bthsplanner.components import (
     plan_sidebar,
     sidebar_toggle_button,
     course_detail_modal,
-    course_search_modal,
-    pre_credit_checkbox,
-    pre_language_checkbox,
-    styled_select,
-    render_major_course,
-    order_dropdown,
-    filter_dropdowns,
-    senior_physics_cards,
-    toggle_dropdown_card,
     explore_sidebar
 )
+def pagination_bar() -> rx.Component:
+    on_first = PlannerState.explore_page_num <= 1
+    on_last = PlannerState.explore_page_num >= PlannerState.explore_total_pages
+    return rx.hstack(
+        rx.button(
+            rx.icon("chevron-left", size=16),
+            "Previous",
+            on_click=PlannerState.prev_explore_page,
+            disabled=on_first,
+            variant="ghost",
+            color_scheme="gray",
+            size="3",
+            style={
+                "color": rx.cond(on_first, theme.text_dim, theme.text),
+                "cursor": rx.cond(on_first, "not-allowed", "pointer"),
+                "font_weight": "500",
+            },
+        ),
+        rx.text(
+            "Page ",
+            rx.text.span(PlannerState.explore_page_num.to_string(), font_weight="700", color=theme.text),
+            " of " + PlannerState.explore_total_pages.to_string(),
+            color=theme.text_dim,
+            size="3",
+        ),
+        rx.button(
+            "Next",
+            rx.icon("chevron-right", size=16),
+            on_click=PlannerState.next_explore_page,
+            disabled=on_last,
+            variant="ghost",
+            color_scheme="gray",
+            size="3",
+            style={
+                "color": rx.cond(on_last, theme.text_dim, theme.text),
+                "cursor": rx.cond(on_last, "not-allowed", "pointer"),
+                "font_weight": "500",
+            },
+        ),
+        justify="center",
+        align="center",
+        spacing="6",
+        width="100%",
+        margin_top="24px",
+    )
+
 @rx.page(route="/explore", title="BTHS Planner - Explore Courses", description="Explore all of the course offerings at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Explore")) 
 def explore_page() -> rx.Component:
     explore_main = rx.vstack(
@@ -38,13 +75,13 @@ def explore_page() -> rx.Component:
             background_color=theme.lighter_aa_blue,
         ),
 
-        rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
+        rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color=theme.text, size="3"),
 
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.grid(
             rx.foreach(
-                PlannerState.explore_catalog,
+                PlannerState.explore_page_catalog,
                 lambda course: rx.box(
                     rx.vstack(
                         # Header Row: Course Title on top, Badges side-by-side underneath
@@ -152,7 +189,7 @@ def explore_page() -> rx.Component:
             width="100%",
             justify_items="start",                  # Standardizes columns alignment
         ),
-        
+        pagination_bar(),
         course_detail_modal(),
         
         align_items="start",

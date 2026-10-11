@@ -8,31 +8,46 @@ required_courses_labels = ["Major Course", "Required Course"]
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
 ORDER_OPTIONS = ["AP First", "A-Z"]
-FILTER_OPTIONS = ["Electives", "Non-electives"]
+FILTER_OPTIONS = ["Elective", "Non-elective"]
+PERIOD_LENGTH_OPTIONS = ["1 period", "2 periods"]
+SEMESTER_OPTIONS = ["1 semester", "2 semesters"]
 
 def checkbox_option(label, checked, on_click, font_size="16px", font_weight="600"):
+    # visual-only checkbox, the row handles the click
+    box = rx.box(
+        rx.cond(
+            checked,
+            rx.icon("check", size=12, color="white"),
+        ),
+        width="16px",
+        height="16px",
+        flex_shrink="0",
+        display="flex",
+        align_items="center",
+        justify_content="center",
+        border_radius="4px",
+        border=rx.cond(checked, "2px solid #3b82f6", f"2px solid #A5A5AD"),
+        background_color=rx.cond(checked, "#3b82f6", "transparent"),
+    )
     return rx.box(
         rx.hstack(
-            rx.checkbox(
-                checked=checked, 
-                pointer_events="none"  # Makes the checkbox ignore direct clicks so they pass through to the row
-            ),
+            box,
             rx.text(
-                label, 
-                font_size=font_size, 
-                color=theme.text, 
-                font_weight=font_weight
+                label,
+                font_size=font_size,
+                color=theme.text,
+                font_weight=font_weight,
             ),
             spacing="2",
             align_items="center",
         ),
         width="100%",
-        padding="8px 12px",   
-        min_height="36px",    
+        padding="8px 12px",
+        min_height="36px",
         border_radius="6px",
         cursor="pointer",
-        on_click=on_click,          # Triggers the toggle when clicking anywhere inside the row box!
-        _hover={"background_color": "rgba(255, 255, 255, 0.08)"},
+        on_click=on_click,
+        _hover={"background_color": "rgba(128, 128, 128, 0.2)"},
     )
 
 def filter_popover(trigger_label, *items) -> rx.Component:
@@ -101,6 +116,7 @@ def filter_dropdown(trigger_label: rx.Component | str, *items: rx.Component, fon
                     "font_weight": "600",
                     "color": theme.text,
                     "cursor": "pointer",
+                    "_hover": {"background_color": "rgba(128, 128, 128, 0.25) !important"},
                 },
             )
         ),
@@ -109,8 +125,8 @@ def filter_dropdown(trigger_label: rx.Component | str, *items: rx.Component, fon
             max_height="300px",
             width="260px",
             overflow_y="auto",
-            side="bottom",       # Forces the popover to open below the trigger button
-            align="start",       # Aligns the left edges cleanly
+            side="bottom",
+            align="start",
             style={
                 "background_color": theme.lighter_aa_blue,
                 "border": f"1px solid {theme.border}",
@@ -120,17 +136,16 @@ def filter_dropdown(trigger_label: rx.Component | str, *items: rx.Component, fon
         ),
     )
 
-
 def order_dropdown() -> rx.Component:
     return filter_dropdown(
         PlannerState.order,
         *[
             rx.box(
                 rx.text(
-                    option, 
-                    font_size="14px", 
-                    font_weight=rx.cond(PlannerState.order == option, "600", "500"), 
-                    color=rx.cond(PlannerState.order == option, "#3b82f6", theme.text) # Highlights text blue when active
+                    option,
+                    font_size="14px",
+                    font_weight=rx.cond(PlannerState.order == option, "600", "500"),
+                    color=rx.cond(PlannerState.order == option, "#3b82f6", theme.text)
                 ),
                 width="100%",
                 padding="10px 8px",
@@ -138,11 +153,18 @@ def order_dropdown() -> rx.Component:
                 cursor="pointer",
                 background_color=rx.cond(
                     PlannerState.order == option,
-                    "rgba(59, 130, 246, 0.15)",  # Subtle blue background highlight when selected
+                    "rgba(59, 130, 246, 0.15)",
                     "transparent"
                 ),
                 on_click=lambda _, opt=option: PlannerState.set_order(opt),
-                _hover={"background_color": "rgba(255, 255, 255, 0.08)"},
+                # selected rows stay blue on hover, just a bit stronger
+                _hover={
+                    "background_color": rx.cond(
+                        PlannerState.order == option,
+                        "rgba(59, 130, 246, 0.25)",
+                        "rgba(128, 128, 128, 0.2)"
+                    )
+                },
             )
             for option in ORDER_OPTIONS
         ],
@@ -179,17 +201,28 @@ def major_dropdown() -> rx.Component:
             for m in MAJOR_NAMES
         ],
     )
-
-def filter_dropdowns() -> rx.Component:
-    return rx.hstack(
-        #order_dropdown(),
-        grade_dropdown(),
-        major_dropdown(),
-        elective_dropdown(),
-        spacing="3",
-        align="center",
-        flex_shrink="0",
+def period_length_dropdown() -> rx.Component:
+    count = PlannerState.selected_period_length.length()
+    label = rx.cond(count > 0, "Selected Periods (" + count.to_string() + ")", "Select periods")
+    return filter_dropdown(
+        label,
+        *[
+            checkbox_option(p, PlannerState.selected_period_length.contains(p), PlannerState.toggle_period_length(p), "14px")
+            for p in PERIOD_LENGTH_OPTIONS
+        ],
     )
+
+def semester_dropdown() -> rx.Component:
+    count = PlannerState.selected_semesters.length()
+    label = rx.cond(count > 0, "Semesters (" + count.to_string() + ")", "Select semesters")
+    return filter_dropdown(
+        label,
+        *[
+            checkbox_option(s, PlannerState.selected_semesters.contains(s), PlannerState.toggle_semester(s), "14px")
+            for s in SEMESTER_OPTIONS
+        ],
+    )
+
 
 def _sidebar_title(label: str) -> rx.Component:
     return rx.text(label, font_weight="bold", color=theme.text, font_size="15px")
@@ -245,6 +278,23 @@ def explore_sidebar() -> rx.Component:
             rx.vstack(
                 _sidebar_title("Major"),
                 major_dropdown(),
+                width="100%",
+                spacing="2",
+                align_items="start",
+            ),
+            # 5. Periods
+            rx.vstack(
+                _sidebar_title("Periods"),
+                period_length_dropdown(),
+                width="100%",
+                spacing="2",
+                align_items="start",
+            ),
+
+            # 6. Semesters
+            rx.vstack(
+                _sidebar_title("Semesters"),
+                semester_dropdown(),
                 width="100%",
                 spacing="2",
                 align_items="start",

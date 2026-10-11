@@ -12,15 +12,7 @@ from bthsplanner.components import (
     plan_sidebar,
     sidebar_toggle_button,
     course_detail_modal,
-    course_search_modal,
-    pre_credit_checkbox,
-    pre_language_checkbox,
-    styled_select,
-    render_major_course,
-    order_dropdown,
-    filter_dropdowns,
-    senior_physics_cards,
-    toggle_dropdown_card
+
 )
 from .freshman import freshman_column
 from .sophomore import sophomore_column

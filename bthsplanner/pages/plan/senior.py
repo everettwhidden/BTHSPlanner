@@ -17,7 +17,6 @@ from bthsplanner.components import (
     styled_select,
     render_major_course,
     order_dropdown,
-    filter_dropdowns,
     senior_physics_cards,
     toggle_dropdown_card
 )

@@ -13,6 +13,8 @@ MAJOR_NAMES = list(MAJORS.keys())
 # senior gov courses that all behave the same way (econ gets tacked on unless there's a conflict)
 SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
 PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
+EXPLORE_PAGE_SIZE = 20
+
 def _next_lang_level(lang: str) -> str:
     if lang.endswith(" I"):
         return lang[:-1] + "II"
@@ -55,12 +57,6 @@ class PlannerState(rx.State):
     
 
     partner_map: dict[str, str] = _build_partner_map(double_alternates)
-
-    def clear_filters(self):
-        self.order = "AP First"
-        self.selected_grades = []
-        self.selected_filters = []
-        self.selected_majors = []
 
     def toggle_sidebar(self):
         self.sidebar_open = not self.sidebar_open
@@ -207,34 +203,73 @@ class PlannerState(rx.State):
     selected_grades: list[str] = []
     selected_majors: list[str] = []
     selected_filters: list[str] = []
+    selected_period_length: list[str] = []
+    selected_semesters: list[str] = []
+    explore_page_num: int = 1
+
+    def clear_filters(self):
+        self.order = "AP First"
+        self.selected_grades = []
+        self.selected_filters = []
+        self.selected_majors = []
+        self.selected_period_length = []
+        self.selected_semesters = []
+        self.explore_page_num = 1
 
     def set_explore_search_query(self, val: str):
         self.explore_search_query = val
-
-
+        self.explore_page_num = 1
 
     def set_order(self, val: str):
         self.order = val
+        self.explore_page_num = 1
 
     def toggle_grade(self, grade: str):
         if grade in self.selected_grades:
             self.selected_grades.remove(grade)
         else:
             self.selected_grades.append(grade)
+        self.explore_page_num = 1
 
     def toggle_filter(self, filter_name: str):
         if filter_name in self.selected_filters:
             self.selected_filters.remove(filter_name)
         else:
             self.selected_filters.append(filter_name)
+        self.explore_page_num = 1
 
-    # Do the same for majors if you have a toggle_major method:
     def toggle_major(self, major: str):
         if major in self.selected_majors:
             self.selected_majors.remove(major)
         else:
             self.selected_majors.append(major)
+        self.explore_page_num = 1
 
+    def toggle_period_length(self, period_length: str):
+        if period_length in self.selected_period_length:
+            self.selected_period_length.remove(period_length)
+        else:
+            self.selected_period_length.append(period_length)
+        self.explore_page_num = 1
+
+    def toggle_semester(self, semester: str):
+        if semester in self.selected_semesters:
+            self.selected_semesters.remove(semester)
+        else:
+            self.selected_semesters.append(semester)
+        self.explore_page_num = 1
+
+
+    def next_explore_page(self):
+        if self.explore_page_num < self.explore_total_pages:
+            self.explore_page_num += 1
+            return rx.call_script("window.scrollTo(0, 0)")
+
+    def prev_explore_page(self):
+        if self.explore_page_num > 1:
+            self.explore_page_num -= 1
+            return rx.call_script("window.scrollTo(0, 0)")
+        
     def compute_explore_catalog(self) -> list[dict]:
         query = self.explore_search_query.lower().strip()
         results = []
@@ -251,15 +286,15 @@ class PlannerState(rx.State):
             #generalize filter
             
             if self.selected_filters:
-                if "Electives" in self.selected_filters and "Non-electives" in self.selected_filters:
+                if "Elective" in self.selected_filters and "Non-elective" in self.selected_filters:
                     pass
-                elif "Electives" in self.selected_filters and data.get("is_elective") == False:
+                elif "Elective" in self.selected_filters and data.get("is_elective") == False:
                     continue
-                elif "Non-electives" in self.selected_filters and data.get("is_elective") == True:
+                elif "Non-elective" in self.selected_filters and data.get("is_elective") == True:
                     continue
 
                         
-             
+            
 
             # grade filter, keep the course if it matches any picked grade
             if self.selected_grades:
@@ -277,6 +312,20 @@ class PlannerState(rx.State):
                 if not in_major:
                     continue
 
+                       
+            if self.selected_period_length:
+                periods = data.get("periods", 1)
+                label = "1 period" if periods == 1 else f"{periods} periods"
+                if label not in self.selected_period_length:
+                    continue
+
+                        # semester filter, keep the course if its length matches any picked option
+            if self.selected_semesters:
+                sems = data.get("semesters", 2)
+                label = "1 semester" if sems == 1 else f"{sems} semesters"
+                if label not in self.selected_semesters:
+                    continue
+
             results.append({
                 "name": name,
                 "description": data.get("description", ""),
@@ -292,13 +341,23 @@ class PlannerState(rx.State):
             results = sorted(results, key=lambda c: c["name"].lower())
 
         return results
+    
     @rx.var
     def explore_catalog(self) -> list[dict]:
         return self.compute_explore_catalog()
 
     @rx.var
     def explore_catalog_count(self) -> int:
-        return len(self.compute_explore_catalog())
+        return len(self.explore_catalog)
+
+    @rx.var
+    def explore_total_pages(self) -> int:
+        return max(1, math.ceil(len(self.explore_catalog) / EXPLORE_PAGE_SIZE))
+
+    @rx.var
+    def explore_page_catalog(self) -> list[dict]:
+        start = (self.explore_page_num - 1) * EXPLORE_PAGE_SIZE
+        return self.explore_catalog[start:start + EXPLORE_PAGE_SIZE]
     
 
 
