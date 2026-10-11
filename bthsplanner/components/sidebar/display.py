@@ -74,7 +74,7 @@ def plan_sidebar() -> rx.Component:
                 rx.divider(border_color=theme.border),
                 
 
-                sidebar_section_title("Credits you have"),
+                sidebar_section_title("Credits already earned"),
                 pre_credit_checkbox("Algebra I"),
                 pre_credit_checkbox("Geometry"),
                 pre_credit_checkbox("US History"),
