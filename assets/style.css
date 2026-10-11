@@ -8,7 +8,7 @@ body {
 
 /* Outer separation constraint */
 .card-spacing-wrapper {
-    margin-bottom: 15px !important;
+    margin-bottom: 0px !important;
     display: block;
     width: 100%;
 }

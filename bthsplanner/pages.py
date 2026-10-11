@@ -35,7 +35,7 @@ def index() -> rx.Component:
         plan_sidebar(),
         rx.box(
             rx.vstack(
-                rx.heading("Course Plan", font_size="35px", color=theme.text),
+                rx.heading("Course Plan", font_size="30px", color=theme.text),
                 rx.cond(
                     PlannerState.major_note != "",
                     rx.callout(rx.text(PlannerState.major_note, font_size="16px"), icon="info", color_scheme="blue"),
@@ -315,35 +315,28 @@ def index() -> rx.Component:
 @rx.page(route="/explore", title="BTHS Planner - Explore Courses", on_load=PlannerState.change_tab("Explore")) 
 def explore_page() -> rx.Component:
     explore_content = rx.vstack(
-        rx.vstack(
-            rx.heading("Explore Course Catalog", font_size="40px", color=theme.text),
-            rx.text("Search and browse through all academic offerings at Brooklyn Tech.", color=theme.text, size="3"),
-            
-            # Live Filter Search Field
-            
-            rx.hstack(
-                rx.input(
-                    placeholder="Search titles, descriptions or keywords...",
-                    on_change=PlannerState.set_explore_search_query,
-                    value=PlannerState.explore_search_query,
-                    width="100%",
-                    max_width="800",
-                    margin_top="12px",
-                    margin_bottom="10px",
-                    size="3",
-                    background_color = theme.lighter_aa_blue
-                ),
-                order_dropdown(),
+        # Live Filter Search Field
+        rx.heading("Explore Courses", font_size="30px", margin_bottom="8px", color=theme.text),
+        rx.hstack(
+            rx.input(
+                placeholder="Search titles, descriptions or keywords...",
+                on_change=PlannerState.set_explore_search_query,
+                value=PlannerState.explore_search_query,
                 width="100%",
-                align="center",
+                max_width="800",
+                margin_top="12px",
+                margin_bottom="10px",
+                size="3",
+                background_color = theme.lighter_aa_blue
             ),
-        
-            filter_dropdowns(),
-
-            rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
+            order_dropdown(),
             width="100%",
-            align="start",
+            align="center",
         ),
+    
+        filter_dropdowns(),
+
+        rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.grid(
@@ -579,7 +572,7 @@ def how_it_works_section(section: dict) -> rx.Component:
 def how_it_works_page() -> rx.Component:
     how_it_works_content = rx.vstack(
         # Page Header
-        rx.heading("How It Works", font_size="40px", margin_bottom="8px", color=theme.text),
+        rx.heading("How It Works", font_size="30px", margin_bottom="8px", color=theme.text),
         rx.text(
             "Welcome to BTHS Planner! Here is a quick guide on how to navigate the planner and successfully map out your Brooklyn Tech high school career.",
             color=theme.text,
@@ -599,7 +592,7 @@ def how_it_works_page() -> rx.Component:
 @rx.page(route="/settings", title="BTHS Planner - Settings", on_load=PlannerState.change_tab("Settings"))
 def settings_page() -> rx.Component:
     settings_content = rx.vstack(
-        rx.heading("Settings", font_size="40px", color=theme.text, margin_bottom="8px"),
+        rx.heading("Settings", font_size="30px", color=theme.text, margin_bottom="8px"),
         rx.spacer(),
 
         # appearance section

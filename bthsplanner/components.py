@@ -276,7 +276,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
         rx.box(
             content,
             padding_x="0px" if full_width else "32px",
-            padding_y="0px" if full_width else "40px",
+            padding_y="0px" if full_width else "25px",
             width="100%",
             max_width="none" if full_width else "1400px",
             margin="0" if full_width else "0 auto",
