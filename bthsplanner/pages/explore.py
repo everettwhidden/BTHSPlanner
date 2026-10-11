@@ -19,33 +19,27 @@ from bthsplanner.components import (
     order_dropdown,
     filter_dropdowns,
     senior_physics_cards,
-    toggle_dropdown_card
+    toggle_dropdown_card,
+    explore_sidebar
 )
 @rx.page(route="/explore", title="BTHS Planner - Explore Courses", description="Explore all of the course offerings at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Explore")) 
 def explore_page() -> rx.Component:
-    explore_content = rx.vstack(
-        # Live Filter Search Field
+    explore_main = rx.vstack(
         rx.heading("Explore Courses", font_size="30px", margin_bottom="8px", color=theme.text),
-        rx.hstack(
-            rx.input(
-                placeholder="Search titles, descriptions or keywords...",
-                on_change=PlannerState.set_explore_search_query,
-                value=PlannerState.explore_search_query,
-                width="100%",
-                max_width="800",
-                margin_top="12px",
-                margin_bottom="10px",
-                size="3",
-                background_color = theme.lighter_aa_blue
-            ),
-            order_dropdown(),
+        rx.input(
+            placeholder="Search titles, descriptions or keywords...",
+            on_change=PlannerState.set_explore_search_query,
+            value=PlannerState.explore_search_query,
             width="100%",
-            align="center",
+            max_width="800px",
+            margin_top="12px",
+            margin_bottom="10px",
+            size="3",
+            background_color=theme.lighter_aa_blue,
         ),
-    
-        filter_dropdowns(),
 
         rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color="rgba(250,250,250,0.5)", size="3"),
+
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.grid(
@@ -164,5 +158,19 @@ def explore_page() -> rx.Component:
         align_items="start",
         width="100%"
     )
-    return navigation_layout(explore_content)
+    explore_content = rx.hstack(
+        explore_sidebar(),
+        rx.box(
+            explore_main,
+            flex="1",
+            min_width="0",
+            padding_x="32px",
+            padding_y="25px",
+        ),
+        align="start",
+        spacing="0",
+        width="100%",
+        margin="0",
+    )
+    return navigation_layout(explore_content, full_width = True)
 

@@ -25,7 +25,7 @@ def styled_select(options: list[str], value: rx.Var, on_change: any, font: str =
             class_name="reflex-dropdown-select",
             style={
                 "background_color": theme.lighter_aa_blue,
-                "padding": "5px 5px !important",
+                "padding": "15px 15px !important",
                 "border": f"1px solid {theme.border}",
                 "box_shadow": "none",   
                 "border_radius": "0.5rem",

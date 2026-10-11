@@ -56,6 +56,12 @@ class PlannerState(rx.State):
 
     partner_map: dict[str, str] = _build_partner_map(double_alternates)
 
+    def clear_filters(self):
+        self.order = "AP First"
+        self.selected_grades = []
+        self.selected_filters = []
+        self.selected_majors = []
+
     def toggle_sidebar(self):
         self.sidebar_open = not self.sidebar_open
 
@@ -210,24 +216,24 @@ class PlannerState(rx.State):
     def set_order(self, val: str):
         self.order = val
 
-    def toggle_filter(self, filter: str, checked: bool,):
-        if checked and filter not in self.selected_filters:
-                self.selected_filters.append(filter)
-        elif not checked and filter in self.selected_filters:
-                self.selected_filters.remove(filter)
-                
-
-    def toggle_grade(self, grade: str, checked: bool):
-        if checked and grade not in self.selected_grades:
-            self.selected_grades.append(grade)
-        elif not checked and grade in self.selected_grades:
+    def toggle_grade(self, grade: str):
+        if grade in self.selected_grades:
             self.selected_grades.remove(grade)
+        else:
+            self.selected_grades.append(grade)
 
-    def toggle_major(self, major_name: str, checked: bool):
-        if checked and major_name not in self.selected_majors:
-            self.selected_majors.append(major_name)
-        elif not checked and major_name in self.selected_majors:
-            self.selected_majors.remove(major_name)
+    def toggle_filter(self, filter_name: str):
+        if filter_name in self.selected_filters:
+            self.selected_filters.remove(filter_name)
+        else:
+            self.selected_filters.append(filter_name)
+
+    # Do the same for majors if you have a toggle_major method:
+    def toggle_major(self, major: str):
+        if major in self.selected_majors:
+            self.selected_majors.remove(major)
+        else:
+            self.selected_majors.append(major)
 
     def compute_explore_catalog(self) -> list[dict]:
         query = self.explore_search_query.lower().strip()
