@@ -1,25 +1,3 @@
-MAJORS = {
-    "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing"]},
-    "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
-    "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling",]},
-    "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
-    "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
-    "Civil Engineering": {"room": "1N8", "Junior": ["PLTW Civil Engineering & Architecture", "Engineering Statics"], "Senior": ["AutoCAD Certification", "American Concrete Institute Certification", "Surveying Certification", ]},
-    "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications - JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development",]},
-    "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", ]},
-    "Environmental Science": {"room": "3E12", "Junior": ["AP Environmental Science"], "Senior": ["AP Human Geography", "Environmental Sustainability"]},
-    "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
-    "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification",]},
-    "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP US Government/Constitutional Law"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
-    "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
-    "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", ]},
-    "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography",]},
-    "Neuroscience": {"room": "3N1", "Junior": ["AP Biology"], "Senior": ["AP Psychology", "Introduction to Neuroscience", "Bioorganic Chemistry"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
-    "Physics": {"room": "2N1", "Junior": ["Astronomy & Astrophysics", "AP Physics I"], "Senior": ["Modern Physics", "AP Physics II", "AP Physics C: Electricity & Magnetism"]},
-    "Social Science Research": {"room": "6N8", "Junior": ["Sociology", "AP Human Geography"], "Senior": ["Cultural & Physical Anthropology", "AP Psychology", "Social Science Research"]},
-   
-}
-
 english_color = "var(--english_color)"
 history_color =  "var(--history_color)"
 science_color = "var(--science_color)"
@@ -29,12 +7,6 @@ req_courses = "var(--req_courses)"
 elective_color = "var(--elective_color)"
 gym_lunch_color = "var(--gym_lunch_color)"
 
-language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
-
-double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"), ("PLTW Digital Electronics", "Robotics Engineering")]
-alternate_list = [course for pairs in double_alternates for course in pairs]
-
-alternates_with_gym = ["PLTW Digital Electronics"]
 
 COURSE_CATALOG = {
     "AP African American Studies": {

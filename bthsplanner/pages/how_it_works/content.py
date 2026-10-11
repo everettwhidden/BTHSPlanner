@@ -1,5 +1,5 @@
 import reflex as rx
-from data.courses import MAJORS
+from data.courses import *
 
 import bthsplanner.theme as theme
 from bthsplanner.backend import *
