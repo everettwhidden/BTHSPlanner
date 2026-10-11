@@ -69,7 +69,7 @@ def junior_column():
             
         ),
         
-        rx.cond(~PlannerState.lang_is_accelerated, course_card("Langauge", PlannerState.language_base + " III")),
+        rx.cond(~PlannerState.lang_is_accelerated, course_card("Language", PlannerState.language_base + " III")),
         
     # 1. 🎯 MAJOR SEQUENCE SLOTS: Only pulls math up if a major math requirement exists
         rx.cond(

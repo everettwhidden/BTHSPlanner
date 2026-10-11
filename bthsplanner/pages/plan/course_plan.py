@@ -27,7 +27,7 @@ from .sophomore import sophomore_column
 from .junior import junior_column
 from .senior import senior_column
 
-@rx.page(route="/", title="BTHS Planner - Plan Your Courses", description="Simulate and plan your 4-year high school course schedule at Brooklyn Tech.", on_load=PlannerState.change_tab("Plan")) 
+@rx.page(route="/", title="BTHS Planner - Plan Your Courses", description="Simulate and plan your 4-year high school course schedule at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Plan")) 
 def index() -> rx.Component:
     plan_content = rx.hstack(
         plan_sidebar(),

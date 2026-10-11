@@ -44,9 +44,6 @@ class PlannerState(rx.State):
     sidebar_open: bool = True
 
 
-
-    course_catalog: list[dict] = COURSE_CATALOG
-    modal_source: str = "planner"
     is_detail_open: bool = False
 
     pre_credits: dict[str, bool] = {
@@ -304,10 +301,13 @@ class PlannerState(rx.State):
 
     #adnvaced language courses electives, exclude spanish because it has advanced spanish so logic is different
     ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
-    none_hisory_placeholders = {
+    none_history_placeholders = {
     "None (free period, econ senior year)",
     "None (free period, econ junior year)",
+    "None (free period, gov senior year)",
+    "None (free period, gov junior year)",
 }
+
 
     current_modal_grade: str = "Junior"
     
@@ -929,7 +929,7 @@ class PlannerState(rx.State):
                 courses.append(self.language_base + " III")
             if self.need_regents_physics_junior:
                 courses.append(self.j_phys)
-            return set(c for c in courses if c not in self.none_hisory_placeholders)
+            return set(c for c in courses if c not in self.none_history_placeholders)
         
         if year == "Senior":
 
@@ -962,7 +962,7 @@ class PlannerState(rx.State):
                         courses.append(self.sn_gov)
 
 
-            return set(c for c in courses if c not in self.none_hisory_placeholders)
+            return set(c for c in courses if c not in self.none_history_placeholders)
     @rx.var
     def all_courses(self) -> set[str]:
         return self._courses_for_year("Freshman") | self._courses_for_year("Sophomore") | self._courses_for_year("Junior") | self._courses_for_year("Senior") 

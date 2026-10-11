@@ -21,7 +21,7 @@ from bthsplanner.components import (
     senior_physics_cards,
     toggle_dropdown_card
 )
-@rx.page(route="/explore", title="BTHS Planner - Explore Courses", description="Explore through all of the course offerings at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Explore")) 
+@rx.page(route="/explore", title="BTHS Planner - Explore Courses", description="Explore all of the course offerings at Brooklyn Technical High School.", on_load=PlannerState.change_tab("Explore")) 
 def explore_page() -> rx.Component:
     explore_content = rx.vstack(
         # Live Filter Search Field

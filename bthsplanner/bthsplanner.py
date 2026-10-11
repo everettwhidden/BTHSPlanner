@@ -1,30 +1,7 @@
 import reflex as rx
 
-from bthsplanner.pages import *
-
-config = rx.Config(
-    app_name="bthsplanner",
-    default_color_mode = "dark",
-)
-
-
-class User(rx.Model, table=True):
-    __tablename__ = "user"
-
-    saved_progress: str  # Stores JSON string of course/major selections
-
-
-hide_watermark_style = {
-    "div.__reflex": {
-        "display": "none !important",
-    },
-    "div[style*='position: fixed'][style*='bottom:']:has(a[href*='reflex.dev'])": {
-        "display": "none !important",
-    },
-    "a[href*='reflex.dev']": {
-        "display": "none !important",
-    },
-}
+# importing the pages package is what registers every @rx.page route
+from bthsplanner.pages import hide_watermark_style
 
 app = rx.App(
     stylesheets=["/style.css"],
@@ -41,5 +18,3 @@ app = rx.App(
         ),
     ],
 )
-app.add_page(index)
-rx.Model.create_all()

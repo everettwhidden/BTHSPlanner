@@ -8,7 +8,7 @@ MAJORS = {
     "Computer Engineering": {"room": "1N3", "Junior": ["AP Computer Science Applications - JAVA", "Fundamentals of IT Infrastructure", "Big Data: Warehousing and Analytics"], "Senior": ["Web Development", "Cyber Security", "PLTW Digital Electronics", "Mobile Application Development",]},
     "Electrical Engineering": {"room": "2N8", "Junior": ["PLTW Digital Electronics", "AP Physics I"], "Senior": ["Digital Systems Design (Stony Brook Accredited)", "PLTW Computer Integrated Manufacturing", "Analog Electronics", ]},
     "Environmental Science": {"room": "3E12", "Junior": ["AP Environmental Science"], "Senior": ["AP Human Geography", "Environmental Sustainability"]},
-    "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics (One Semester each)"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
+    "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
     "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification",]},
     "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP US Government/Constitutional Law"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
     "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
@@ -194,7 +194,7 @@ COURSE_CATALOG = {
         "grades": ["Senior"],
         "color" : history_color
     },
-    "AP Macroeconomics / AP Microeconomics (One Semester each)": {
+    "AP Macroeconomics / AP Microeconomics": {
         "description": "This junior-year Finance major sequence splits the year between the two College Board AP economics courses: AP Macroeconomics for one semester, covering national income, unemployment, inflation, the aggregate supply and demand model, and fiscal and monetary policy, and AP Microeconomics for the other semester, covering supply and demand, consumer and producer theory, market structures, factor markets, and market failure. Together they give Finance majors college-level grounding in both branches of economics before senior year.",
         "periods": 1,
         "credits": 1.0,
