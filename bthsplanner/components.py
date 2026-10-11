@@ -26,13 +26,13 @@ from bthsplanner.state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, Dro
 required_courses_labels = ["Major Course", "Required Course"]
 
 
-def styled_select(options: list[str], value: rx.Var, on_change: any, font: str = "18px", width: str = "160px",) -> rx.Component:
+def styled_select(options: list[str], value: rx.Var, on_change: any, font: str = "15px", width: str = "130px",) -> rx.Component:
     return rx.select.root(
         rx.select.trigger(
             class_name="reflex-dropdown-select",
             style={
-                "background_color": theme.illini_blue,
-                "padding": "8px 12px !important",
+                "background_color": theme.lighter_aa_blue,
+                "padding": "5px 5px !important",
                 "border": f"1px solid {theme.border}",
                 "box_shadow": "none",   
                 "border_radius": "0.5rem",
@@ -64,7 +64,7 @@ def legend_item(label: str, border_color: str) -> rx.Component:
         rx.text(
             label,
             color=theme.text, 
-            font_size="18px",
+            font_size="15px",
             font_weight="600",
         ),
         align_items="center",
@@ -94,52 +94,71 @@ def sidebar_section_title(label: str) -> rx.Component:
 def plan_sidebar() -> rx.Component:
     return rx.box(
         rx.vstack(
-            sidebar_section_title("Legend"),
-            legend_list(),
-            rx.divider(border_color=theme.border),
-
-            sidebar_section_title("Select your major"),
-            styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px", "100%"),
-            rx.text(
-                "View majors ",
-                rx.link(
-                    "here",
-                    href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f",
-                    is_external=True,
-                    color=theme.text,
-                    text_decoration="underline",
-                ),
-                color=theme.text,
-                size="2",
-                font_weight="600",
+            # header row with the toggle, always visible, even when collapsed
+            rx.box(
+                sidebar_toggle_button(),
+                padding="8px",
+                width="100%",
+                border_bottom=f"1px solid {theme.border}",
             ),
-            rx.divider(border_color=theme.border),
+            # everything else fades out when collapsed
+            rx.box(
+                rx.vstack(
+                    sidebar_section_title("Legend"),
+                    legend_list(),
+                    rx.divider(border_color=theme.border),
 
-            sidebar_section_title("Credits you already have"),
-            pre_credit_checkbox("Algebra I"),
-            pre_credit_checkbox("Geometry"),
-            pre_credit_checkbox("US History"),
-            pre_credit_checkbox("Biology/Living Environment"),
-            pre_language_checkbox(),
+                    sidebar_section_title("Select your major"),
+                    styled_select(MAJORS, PlannerState.major, PlannerState.change_major, "15px", "100%"),
+                    rx.text(
+                        "View majors ",
+                        rx.link(
+                            "here",
+                            href="https://www.bths.edu/apps/pages/index.jsp?uREC_ID=222176&type=d&termREC_ID=&pREC_ID=1201473f",
+                            is_external=True,
+                            color=theme.text,
+                            text_decoration="underline",
+                        ),
+                        color=theme.text,
+                        size="2",
+                        font_weight="600",
+                    ),
+                    rx.divider(border_color=theme.border),
 
+                    sidebar_section_title("Credits you already have"),
+                    pre_credit_checkbox("Algebra I"),
+                    pre_credit_checkbox("Geometry"),
+                    pre_credit_checkbox("US History"),
+                    pre_credit_checkbox("Biology/Living Environment"),
+                    pre_language_checkbox(),
+
+                    align_items="start",
+                    spacing="4",
+                    width="280px",      # fixed so it doesn't rewrap while sliding
+                    padding="16px",
+                ),
+                opacity=rx.cond(PlannerState.sidebar_open, "1", "0"),
+                pointer_events=rx.cond(PlannerState.sidebar_open, "auto", "none"),
+                transition="opacity 0.2s ease",
+                overflow_y="auto",
+                flex="1",
+                width="100%",
+            ),
+            spacing="0",
             align_items="start",
-            spacing="4",
-            width="280px",          # fixed so content doesn't rewrap while sliding
-            padding="16px",
+            height="100%",
+            width="100%",
         ),
-        # outer box does the sliding
-        width=rx.cond(PlannerState.sidebar_open, "280px", "0px"),
-        margin_right=rx.cond(PlannerState.sidebar_open, "24px", "0px"),
-        opacity=rx.cond(PlannerState.sidebar_open, "1", "0"),
-        overflow="hidden",
-        flex_shrink="0",
-        transition="width 0.25s ease, margin 0.25s ease, opacity 0.2s ease",
+        width=rx.cond(PlannerState.sidebar_open, "280px", "56px"),
+        height="calc(100vh - 57px)",    # 57px is the nav bar height
         position="sticky",
-        top="80px",
+        top="57px",
         align_self="flex-start",
+        flex_shrink="0",
+        overflow="hidden",
+        transition="width 0.25s ease",
         background_color=theme.lighter_aa_blue,
-        border_radius="0.5rem",
-        border=rx.cond(PlannerState.sidebar_open, f"1px solid {theme.border}", "1px solid transparent"),
+        border_right=f"1px solid {theme.border}",
     )
 
 
@@ -162,7 +181,7 @@ def pre_credit_checkbox(label: str) -> rx.Component:
             checked=PlannerState.pre_credits[label],
             on_change=PlannerState.toggle_pre_credit(label),
         ),
-        rx.text(label, color=theme.text, font_size="18px", font_weight="600"),
+        rx.text(label, color=theme.text, font_size="15px", font_weight="600"),
         align_items="center",
         spacing="2",
     )
@@ -193,11 +212,8 @@ def nav_link(label: str, href: str) -> rx.Component:
         border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
     )
 
-def navigation_layout(content: rx.Component) -> rx.Component:
+def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Component:
     return rx.vstack(
-        # Auth Modal Condition
-        
-        
         # Navigation Bar
         rx.box(
             rx.hstack(
@@ -217,7 +233,6 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                     align_items="center",
                 ),
                 # Navigation Links
-                                
                 rx.hstack(
                     nav_link("Plan", "/"),
                     nav_link("Explore", "/explore"),
@@ -229,26 +244,22 @@ def navigation_layout(content: rx.Component) -> rx.Component:
                 rx.spacer(),
                 # Action Buttons
                 rx.hstack(
-                    
                     rx.button(
                         "Export to Excel",
                         on_click=PlannerState.export_to_excel,
                         color_scheme="blue",
                         size="2",
                     ),
-                    
-                    
                     spacing="3",
                     align_items="center",
                 ),
                 align_items="center",
                 width="100%",
-                
             ),
             position="sticky",
             top="0",
             z_index="100",
-            background_color=theme.lighter_aa_blue,  # color of tab bar
+            background_color=theme.lighter_aa_blue,
             border_bottom=f"1px solid {theme.border}",
             padding_x="16px",
             padding_y="8px",
@@ -257,15 +268,15 @@ def navigation_layout(content: rx.Component) -> rx.Component:
         # Page Content Container
         rx.box(
             content,
-            padding_x="32px",
-            padding_y="40px",
+            padding_x="0px" if full_width else "32px",
+            padding_y="0px" if full_width else "40px",
             width="100%",
-            max_width="1400px",
-            margin="0 auto",
+            max_width="none" if full_width else "1400px",
+            margin="0" if full_width else "0 auto",
         ),
         width="100%",
         min_height="100vh",
-        background_color=theme.illini_blue, #main color on every page 
+        background_color=theme.illini_blue,
         spacing="0",
     )
 

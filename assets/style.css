@@ -60,8 +60,8 @@ body {
     
     /* 🎯 TYPOGRAPHY SYNCHRONIZATION */
     font-family: system-ui, -apple-system, sans-serif !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;   /* Matches static bold title style exactly */
+    font-size: 15px !important;
+    font-weight: 600 !important;   /* Matches static bold title style exactly */
     color: var(--text)!important;      /* Forces pure white color */
     
     /* 🎯 VERTICAL POSITIONING & PADDING RESET */
