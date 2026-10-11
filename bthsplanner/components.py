@@ -251,6 +251,28 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
                 rx.spacer(),
                 # Action Buttons
                 rx.hstack(
+                    # Clickable Theme Toggle Icon Button
+                    rx.icon_button(
+                        rx.cond(
+                            rx.color_mode == "light",
+                            rx.icon("sun", size=20),  # Shown during light mode (click to go dark)
+                            rx.icon("moon", size=20),   # Shown during dark mode (click to go light)
+                        ),
+                        on_click=rx.toggle_color_mode,
+                        variant="ghost",
+                        color_scheme="gray",
+                        size="2",
+                        style={
+                            "cursor": "pointer",
+                            "color": theme.text,
+                            "background_color": "transparent",
+                            "border": "none",
+                            "box_shadow": "none",
+                            "outline": "none",
+                            "transition": "all 0s ease",
+                            "_hover": {"background_color": "rgba(128, 128, 128, 0.25)"},
+                        },
+                    ),
                     rx.button(
                         "Export to Excel",
                         on_click=PlannerState.export_to_excel,

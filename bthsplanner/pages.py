@@ -594,13 +594,30 @@ def settings_page() -> rx.Component:
     settings_content = rx.vstack(
         rx.heading("Settings", font_size="30px", color=theme.text, margin_bottom="8px"),
         rx.spacer(),
-
+        rx.heading("Provide Feedback", font_size = "28px", color=theme.text, margin_bottom="8px"),
+        rx.text(
+            "Noticed a bug or have any suggestions for features? ",
+            rx.link(
+                "Fill out this feedback form.",
+                href="https://docs.google.com/forms/d/e/1FAIpQLSebmbV4Ce9doWAPPl86DheyuMYkaYKGf_dxDp0k2z1sfz0BSQ/viewform?usp=header",
+                is_external=True,
+                color=theme.text,
+                text_decoration="underline",
+            ),
+            color=theme.text,
+            font_size ="18px",
+            font_weight="400",
+            margin_bottom="8px"
+        ),
         # appearance section
-        rx.heading("Appearance", font_size="28px", color=theme.text, margin_bottom="8px"),
+        rx.heading("Appearance", font_size="25px", color=theme.text, margin_bottom="8px"),
         rx.hstack(
             rx.vstack(
-                rx.text("Light mode", font_weight="bold", color=theme.text, font_size="18px"),
-                rx.text("Switch between the dark and light theme.", color=theme.text, size="3"),
+                rx.cond(
+                    rx.color_mode == "light",
+                    rx.text("Theme: Light", color=theme.text, size="3"),
+                    rx.text("Theme: Dark", color=theme.text, size="3")
+                ),
                 align_items="start",
                 spacing="1",
             ),
@@ -613,7 +630,7 @@ def settings_page() -> rx.Component:
             padding="16px",
             border_radius="0.5rem",
             border=f"1px solid {theme.border}",
-            width="100%",
+            width="200px",
             align="center",
         ),
 
