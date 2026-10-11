@@ -14,7 +14,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.backend import *
+from bthsplanner.old_state import PlannerState, DropdownOptions, MAJOR_COURSE_COLOR, MAJOR_NAMES
 
 from .styled_select import styled_select
 from .credit_checkboxes import (pre_language_checkbox, pre_credit_checkbox)
@@ -73,9 +73,6 @@ def plan_sidebar() -> rx.Component:
                 ),
                 rx.divider(border_color=theme.border),
                 
-                sidebar_section_title("Legend"),
-                legend_list(),
-                rx.divider(border_color=theme.border),
 
                 sidebar_section_title("Credits you have"),
                 pre_credit_checkbox("Algebra I"),
@@ -83,7 +80,10 @@ def plan_sidebar() -> rx.Component:
                 pre_credit_checkbox("US History"),
                 pre_credit_checkbox("Biology/Living Environment"),
                 pre_language_checkbox(),
-
+                rx.divider(border_color=theme.border),
+                
+                sidebar_section_title("Legend"),
+                legend_list(),
                 align_items="start",
                 spacing="4",
                 width="280px",      # fixed so it doesn't rewrap while sliding
