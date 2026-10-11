@@ -29,7 +29,7 @@ from bthsplanner.components import (
 )
 
 
-@rx.page(route="/", title="BTHS Planner - Course Plan", description="Simulate and plan your 4-year high school course schedule at Brooklyn Tech.", on_load=PlannerState.change_tab("Plan")) 
+@rx.page(route="/", title="BTHS Planner - Course Plan", description="Simulate and plan your 4-year high school courses at Brooklyn Tech.", on_load=PlannerState.change_tab("Plan")) 
 def index() -> rx.Component:
     plan_content = rx.hstack(
         plan_sidebar(),

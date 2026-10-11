@@ -12,7 +12,7 @@ MAJORS = {
     "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification",]},
     "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP US Government/Constitutional Law"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
     "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
-    "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering I & II", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", ]},
+    "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", ]},
     "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography",]},
     "Neuroscience": {"room": "3N1", "Junior": ["AP Biology"], "Senior": ["AP Psychology", "Introduction to Neuroscience", "Bioorganic Chemistry"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Physics": {"room": "2N1", "Junior": ["Astronomy & Astrophysics", "AP Physics I"], "Senior": ["Modern Physics", "AP Physics II", "AP Physics C: Electricity & Magnetism"]},
@@ -31,7 +31,7 @@ gym_lunch_color = "var(--gym_lunch_color)"
 
 language_opts = ["Chinese I", "French I",  "German I",  "Italian I",  "Spanish I", ]
 
-double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"), ("PLTW Digital Electronics", "Robotics Engineering I & II")]
+double_alternates = [("English 9", "Design & Drafting for Production (DDP)"), ("Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"), ("PLTW Digital Electronics", "Robotics Engineering")]
 alternate_list = [course for pairs in double_alternates for course in pairs]
 
 alternates_with_gym = ["PLTW Digital Electronics"]
@@ -1040,7 +1040,7 @@ COURSE_CATALOG = {
         "grades": ["Junior"],
         "color" : history_color
     },
-    "Robotics Engineering I & II": {
+    "Robotics Engineering": {
         "description": "This junior-year Mechatronics & Robotics major course is a multidisciplinary introduction to mechatronics, having students build robotic devices with VEX hardware while learning mechanical design, electronics, and control systems. Students program their robots using languages like C, Arduino, RobotC, and easyC, culminating in a mechatronic device that solves a real-world problem.",
         "periods": 2,
         "credits": 1.0,

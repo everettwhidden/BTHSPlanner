@@ -15,7 +15,7 @@ from data.courses import (
 )
 from bthsplanner.old_state import PlannerState, MAJOR_COURSE_COLOR, MAJOR_NAMES, DropdownOptions
 
-required_courses_labels = ["Major Course", "Required Course"]
+required_courses_labels = ["Major", "Required"]
 
 def course_card(label: str, course_name: str) -> rx.Component:
     color = MAJOR_COURSE_COLOR if label in required_courses_labels else PlannerState.dropdown_colors[course_name]
@@ -136,12 +136,12 @@ def physics_toggle_args(course) -> dict:
 def senior_physics_cards() -> rx.Component:
     ap_ii = "AP Physics II"
     return rx.vstack(
-        toggle_card(course_card("Major Course", ap_ii), **physics_toggle_args(ap_ii)),
+        toggle_card(course_card("Major", ap_ii), **physics_toggle_args(ap_ii)),
         rx.cond(
             PlannerState.selected_senior_physics.contains(ap_ii),
             # AP Physics II picked -> choose mechanics or E&M
             toggle_dropdown_card(
-                "Major Course",
+                "Major",
                 DropdownOptions.sn_phys_c_opts,
                 PlannerState.sn_phys_c,
                 PlannerState.change_sn_phys_c,
@@ -149,11 +149,11 @@ def senior_physics_cards() -> rx.Component:
             ),
             # otherwise just the regular card for whichever C is chosen
             toggle_card(
-                course_card("Major Course", PlannerState.sn_phys_c),
+                course_card("Major", PlannerState.sn_phys_c),
                 **physics_toggle_args(PlannerState.sn_phys_c),
             ),
         ),
-        course_card("Major Course", "Modern Physics"),
+        course_card("Major", "Modern Physics"),
         width="100%", spacing="3", margin_top="0px",
     )
 
@@ -168,16 +168,16 @@ def render_major_course(course: rx.Var[str]) -> rx.Component:
     return rx.cond(
         _has_partner_map(course),
         rx.tooltip(
-            course_card("Major Course", course),
+            course_card("Major", course),
             content=f"Double period, alternates daily with {PlannerState.partner_map[course]}",
         ),
         rx.cond(
             rx.Var.create(alternates_with_gym).contains(course),
             rx.tooltip(
-                course_card("Major Course", course),
+                course_card("Major", course),
                 content = "Double period, alternates daily with Gym"
             ),
         
-        course_card("Major Course", course),
+        course_card("Major", course),
         ),
     )
