@@ -43,13 +43,13 @@ def index() -> rx.Component:
                 rx.grid(
                     # --- FRESHMAN ---
                     rx.vstack(
-                        rx.heading("Freshman", size="7", margin_bottom="2px", color=theme.text),
+                        rx.heading("Freshman", size="5", margin_bottom="2px", color=theme.text),
                         rx.hstack(
-                            rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            rx.text(PlannerState.freshman_course_count.to(str) + " courses", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.freshman_periods.to(str) + "/10 periods", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.freshman_ap_count.to(str) + "/3 APs", size="2", color=rx.cond(PlannerState.freshman_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                             spacing="2", margin_bottom="10px"
                         ),
                         
@@ -91,13 +91,13 @@ def index() -> rx.Component:
 
                     # --- SOPHOMORE ---
                     rx.vstack(
-                        rx.heading("Sophomore", size="7", margin_bottom="2px", color=theme.text),
+                        rx.heading("Sophomore", size="5", margin_bottom="2px", color=theme.text),
                         rx.hstack(
-                            rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            rx.text(PlannerState.sophomore_course_count.to(str) + " courses", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.sophomore_periods.to(str) + "/10 periods", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.sophomore_ap_count.to(str) + "/3 APs", size="2", color=rx.cond(PlannerState.sophomore_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                             spacing="2", margin_bottom="10px"
                         ),
                         
@@ -125,13 +125,13 @@ def index() -> rx.Component:
 
                 # --- JUNIOR ---
                     rx.vstack(
-                        rx.heading("Junior", size="7", margin_bottom="2px", color=theme.text),
+                        rx.heading("Junior", size="5", margin_bottom="2px", color=theme.text),
                         rx.hstack(
-                            rx.text(PlannerState.junior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            rx.text(PlannerState.junior_course_count.to(str) + " courses", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.junior_periods.to(str) + "/10 periods", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.junior_ap_count.to(str) + "/3 APs", size="2", color=rx.cond(PlannerState.junior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                             spacing="2", margin_bottom="10px"
                         ),
                         
@@ -202,13 +202,13 @@ def index() -> rx.Component:
                     # --- SENIOR ---
                     # --- SENIOR COLUMN ---
                     rx.vstack(
-                        rx.heading("Senior", size="7", margin_bottom="2px", color=theme.text),
+                        rx.heading("Senior", size="5", margin_bottom="2px", color=theme.text),
                         rx.hstack(
-                            rx.text(PlannerState.senior_course_count.to(str) + " courses", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="3", color=theme.text, weight = "bold"),
-                            rx.text("•", size="3", color=theme.text),
-                            rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="3", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
+                            rx.text(PlannerState.senior_course_count.to(str) + " courses", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.senior_periods.to(str) + "/10 periods", size="2", color=theme.text, weight = "bold"),
+                            rx.text("•", size="2", color=theme.text),
+                            rx.text(PlannerState.senior_ap_count.to(str) + "/3 APs", size="2", color=rx.cond(PlannerState.senior_ap_count >= 3, "#f87171", theme.text), weight = "bold"),
                             spacing="2", margin_bottom="10px"
                         ),
                         
