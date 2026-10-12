@@ -158,6 +158,7 @@ html body[data-scroll-locked] {
   --req_courses : #ac114cff;
   --elective_color : #13a7afff;
   --gym_lunch_color : #ffffffa3;
+  --gradient : #1D40AE;
 }
 
 .light {
@@ -174,6 +175,7 @@ html body[data-scroll-locked] {
   --req_courses : rgb(205, 16, 88);
   --elective_color : rgb(34, 195, 203);
   --gym_lunch_color : #6b6767a3;
+  --gradient : #3C81F6;
 }
 
 /* fade the swap instead of snapping */

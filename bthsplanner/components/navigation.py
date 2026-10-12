@@ -23,27 +23,32 @@ def nav_link(label: str, href: str) -> rx.Component:
         border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
     )
 
-def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Component:
+def navigation_layout(content: rx.Component, full_width: bool = False, zero_gap: bool = False, show_border: bool = True) -> rx.Component:
     return rx.vstack(
         # Navigation Bar
         rx.box(
             rx.hstack(
-                # Logo & Brand
-                            rx.hstack(
-                # Logo & Brand
-                rx.hstack(
-                    rx.image(
-                        src="/header_logo.png",
-                        width="40px",
-                        height="40px",
-                        object_fit="contain",
-                        border_radius="4px",
+                # Logo & Brand (wrapped with link to home)
+                rx.link(
+                    rx.hstack(
+                        rx.image(
+                            src="/header_logo.png",
+                            width="40px",
+                            height="40px",
+                            object_fit="contain",
+                            border_radius="4px",
+                        ),
+                        rx.text(
+                            "BTHS Planner", size="6", weight="bold", color=theme.text,
+                        ),
+                        spacing="3",
+                        align_items="center",
                     ),
-                    rx.text(
-                        "BTHS Planner", size="6", weight="bold", color=theme.text,
-                    ),
-                    spacing="3",
-                    align_items="center",
+                    href="/home",
+                    style={
+                        "text_decoration": "none",
+                        "_hover": {"text_decoration": "none"},
+                    },
                 ),
                 rx.spacer(),
                 # Navigation Links
@@ -95,7 +100,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
             top="0",
             z_index="100",
             background_color=theme.lighter_aa_blue,
-            border_bottom=f"1px solid {theme.border}",
+            border_bottom=f"1px solid {theme.border}" if show_border else "none",
             padding_x="16px",
             padding_y="8px",
             width="100%",
@@ -114,4 +119,4 @@ def navigation_layout(content: rx.Component, full_width: bool = False) -> rx.Com
         background_color=theme.illini_blue,
         spacing="0",
     ),
-    )
+    
