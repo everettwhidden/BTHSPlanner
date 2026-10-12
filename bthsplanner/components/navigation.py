@@ -56,7 +56,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False, zero_gap:
                     nav_link("Plan", "/plan"),
                     nav_link("Explore", "/explore"),
                     nav_link("How It Works", "/how-it-works"),
-                    nav_link("Settings", "/settings"),
+                    #nav_link("Settings", "/settings"), temporarily removed
                     spacing="4",
                     margin_right="16px",
                 ),
