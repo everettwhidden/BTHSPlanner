@@ -79,7 +79,7 @@ def explore_page() -> rx.Component:
 
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
-        rx.grid(
+        rx.box(
             rx.foreach(
                 PlannerState.explore_page_catalog,
                 lambda course: rx.box(
@@ -172,22 +172,26 @@ def explore_page() -> rx.Component:
                         height="100%",
                         spacing="2",
                     ),
-                    background_color=theme.lighter_aa_blue,   # lighter aa blue for card bg
-                    border=f"1px solid {theme.border}",     # Seamless matching border lines
+                    background_color=theme.lighter_aa_blue,
+                    border=f"1px solid {theme.border}",
                     border_radius="12px",
                     padding="24px",
-                    # Standardized explicit sizing constraints
-                    height="230px",                
-                    width="100%",
-                    max_width="800px",              # Keeps boxes from stretching super wide when 1 remains!
+                    height="230px",
+                    flex="1 1 560px",
+                    max_width="800px",
                     overflow="hidden",
                 )
+            
             ),
             # Standardized layout settings for the responsive grid
-            columns={"sm": "1", "md": "2"},
-            spacing="6",
+
+            style={
+                "display": "flex",
+                "flex_wrap": "wrap",
+                "justify_content": "center",
+                "gap": "24px",
+            },
             width="100%",
-            justify_items="start",                  # Standardizes columns alignment
         ),
         pagination_bar(),
         rx.text(
