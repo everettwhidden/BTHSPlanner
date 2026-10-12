@@ -17,14 +17,16 @@ def home_page() -> rx.Component:
         # --- HERO SECTION (Changes based on Light/Dark Mode) ---
         rx.box(
             rx.image(
-                src="main.png",  
+                src="building.png",  
                 position="absolute",
                 bottom="0",
                 right="0",
                 max_height="100%",        # Scales up to full container height
                 width="auto",             # Preserves natural aspect ratio
                 object_fit="contain",
-                object_position="bottom right",  # Forces alignment to bottom-right corner
+                object_position="bottom right",
+                transform="scale(1.2)",
+                transform_origin="bottom right",  # Forces alignment to bottom-right corner
             ),
             
             rx.vstack(
