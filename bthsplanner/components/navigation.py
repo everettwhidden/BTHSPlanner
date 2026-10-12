@@ -44,7 +44,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False, zero_gap:
                         spacing="3",
                         align_items="center",
                     ),
-                    href="/home",
+                    href="/",
                     style={
                         "text_decoration": "none",
                         "_hover": {"text_decoration": "none"},
@@ -53,7 +53,7 @@ def navigation_layout(content: rx.Component, full_width: bool = False, zero_gap:
                 rx.spacer(),
                 # Navigation Links
                 rx.hstack(
-                    nav_link("Plan", "/"),
+                    nav_link("Plan", "/plan"),
                     nav_link("Explore", "/explore"),
                     nav_link("How It Works", "/how-it-works"),
                     nav_link("Settings", "/settings"),
