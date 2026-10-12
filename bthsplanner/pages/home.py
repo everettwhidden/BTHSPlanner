@@ -11,7 +11,7 @@ import reflex as rx
 
 import reflex as rx
 
-@rx.page(route="/home", title="BTHS Planner", description="Brooklyn Tech's Course Planner", on_load=PlannerState.change_tab("Home"))
+@rx.page(route="/", title="BTHS Planner", description="Brooklyn Tech's Course Planner", on_load=PlannerState.change_tab("Home"))
 def home_page() -> rx.Component:
     home_page_content = rx.box(
         # --- HERO SECTION (Changes based on Light/Dark Mode) ---
