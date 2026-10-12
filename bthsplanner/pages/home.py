@@ -73,6 +73,12 @@ def home_page() -> rx.Component:
                         margin_bottom="1rem",
                         text_align="center"
                     ),
+                    rx.text(
+                        "BTHS Planner is currently in Beta, which means it is still developing, may contain bugs, and is provided 'as is' without warranties of any kind.", 
+                        font_size = "20px",         
+                        line_height="1.7",
+                        margin_bottom="1rem",
+                        text_align="center"),
                     rx.divider(border_color= border),
                     rx.spacer(),
                     rx.heading("Contact", font_size = "15px", margin_bottom = "5px",),

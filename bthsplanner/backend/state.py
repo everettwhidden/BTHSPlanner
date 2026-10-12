@@ -13,7 +13,7 @@ MAJOR_NAMES = list(MAJORS.keys())
 # senior gov courses that all behave the same way (econ gets tacked on unless there's a conflict)
 SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
 PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
-EXPLORE_PAGE_SIZE = 20
+EXPLORE_PAGE_SIZE = 24
 
 def _next_lang_level(lang: str) -> str:
     if lang.endswith(" I"):
@@ -358,7 +358,10 @@ class PlannerState(rx.State):
     def explore_page_catalog(self) -> list[dict]:
         start = (self.explore_page_num - 1) * EXPLORE_PAGE_SIZE
         return self.explore_catalog[start:start + EXPLORE_PAGE_SIZE]
-    
+
+    @rx.var
+    def explore_page_count(self) -> int:
+        return len(self.explore_page_catalog)
 
 
     active_modal_course: dict = {}     # Holds the course info for detail popup

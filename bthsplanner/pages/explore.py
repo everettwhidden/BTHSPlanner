@@ -75,7 +75,11 @@ def explore_page() -> rx.Component:
             background_color=theme.lighter_aa_blue,
         ),
 
-        rx.text("Showing " + PlannerState.explore_catalog_count.to_string() + " courses", color=theme.text, size="3"),
+        rx.text(
+            "Showing " + PlannerState.explore_page_count.to_string() + "/" + PlannerState.explore_catalog_count.to_string() + " courses",
+            color=theme.text,
+            size="3",
+        ),
 
         
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
