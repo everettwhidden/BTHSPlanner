@@ -31,14 +31,14 @@ def home_page() -> rx.Component:
             
             rx.vstack(
                 rx.heading(
-                    "Brooklyn Tech's premier",
+                    "The course platform for the",
                     font_size="45px",
                     color="white",
                     weight="bold",
                     line_height="1.1",
                 ),
                 rx.heading(
-                    "course discovery platform",
+                    "nation's largest high school",
                     font_size="45px",
                     color="white",
                     weight="bold",
