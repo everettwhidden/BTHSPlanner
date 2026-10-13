@@ -10,15 +10,15 @@ from data.courses import alternates_with_gym
 from data.courses import language_opts
 
 MAJOR_NAMES = list(MAJORS.keys())
-# senior gov courses that all behave the same way (econ gets tacked on unless there's a conflict)
+
 SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
 PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
-EXPLORE_PAGE_SIZE = 24
+EXPLORE_PAGE_SIZE = 48
 
 def _next_lang_level(lang: str) -> str:
     if lang.endswith(" I"):
         return lang[:-1] + "II"
-    return lang  # already at level II, nothing higher to bump to
+    return lang  
 
 def _grade_badges(is_elective: bool, grades: list, available_grades: list) -> list[str]:
     if grades:
