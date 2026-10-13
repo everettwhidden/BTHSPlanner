@@ -158,15 +158,6 @@ COURSE_CATALOG = {
         "is_elective": True,
         "grades": ["Senior"]
     },
-    "AP Macroeconomics": {
-        "description": "This college-level course covers macroeconomic principles including GDP, unemployment, inflation, aggregate supply and demand, and fiscal and monetary policy, examining how national economies function as a whole.",
-        "periods": 1,
-        "credits": 1.0,
-        "semesters" : 1,
-        "is_elective": False,
-        "grades": ["Senior"],
-        "color" : history_color
-    },
     "AP Macroeconomics / AP Microeconomics": {
         "description": "This junior-year Finance major sequence splits the year between the two College Board AP economics courses: AP Macroeconomics for one semester, covering national income, unemployment, inflation, the aggregate supply and demand model, and fiscal and monetary policy, and AP Microeconomics for the other semester, covering supply and demand, consumer and producer theory, market structures, factor markets, and market failure. Together they give Finance majors college-level grounding in both branches of economics before senior year.",
         "periods": 1,
@@ -799,7 +790,7 @@ COURSE_CATALOG = {
         "color" : english_color
     },  
     "Linear Algebra": {
-        "description": "Linear Algebra is both an important branch of pure mathematics and a fundamental component of applications spanning finance, cryptography, stochastic processes, web search, and image processing. This senior-year Applied Mathematics major course covers the basic elements of a college-level introduction to linear algebra, including matrix algebra, determinants, elementary vector spaces, and characteristic equations and eigenvalues, and students use computing technologies to build and explore applications of the material as time allows.",
+        "description": "Linear Algebra is both an important branch of pure mathematics and a fundamental component of applications spanning finance, cryptography, stochastic processes, web search, machine learning, and image processing. This senior-year Applied Mathematics major course covers the basic elements of a college-level introduction to linear algebra, including matrix algebra, determinants, elementary vector spaces, and characteristic equations and eigenvalues, and students use computing technologies to build and explore applications of the material as time allows.",
         "periods": 1,
         "credits": 1.0,
         "is_elective": True,

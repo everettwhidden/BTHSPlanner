@@ -182,8 +182,7 @@ def explore_page() -> rx.Component:
                     border_radius="12px",
                     padding="24px",
                     height="250px",
-                    flex="1 1 440px",
-                    max_width="640px",
+                    width="100%",
                     overflow="hidden",
                 )
             
@@ -191,12 +190,12 @@ def explore_page() -> rx.Component:
             # Standardized layout settings for the responsive grid
 
             style={
-                "display": "flex",
-                "flex_wrap": "wrap",
-                "justify_content": "center",
+                "display": "grid",
+                "grid_template_columns": "repeat(auto-fill, minmax(440px, 1fr))",
                 "gap": "24px",
             },
             width="100%",
+        
         ),
         pagination_bar(),
         rx.text(
