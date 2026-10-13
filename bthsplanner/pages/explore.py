@@ -131,6 +131,7 @@ def explore_page() -> rx.Component:
                             width="100%",
                             align_items="start",
                             spacing="1",
+                            wrap = "wrap"
                             )
                         ),
                         
@@ -180,9 +181,9 @@ def explore_page() -> rx.Component:
                     border=f"1px solid {theme.border}",
                     border_radius="12px",
                     padding="24px",
-                    height="230px",
-                    flex="1 1 560px",
-                    max_width="800px",
+                    height="250px",
+                    flex="1 1 440px",
+                    max_width="640px",
                     overflow="hidden",
                 )
             
