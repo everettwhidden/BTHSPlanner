@@ -1,6 +1,6 @@
 MAJORS = {
     "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing"]},
-    "Applied Mathematics": {"room": "5N7", "Junior": ["Introduction to Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
+    "Applied Mathematics": {"room": "5N7", "Junior": ["Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
     "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling",]},
     "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},

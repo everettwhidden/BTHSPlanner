@@ -744,7 +744,7 @@ COURSE_CATALOG = {
         "is_elective": False,
         "grades": ["Senior"]
     },
-    "Introduction to Math Research & Python Programming": {
+    "Math Research & Python Programming": {
         "description": "This junior-year Applied Mathematics major course introduces students to thinking, writing, and presenting mathematics, building from a series of small writing assignments up to two full-length mathematical research papers, one each in the fall and spring terms. Students work throughout the year with current Junior and Senior Math majors and the major's teachers, present their findings to the class, and submit their papers to the NYC Metropolitan Math Fair and other research competitions.",
         "periods": 1,
         "credits": 1.0,
