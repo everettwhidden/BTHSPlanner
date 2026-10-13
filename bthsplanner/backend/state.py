@@ -8,6 +8,7 @@ from data.courses import alternate_list
 from data.courses import COURSE_CATALOG, MAJORS, req_courses
 from data.courses import alternates_with_gym
 from data.courses import language_opts
+from data.courses import AP_COURSES
 
 MAJOR_NAMES = list(MAJORS.keys())
 
@@ -291,6 +292,8 @@ class PlannerState(rx.State):
                 elif "Elective" in self.selected_filters and data.get("is_elective") == False:
                     continue
                 elif "Non-elective" in self.selected_filters and data.get("is_elective") == True:
+                    continue
+                elif "AP" in self.selected_filters and name not in AP_COURSES:
                     continue
 
                         

@@ -8,7 +8,7 @@ required_courses_labels = ["Major Course", "Required Course"]
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
 ORDER_OPTIONS = ["A-Z", "AP First"]
-FILTER_OPTIONS = ["Elective", "Non-elective"]
+FILTER_OPTIONS = ["AP", "Elective", "Non-elective"]
 PERIOD_LENGTH_OPTIONS = ["1 period", "2 periods"]
 SEMESTER_OPTIONS = ["1 semester", "2 semesters"]
 
@@ -180,7 +180,7 @@ def grade_dropdown() -> rx.Component:
         ],
     )
 
-def elective_dropdown() -> rx.Component:
+def type_dropdown() -> rx.Component:
     count = PlannerState.selected_filters.length()
     label = rx.cond(count > 0, "Type (" + count.to_string() + ")", "Select class type")
     return filter_dropdown(
@@ -268,7 +268,7 @@ def explore_sidebar() -> rx.Component:
             # 3. Type
             rx.vstack(
                 _sidebar_title("Type"),
-                elective_dropdown(),
+                type_dropdown(),
                 width="100%",
                 spacing="2",
                 align_items="start",

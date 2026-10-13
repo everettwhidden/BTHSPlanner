@@ -8,6 +8,7 @@ elective_color = "var(--elective_color)"
 gym_lunch_color = "var(--gym_lunch_color)"
 
 
+
 COURSE_CATALOG = {
     "AP African American Studies": {
             "description": "AP African American Studies is an interdisciplinary high school course exploring the history, culture, and vital contributions of African Americans. Spanning from early African kingdoms to modern times, the curriculum blends history, literature, the arts, science, and political science.",
@@ -1145,12 +1146,42 @@ COURSE_CATALOG = {
         "color" : gym_lunch_color,
         "lunch_or_gym" : True,
     }
-
-
-
-
-
-
 }
 
 
+AP_COURSES = [
+    "AP African American Studies",
+    "AP Biology",
+    "AP Business with Personal Finance",
+    "AP Calculus AB",
+    "AP Calculus BC",
+    "AP Capstone Research",
+    "AP Capstone Seminar",
+    "AP Chemistry",
+    "AP Chinese Language & Culture",
+    "AP Comparative Government",
+    "AP Computer Science Applications - JAVA",
+    "AP Computer Science Principles",
+    "AP Cybersecurity",
+    "AP English Language & Composition",
+    "AP English Literature & Composition",
+    "AP Environmental Science",
+    "AP European History",
+    "AP French Language & Culture",
+    "AP German Language & Culture",
+    "AP Human Geography",
+    "AP Italian Language & Culture",
+    "AP Macroeconomics / AP Microeconomics",
+    "AP Macroeconomics with Government",
+    "AP Physics C: Electricity & Magnetism",
+    "AP Physics C: Mechanics",
+    "AP Physics I",
+    "AP Physics II",
+    "AP Psychology",
+    "AP Spanish Language & Culture",
+    "AP Statistics",
+    "AP Studio Art 2D",
+    "AP US Government",
+    "AP US History",
+    "AP World History",
+]
