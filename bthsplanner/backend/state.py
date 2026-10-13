@@ -16,6 +16,21 @@ SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Com
 PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
 EXPLORE_PAGE_SIZE = 48
 
+GRADE_ORDER = ["Freshman", "Sophomore", "Junior", "Senior"]
+
+def _first_grade(c: dict) -> int:
+    # earliest grade the course is offered, unknown goes last
+    idxs = [GRADE_ORDER.index(g) for g in c["grade_badges"] if g in GRADE_ORDER]
+    return min(idxs) if idxs else 99
+
+# each option is (key function, reverse?)
+# tuples break ties, so equal items fall back to name
+SORT_OPTIONS = {
+    "A-Z": (lambda c: c["name"].lower(), False),
+    "Z-A": (lambda c: c["name"].lower(), True),
+    "Grade level": (lambda c: (_first_grade(c), c["name"].lower()), False),
+}
+
 def _next_lang_level(lang: str) -> str:
     if lang.endswith(" I"):
         return lang[:-1] + "II"
@@ -340,10 +355,11 @@ class PlannerState(rx.State):
                 "grade_badges": badges,
             })
 
-        if self.order == "A-Z":
-            results = sorted(results, key=lambda c: c["name"].lower())
+        sort_key, reverse = SORT_OPTIONS.get(self.order, SORT_OPTIONS["A-Z"])
+        results = sorted(results, key=sort_key, reverse=reverse)
 
         return results
+
     
     @rx.var
     def explore_catalog(self) -> list[dict]:

@@ -7,7 +7,7 @@ from bthsplanner.components import styled_select
 required_courses_labels = ["Major Course", "Required Course"]
 
 GRADE_OPTIONS = ["Freshman", "Sophomore", "Junior", "Senior"]
-ORDER_OPTIONS = ["A-Z", "AP First"]
+ORDER_OPTIONS = ["A-Z", "Z-A", "Grade level"]
 FILTER_OPTIONS = ["AP", "Elective", "Non-elective"]
 PERIOD_LENGTH_OPTIONS = ["1 period", "2 periods"]
 SEMESTER_OPTIONS = ["1 semester", "2 semesters"]
