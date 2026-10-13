@@ -7,8 +7,8 @@ from bthsplanner.backend import *
 required_courses_labels = ["Major Course", "Required Course"]
 
 def nav_link(label: str, href: str) -> rx.Component:
-    # one tab in the top nav, highlights when it's the active tab
-    is_active = PlannerState.active_tab == label
+    # active tab comes from the current url, so there's nothing to flash
+    is_active = PlannerState.router.page.path == href
     return rx.link(
         rx.text(
             label,
@@ -22,7 +22,6 @@ def nav_link(label: str, href: str) -> rx.Component:
         padding_y="8px",
         border_bottom=rx.cond(is_active, "2px solid #3b82f6", "2px solid transparent"),
     )
-
 def navigation_layout(content: rx.Component, full_width: bool = False, zero_gap: bool = False, show_border: bool = True) -> rx.Component:
     return rx.vstack(
         # Navigation Bar

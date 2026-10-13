@@ -6,6 +6,7 @@ from bthsplanner.pages import hide_watermark_style
 app = rx.App(
     stylesheets=["/style.css"],
     style=hide_watermark_style,
+    theme=rx.theme(appearance="light"),
     head_components=[
         rx.el.meta(property="og:image", content="https://www.bths.edu/pics/header_logo.png"),
         rx.el.meta(name="twitter:card", content="summary_large_image"),
