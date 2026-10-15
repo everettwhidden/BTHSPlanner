@@ -50,6 +50,7 @@ class PlannerState(rx.State):
                     self.j_his = "Participation in Government"
                 else:
                     self.j_his = "Economics"
+                    
             elif self.j_his == "Economics":
                 self.j_his = "Regents US History"
             elif self.j_his == "Participation in Government":

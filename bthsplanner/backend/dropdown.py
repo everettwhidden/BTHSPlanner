@@ -72,6 +72,8 @@ class DropdownOptions(PlannerState):
                 opts = [o for o in opts if o not in ( "Economics", "None (free period, econ senior year)")]
             else:
                 opts = [o for o in opts if o not in ( "Economics", "None (free period, gov senior year)")]
+        else: opts = [o for o in opts if o not in ("Regents US History")]
+        
         prior = self._courses_for_year("Freshman") | self._courses_for_year("Sophomore")
         return _filter(opts, self.j_his, self.junior_ap_count ,prior)
     
