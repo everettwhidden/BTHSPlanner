@@ -648,7 +648,7 @@ class PlannerState(rx.State):
     @rx.var(cache=True)
     def senior_major_courses(self) -> list[str]:
         courses = MAJORS[self.major].get("Senior", [])
-        courses = [c for c in courses if c != "AP Calculus BC or Multi-Variable Calculus"]
+        courses = [c for c in courses if c != "AP Calculus BC or Multivariable Calculus"]
 
         # 🎯 LIU Pharmacy: AP Biology freshman year bumps the senior AP Biology
         # slot to AP Physics I, or AP Physics C: Mechanics if they also took

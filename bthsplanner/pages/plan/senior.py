@@ -65,7 +65,7 @@ def senior_column():
                 dropdown_card("Math", DropdownOptions.sn_calcs, PlannerState.sn_math, PlannerState.change_sn_math),
             )
         ),
-        # MajorS SECTION
+        # Major section
         rx.cond(
             PlannerState.major == "Physics",
             senior_physics_cards(),

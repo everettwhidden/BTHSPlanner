@@ -1,6 +1,6 @@
 MAJORS = {
     "Aerospace Engineering": {"room": "3N3", "Junior": ["AP Physics I", "PLTW Principles of Engineering"], "Senior": ["Flight School", "PLTW Aerospace Engineering", "PLTW Computer Integrated Manufacturing"]},
-    "Applied Mathematics": {"room": "5N7", "Junior": ["Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC or Multi-Variable Calculus"]},
+    "Applied Mathematics": {"room": "5N7", "Junior": ["Pre-Calculus", "Introduction to Math Research & Python Programming", "Graph Theory / Number Theory"], "Senior": ["Linear Algebra", "AP Statistics", "AP Calculus BC", "Multivariable Calculus"]},
     "Architectural Engineering": {"room": "5N4", "Junior": ["Architectural Drawing with AutoCAD", "PLTW Civil Engineering & Architecture"], "Senior": ["Digital Design", "Building Materials & Fabrication", "Architectural Design & Modeling",]},
     "Biological Sciences": {"room": "5N8", "Junior": ["AP Biology"], "Senior": ["Genetics", "Human Anatomy", "AP Psychology"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
     "Chemistry": {"room": "3E10", "Junior": ["AP Chemistry"], "Senior": ["Quantitative Analysis", "Modern Instrumental Chemical Analysis", "Organic Chemistry", "Biochemistry/Chem E"]},
@@ -11,7 +11,7 @@ MAJORS = {
     "Finance": {"room": "2W6", "Junior": ["Principles of Accounting", "AP Macroeconomics / AP Microeconomics"], "Senior": ["Finance & Investments", "Introduction to Business Law", "Virtual Enterprise"]},
     "Industrial Design": {"room": "5N3", "Junior": ["Fundamentals of Product Design", "Methods of Fabrication"], "Senior": ["Adobe Visual Design & Print Production", "Advanced Modeling", "Inventor Certification",]},
     "Law & Society": {"room": "BN4", "Junior": ["Criminal Law", "AP US Government/Constitutional Law"], "Senior": ["Constitutional Law II / Legal Research", "Civil Law / Criminal Procedure", "Forensic Criminology"]},
-    "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Algebra 2/Pre-Calculus or Higher Level Mathematics"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology"]},
+    "LIU Pharmacy": {"room": "2N6", "Junior": ["AP English Language & Composition", "AP Chemistry", "Pre-Calculus"], "Senior": [ "AP Macroeconomics with Government", "Organic Chemistry Pharmacy Seminar", "AP Biology", "AP Calculus AB"]},
     "Mechatronics & Robotics": {"room": "2N4", "Junior": ["Robotics Engineering", "PLTW Digital Electronics"], "Senior": ["Mechatronics with LabView", "PLTW Computer Integrated Manufacturing", ]},
     "Media Communications": {"room": "1N4 and 1N6", "Junior": ["Video Game Design with Unity", "Adobe Visual Design & Print Production"], "Senior": ["Adobe Visual Design & Film Production", "Digital Animation", "Digital Photography",]},
     "Neuroscience": {"room": "3N1", "Junior": ["AP Biology"], "Senior": ["AP Psychology", "Introduction to Neuroscience", "Bioorganic Chemistry"], "note": "*Those who took AP Biology freshman year will take AP Chemistry junior year instead."},
