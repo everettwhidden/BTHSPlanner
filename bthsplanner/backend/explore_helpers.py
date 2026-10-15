@@ -15,6 +15,8 @@ def filter_explore_catalog(
     query = query.lower().strip()
     results = []
 
+    GRADE_RANK = {"Freshman": 0, "Sophomore": 1, "Junior": 2, "Senior": 3}
+
     for name, data in COURSE_CATALOG.items():
         if query not in name.lower() and query not in data.get("description", "").lower():
             continue
@@ -68,5 +70,9 @@ def filter_explore_catalog(
 
     if order == "A-Z":
         results.sort(key=lambda c: c["name"].lower())
-
+    elif order == "Z-A":
+        results.sort(key=lambda c: c["name"].lower(), reverse=True)
+    elif order == "Grade level":
+        results.sort(key=lambda c: (min((GRADE_RANK[g] for g in c["grade_badges"]), default=99), c["name"].lower() ))
+    
     return results

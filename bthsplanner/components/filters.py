@@ -138,29 +138,29 @@ def filter_dropdown(trigger_label: rx.Component | str, *items: rx.Component, fon
 
 def order_dropdown() -> rx.Component:
     return filter_dropdown(
-        PlannerState.order,
+        ExploreState.order,
         *[
             rx.box(
                 rx.text(
                     option,
                     font_size="14px",
-                    font_weight=rx.cond(PlannerState.order == option, "600", "500"),
-                    color=rx.cond(PlannerState.order == option, "#3b82f6", theme.text)
+                    font_weight=rx.cond(ExploreState.order == option, "600", "500"),
+                    color=rx.cond(ExploreState.order == option, "#3b82f6", theme.text)
                 ),
                 width="100%",
                 padding="10px 8px",
                 border_radius="6px",
                 cursor="pointer",
                 background_color=rx.cond(
-                    PlannerState.order == option,
+                    ExploreState.order == option,
                     "rgba(59, 130, 246, 0.15)",
                     "transparent"
                 ),
-                on_click=lambda _, opt=option: PlannerState.set_order(opt),
+                on_click=lambda _, opt=option: ExploreState.set_order(opt),
                 # selected rows stay blue on hover, just a bit stronger
                 _hover={
                     "background_color": rx.cond(
-                        PlannerState.order == option,
+                        ExploreState.order == option,
                         "rgba(59, 130, 246, 0.25)",
                         "rgba(128, 128, 128, 0.2)"
                     )
@@ -170,55 +170,55 @@ def order_dropdown() -> rx.Component:
         ],
     )
 def grade_dropdown() -> rx.Component:
-    count = PlannerState.selected_grades.length()
+    count = ExploreState.selected_grades.length()
     label = rx.cond(count > 0, "Grades (" + count.to_string() + ")", "Select grade")
     return filter_dropdown(
         label,
         *[
-            checkbox_option(g, PlannerState.selected_grades.contains(g), PlannerState.toggle_grade(g), "14px")
+            checkbox_option(g, ExploreState.selected_grades.contains(g), ExploreState.toggle_grade(g), "14px")
             for g in GRADE_OPTIONS
         ],
     )
 
 def type_dropdown() -> rx.Component:
-    count = PlannerState.selected_filters.length()
+    count = ExploreState.selected_filters.length()
     label = rx.cond(count > 0, "Type (" + count.to_string() + ")", "Select class type")
     return filter_dropdown(
         label,
         *[
-            checkbox_option(f, PlannerState.selected_filters.contains(f), PlannerState.toggle_filter(f), "14px")
+            checkbox_option(f, ExploreState.selected_filters.contains(f), ExploreState.toggle_filter(f), "14px")
             for f in FILTER_OPTIONS
         ],
     )
 
 def major_dropdown() -> rx.Component:
-    count = PlannerState.selected_majors.length()
+    count = ExploreState.selected_majors.length()
     label = rx.cond(count > 0, "Major (" + count.to_string() + ")", "Select major")
     return filter_dropdown(
         label,
         *[
-            checkbox_option(m, PlannerState.selected_majors.contains(m), PlannerState.toggle_major(m), "14px")
+            checkbox_option(m, ExploreState.selected_majors.contains(m), ExploreState.toggle_major(m), "14px")
             for m in MAJOR_NAMES
         ],
     )
 def period_length_dropdown() -> rx.Component:
-    count = PlannerState.selected_period_length.length()
+    count = ExploreState.selected_period_length.length()
     label = rx.cond(count > 0, "Selected Periods (" + count.to_string() + ")", "Select periods")
     return filter_dropdown(
         label,
         *[
-            checkbox_option(p, PlannerState.selected_period_length.contains(p), PlannerState.toggle_period_length(p), "14px")
+            checkbox_option(p, ExploreState.selected_period_length.contains(p), ExploreState.toggle_period_length(p), "14px")
             for p in PERIOD_LENGTH_OPTIONS
         ],
     )
 
 def semester_dropdown() -> rx.Component:
-    count = PlannerState.selected_semesters.length()
+    count = ExploreState.selected_semesters.length()
     label = rx.cond(count > 0, "Semesters (" + count.to_string() + ")", "Select semesters")
     return filter_dropdown(
         label,
         *[
-            checkbox_option(s, PlannerState.selected_semesters.contains(s), PlannerState.toggle_semester(s), "14px")
+            checkbox_option(s, ExploreState.selected_semesters.contains(s), ExploreState.toggle_semester(s), "14px")
             for s in SEMESTER_OPTIONS
         ],
     )
@@ -240,7 +240,7 @@ def explore_sidebar() -> rx.Component:
                     variant="ghost",
                     color_scheme="blue",
                     size="2",
-                    on_click=PlannerState.clear_filters,  # Add your clear filters event handler here
+                    on_click=ExploreState.clear_filters,  # Add your clear filters event handler here
                     style={"cursor": "pointer", "font_weight": "600"},
                 ),
                 width="100%",

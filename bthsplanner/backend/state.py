@@ -5,7 +5,7 @@ import reflex as rx
 from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts
 
 from .constants import EXPLORE_PAGE_SIZE, PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
-from .explore_logic import filter_explore_catalog
+from .explore_helpers import filter_explore_catalog
 from .export import build_plan_xlsx
 from .helpers import (
     build_partner_map,
@@ -178,97 +178,8 @@ class PlannerState(rx.State):
     selected_semesters: list[str] = []
     explore_page_num: int = 1
 
-    def clear_filters(self):
-        self.order = "A-Z"
-        self.selected_grades = []
-        self.selected_filters = []
-        self.selected_majors = []
-        self.selected_period_length = []
-        self.selected_semesters = []
-        self.explore_page_num = 1
-
-    def set_explore_search_query(self, val: str):
-        self.explore_search_query = val
-        self.explore_page_num = 1
-
-    def set_order(self, val: str):
-        self.order = val
-        self.explore_page_num = 1
-
-    def toggle_grade(self, grade: str):
-        if grade in self.selected_grades:
-            self.selected_grades.remove(grade)
-        else:
-            self.selected_grades.append(grade)
-        self.explore_page_num = 1
-
-    def toggle_filter(self, filter_name: str):
-        if filter_name in self.selected_filters:
-            self.selected_filters.remove(filter_name)
-        else:
-            self.selected_filters.append(filter_name)
-        self.explore_page_num = 1
-
-    def toggle_major(self, major: str):
-        if major in self.selected_majors:
-            self.selected_majors.remove(major)
-        else:
-            self.selected_majors.append(major)
-        self.explore_page_num = 1
-
-    def toggle_period_length(self, period_length: str):
-        if period_length in self.selected_period_length:
-            self.selected_period_length.remove(period_length)
-        else:
-            self.selected_period_length.append(period_length)
-        self.explore_page_num = 1
-
-    def toggle_semester(self, semester: str):
-        if semester in self.selected_semesters:
-            self.selected_semesters.remove(semester)
-        else:
-            self.selected_semesters.append(semester)
-        self.explore_page_num = 1
 
 
-    def next_explore_page(self):
-        if self.explore_page_num < self.explore_total_pages:
-            self.explore_page_num += 1
-            return rx.call_script("window.scrollTo(0, 0)")
-
-    def prev_explore_page(self):
-        if self.explore_page_num > 1:
-            self.explore_page_num -= 1
-            return rx.call_script("window.scrollTo(0, 0)")
-        
-    @rx.var
-    def explore_catalog(self) -> list[dict]:
-        return filter_explore_catalog(
-            query=self.explore_search_query,
-            order=self.order,
-            grades=self.selected_grades,
-            majors=self.selected_majors,
-            filters=self.selected_filters,
-            period_lengths=self.selected_period_length,
-            semesters=self.selected_semesters,
-        )
-
-    @rx.var
-    def explore_catalog_count(self) -> int:
-        return len(self.explore_catalog)
-
-    @rx.var
-    def explore_total_pages(self) -> int:
-        return max(1, math.ceil(len(self.explore_catalog) / EXPLORE_PAGE_SIZE))
-
-    @rx.var
-    def explore_page_catalog(self) -> list[dict]:
-        start = (self.explore_page_num - 1) * EXPLORE_PAGE_SIZE
-        return self.explore_catalog[start:start + EXPLORE_PAGE_SIZE]
-
-    @rx.var
-    def explore_page_count(self) -> int:
-        return len(self.explore_page_catalog)
 
 
     active_modal_course: dict = {}     # Holds the course info for detail popup

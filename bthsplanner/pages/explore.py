@@ -14,13 +14,13 @@ from bthsplanner.components import (
     explore_sidebar
 )
 def pagination_bar() -> rx.Component:
-    on_first = PlannerState.explore_page_num <= 1
-    on_last = PlannerState.explore_page_num >= PlannerState.explore_total_pages
+    on_first = ExploreState.explore_page_num <= 1
+    on_last = ExploreState.explore_page_num >= ExploreState.explore_total_pages
     return rx.hstack(
         rx.button(
             rx.icon("chevron-left", size=16),
             "Previous",
-            on_click=PlannerState.prev_explore_page,
+            on_click=ExploreState.prev_explore_page,
             disabled=on_first,
             variant="ghost",
             color_scheme="gray",
@@ -33,15 +33,15 @@ def pagination_bar() -> rx.Component:
         ),
         rx.text(
             "Page ",
-            rx.text.span(PlannerState.explore_page_num.to_string(), font_weight="700", color=theme.text),
-            " of " + PlannerState.explore_total_pages.to_string(),
+            rx.text.span(ExploreState.explore_page_num.to_string(), font_weight="700", color=theme.text),
+            " of " + ExploreState.explore_total_pages.to_string(),
             color=theme.text_dim,
             size="3",
         ),
         rx.button(
             "Next",
             rx.icon("chevron-right", size=16),
-            on_click=PlannerState.next_explore_page,
+            on_click=ExploreState.next_explore_page,
             disabled=on_last,
             variant="ghost",
             color_scheme="gray",
@@ -65,8 +65,8 @@ def explore_page() -> rx.Component:
         rx.heading("Explore Courses", font_size="30px", margin_bottom="8px", color=theme.text),
         rx.input(
             placeholder="Search titles, descriptions or keywords...",
-            on_change=PlannerState.set_explore_search_query,
-            value=PlannerState.explore_search_query,
+            on_change=ExploreState.set_explore_search_query,
+            value=ExploreState.explore_search_query,
             width="100%",
             max_width="800px",
             margin_top="12px",
@@ -76,7 +76,7 @@ def explore_page() -> rx.Component:
         ),
 
         rx.text(
-            "Showing " + PlannerState.explore_page_count.to_string() + "/" + PlannerState.explore_catalog_count.to_string() + " courses",
+            "Showing " + ExploreState.explore_page_count.to_string() + "/" + ExploreState.explore_catalog_count.to_string() + " courses",
             color=theme.text,
             size="3",
         ),
@@ -85,7 +85,7 @@ def explore_page() -> rx.Component:
         # Fixed Grid layout setup to ensure single search results maintain standard sizing instead of stretching
         rx.box(
             rx.foreach(
-                PlannerState.explore_page_catalog,
+                ExploreState.explore_page_catalog,
                 lambda course: rx.box(
                     rx.vstack(
                         # Header Row: Course Title on top, Badges side-by-side underneath
