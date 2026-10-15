@@ -1,40 +1,11 @@
-import io
-import math
 import re
-import openpyxl
+
 import reflex as rx
-from data.courses import double_alternates
-from data.courses import alternate_list
-from data.courses import COURSE_CATALOG, MAJORS, req_courses
-from data.courses import alternates_with_gym
-from data.courses import language_opts
+
+from data.courses import req_courses
+
 from .state import PlannerState
 
-MAJOR_NAMES = list(MAJORS.keys())
-# senior gov courses that all behave the same way (econ gets tacked on unless there's a conflict)
-SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
-PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
-def _next_lang_level(lang: str) -> str:
-    if lang.endswith(" I"):
-        return lang[:-1] + "II"
-    return lang  # already at level II, nothing higher to bump to
-
-def _grade_badges(is_elective: bool, grades: list, available_grades: list) -> list[str]:
-    if grades:
-        return grades
-    elif available_grades:
-        return available_grades
-    elif is_elective:
-        return ["Junior", "Senior"]
-    else:
-        return []
-
-def _build_partner_map(pairs):
-    m = {}
-    for a, b in pairs:
-        m[a] = b
-        m[b] = a
-    return m
 
 def _expand_taken(taken: set) -> set:
     expanded = set()
@@ -49,6 +20,7 @@ def _expand_taken(taken: set) -> set:
                     expanded.add(no_paren)
     return expanded
 
+
 def _filter(opts: list, current: str, ap_count: int, taken: set) -> list:
     expanded = _expand_taken(taken)
     other_ap_count = ap_count - (1 if "AP" in current else 0)
@@ -58,7 +30,6 @@ def _filter(opts: list, current: str, ap_count: int, taken: set) -> list:
         if (o == current or o not in expanded)
         and (o == current or "AP" not in o or not at_limit)
     ]
-
 class DropdownOptions(PlannerState):
     
     @rx.var

@@ -1129,7 +1129,7 @@ COURSE_CATALOG = {
     },
 
     "Gym" :{
-        "description" : "At Brooklyn Tech, this period is spent in different ways on different days. Gym occurs on all even or all odd days, depending on the students schedule. This equates to having Gym 2 or 3 times a week. If you are taking a science class, you have a lab period once a week on a day that you don't have gym. Each year for a semester, you will have advisory once a week during this period. Otherwise, this period is a free period.",
+        "description" : "At Brooklyn Tech, this period is spent in different ways on different days. Gym occurs on all even or all odd days, depending on the students schedule. This equates to having Gym 2 or 3 times a week. If you are taking a science class, you have a lab period once a week on a day that you don't have Gym. Each year for a semester, you will have advisory once a week during this period. Otherwise, this period is a free period.",
         "periods" : 1,
         "credits" : 0.0,
         "is_elective" : False,

@@ -1,68 +1,24 @@
-import io
 import math
-import re
-import openpyxl
+
 import reflex as rx
-from data.courses import double_alternates
-from data.courses import alternate_list
-from data.courses import COURSE_CATALOG, MAJORS, req_courses
-from data.courses import alternates_with_gym
-from data.courses import language_opts
-from data.courses import AP_COURSES
 
-MAJOR_NAMES = list(MAJORS.keys())
+from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts
 
-SENIOR_GOV_COURSES = ("AP US Government", "Participation in Government", "AP Comparative Government")
-PHYSICS_MAJOR_SN_COURSES = ("AP Physics II", "AP Physics C: Mechanics", "AP Physics C: Electricity & Magnetism")
-EXPLORE_PAGE_SIZE = 48
-
-GRADE_ORDER = ["Freshman", "Sophomore", "Junior", "Senior"]
-
-def _first_grade(c: dict) -> int:
-    # earliest grade the course is offered, unknown goes last
-    idxs = [GRADE_ORDER.index(g) for g in c["grade_badges"] if g in GRADE_ORDER]
-    return min(idxs) if idxs else 99
-
-# each option is (key function, reverse?)
-# tuples break ties, so equal items fall back to name
-SORT_OPTIONS = {
-    "A-Z": (lambda c: c["name"].lower(), False),
-    "Z-A": (lambda c: c["name"].lower(), True),
-    "Grade level": (lambda c: (_first_grade(c), c["name"].lower()), False),
-}
-
-def _next_lang_level(lang: str) -> str:
-    if lang.endswith(" I"):
-        return lang[:-1] + "II"
-    return lang  
-
-def _grade_badges(is_elective: bool, grades: list, available_grades: list) -> list[str]:
-    if grades:
-        return grades
-    elif available_grades:
-        return available_grades
-    elif is_elective:
-        return ["Junior", "Senior"]
-    else:
-        return []
-
-def _build_partner_map(pairs):
-    m = {}
-    for a, b in pairs:
-        m[a] = b
-        m[b] = a
-    return m
-
+from .constants import EXPLORE_PAGE_SIZE, PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
+from .explore_logic import filter_explore_catalog
+from .export import build_plan_xlsx
+from .helpers import (
+    build_partner_map,
+    calculate_total_periods,
+    grade_badges,
+    next_lang_level,
+)
 
     
 class PlannerState(rx.State):
-    
-    
     active_tab: str = "Plan"
     sidebar_open: bool = True
 
-
-    is_detail_open: bool = False
 
     pre_credits: dict[str, bool] = {
         "Algebra I": False,
@@ -72,7 +28,7 @@ class PlannerState(rx.State):
     }
     
 
-    partner_map: dict[str, str] = _build_partner_map(double_alternates)
+    partner_map: dict[str, str] =build_partner_map(double_alternates)
 
     def toggle_sidebar(self):
         self.sidebar_open = not self.sidebar_open
@@ -102,7 +58,7 @@ class PlannerState(rx.State):
                 self.j_his = "Regents US History"
         if credit == "Language":
             if checked:
-                self.f_lang = _next_lang_level(self.pre_language)
+                self.f_lang = next_lang_level(self.pre_language)
             else:
                 self.f_lang = self.pre_language
             self.sync_so_eng_for_language()
@@ -118,7 +74,7 @@ class PlannerState(rx.State):
     def change_pre_language(self, val: str):
         self.pre_language = val
         if self.pre_credits.get("Language", False):
-            self.f_lang = _next_lang_level(val)
+            self.f_lang = next_lang_level(val)
         else:
             self.f_lang = val
 
@@ -213,7 +169,6 @@ class PlannerState(rx.State):
 
     explore_search_query: str = ""
 
-    explore_search_query: str = ""
 
     order: str = "A-Z"
     selected_grades: list[str] = []
@@ -286,84 +241,17 @@ class PlannerState(rx.State):
             self.explore_page_num -= 1
             return rx.call_script("window.scrollTo(0, 0)")
         
-    def compute_explore_catalog(self) -> list[dict]:
-        query = self.explore_search_query.lower().strip()
-        results = []
-        for name, data in COURSE_CATALOG.items():
-            if query not in name.lower() and query not in data.get("description", "").lower():
-                continue
-
-            badges = _grade_badges(
-                data.get("is_elective", False),
-                data.get("grades", []),
-                data.get("available_grades", [])
-            )
-
-            #generalize filter
-            
-            if self.selected_filters:
-                if "Elective" in self.selected_filters and "Non-elective" in self.selected_filters:
-                    pass
-                elif "Elective" in self.selected_filters and data.get("is_elective") == False:
-                    continue
-                elif "Non-elective" in self.selected_filters and data.get("is_elective") == True:
-                    continue
-                elif "AP" in self.selected_filters and name not in AP_COURSES:
-                    continue
-
-                        
-            
-
-            # grade filter, keep the course if it matches any picked grade
-            if self.selected_grades:
-                if not any(g in badges for g in self.selected_grades):
-                    continue
-
-            # major filter, keep the course if it's in any picked major
-            if self.selected_majors:
-                in_major = False
-                for m in self.selected_majors:
-                    major_data = MAJORS.get(m, {})
-                    if name in major_data.get("Junior", []) or name in major_data.get("Senior", []):
-                        in_major = True
-                        break
-                if not in_major:
-                    continue
-
-                       
-            if self.selected_period_length:
-                periods = data.get("periods", 1)
-                label = "1 period" if periods == 1 else f"{periods} periods"
-                if label not in self.selected_period_length:
-                    continue
-
-                        # semester filter, keep the course if its length matches any picked option
-            if self.selected_semesters:
-                sems = data.get("semesters", 2)
-                label = "1 semester" if sems == 1 else f"{sems} semesters"
-                if label not in self.selected_semesters:
-                    continue
-
-            results.append({
-                "name": name,
-                "description": data.get("description", ""),
-                "periods": data.get("periods", 1),
-                "semesters": data.get("semesters", 2),
-                "credits": f"{float(data.get('credits', 1.0)):.1f}",
-                "is_elective": data.get("is_elective", False),
-                "disabled": False,
-                "grade_badges": badges,
-            })
-
-        sort_key, reverse = SORT_OPTIONS.get(self.order, SORT_OPTIONS["A-Z"])
-        results = sorted(results, key=sort_key, reverse=reverse)
-
-        return results
-
-    
     @rx.var
     def explore_catalog(self) -> list[dict]:
-        return self.compute_explore_catalog()
+        return filter_explore_catalog(
+            query=self.explore_search_query,
+            order=self.order,
+            grades=self.selected_grades,
+            majors=self.selected_majors,
+            filters=self.selected_filters,
+            period_lengths=self.selected_period_length,
+            semesters=self.selected_semesters,
+        )
 
     @rx.var
     def explore_catalog_count(self) -> int:
@@ -402,74 +290,26 @@ class PlannerState(rx.State):
     def current_page(self) -> str:
         return self.router.page.path
     
-    # --- Existing Explicit Mutator Actions ---
     def export_to_excel(self):
-        wb = openpyxl.Workbook()
-        ws = wb.active
-        ws.title = "4-Year Plan"
-
         years = ["Freshman", "Sophomore", "Junior", "Senior"]
-        year_cols = {"Freshman": 2, "Sophomore": 3, "Junior": 4, "Senior": 5}  # B, C, D, E
-
-        # --- Row 1: Major ---
-        ws.cell(row=1, column=1, value="Major")
-        ws.cell(row=1, column=2, value=self.major)
-
-        # --- Row 3: Year headers ---
-        ws.cell(row=3, column=1, value="Year")
-        for year, col in year_cols.items():
-            ws.cell(row=3, column=col, value=year)
-
-        # --- Rows 4+: courses, one per row, stacked under each year's column ---
-        year_courses = {year: sorted(self._courses_for_year(year)) for year in years}
-        max_courses = max(len(c) for c in year_courses.values())
-
-        for i in range(max_courses):
-            row = 4 + i
-            for year, col in year_cols.items():
-                courses = year_courses[year]
-                if i < len(courses):
-                    ws.cell(row=row, column=col, value=courses[i])
-
-        # lean rows that summarize the totals for eachb category
-        summary_start = 4 + max_courses + 1
-        ws.cell(row=summary_start, column=1, value="Courses")
-        ws.cell(row=summary_start + 1, column=1, value="Periods")
-        ws.cell(row=summary_start + 2, column=1, value="AP Count")
-
-        course_counts = {
-            "Freshman": self.freshman_course_count, "Sophomore": self.sophomore_course_count,
-            "Junior": self.junior_course_count, "Senior": self.senior_course_count,
-        }
-        total_courses = sum(course_counts.values())
-        periods = {
-            "Freshman": self.freshman_periods, "Sophomore": self.sophomore_periods,
-            "Junior": self.junior_periods, "Senior": self.senior_periods,
-        }
-        total_periods = sum(periods.values())
-        ap_counts = {
-            "Freshman": self.freshman_ap_count, "Sophomore": self.sophomore_ap_count,
-            "Junior": self.junior_ap_count, "Senior": self.senior_ap_count,
-        }
-        total_ap = sum(ap_counts.values())
-
-        for year, col in year_cols.items():
-            ws.cell(row=summary_start, column=col, value=course_counts[year])
-            ws.cell(row=summary_start, column=col+1, value=total_courses)
-            ws.cell(row=summary_start + 1, column=col, value=periods[year])
-            ws.cell(row=summary_start + 1, column=col+1, value=total_periods)
-            ws.cell(row=summary_start + 2, column=col, value=ap_counts[year])
-            ws.cell(row=summary_start + 2, column=col+1, value=total_ap)
-
-        buffer = io.BytesIO()
-        wb.save(buffer)
-        buffer.seek(0)
-
-        return rx.download(
-            data=buffer.getvalue(),
-            filename="brooklyn_tech_plan.xlsx",
+        data = build_plan_xlsx(
+            major=self.major,
+            year_courses={y: sorted(self._courses_for_year(y)) for y in years},
+            course_counts={
+                "Freshman": self.freshman_course_count, "Sophomore": self.sophomore_course_count,
+                "Junior": self.junior_course_count, "Senior": self.senior_course_count,
+            },
+            periods={
+                "Freshman": self.freshman_periods, "Sophomore": self.sophomore_periods,
+                "Junior": self.junior_periods, "Senior": self.senior_periods,
+            },
+            ap_counts={
+                "Freshman": self.freshman_ap_count, "Sophomore": self.sophomore_ap_count,
+                "Junior": self.junior_ap_count, "Senior": self.senior_ap_count,
+            },
         )
-
+        return rx.download(data=data, filename="brooklyn_tech_plan.xlsx")
+    
     @rx.var
     def freshman_math_courses(self) -> list[str]:
         if self.math_is_accelerated:
@@ -485,7 +325,7 @@ class PlannerState(rx.State):
         self.sync_f_sci()
         self.f_math = "Geometry"
         if self.pre_credits.get("Language", False):
-            self.f_lang = _next_lang_level(self.pre_language)
+            self.f_lang = next_lang_level(self.pre_language)
         else:
             self.f_lang = self.pre_language
         self.so_eng = "English 10"
@@ -670,37 +510,7 @@ class PlannerState(rx.State):
             self._import_progress_dict(snapshot)
 
     def _calculate_total_periods(self, year: str) -> int:
-        courses = self._courses_for_year(year)
-        full_year_periods = 0
-        single_semester_1_pd = 0
-        single_semester_2_pd = 0
-        
-        for c in courses:
-            data = COURSE_CATALOG.get(c, {})
-            pds = data.get("periods", 1)
-            
-            if data.get("semesters") == 1:
-                if pds == 2:
-                    # Count how many 2 period semester classes they have
-                    single_semester_2_pd += 1
-                else:
-                    # Count how many 1 period semester classes they have
-                    single_semester_1_pd += 1
-
-            elif c in alternates_with_gym:
-                full_year_periods += (pds-1)
-
-            else:
-                if pds == 2 and c in alternate_list:
-                    full_year_periods += 1
-                else:
-                    full_year_periods += pds
-                
-        # 1. Pair up 1-period semester classes: math.ceil(count / 2) -> each pair = 1 period
-        # 2. Pair up 2-period semester classes: math.ceil(count / 2) * 2 -> each pair = 2 periods
-        total_semester_room = math.ceil(single_semester_1_pd / 2) + (math.ceil(single_semester_2_pd / 2) * 2)
-        
-        return full_year_periods + total_semester_room
+        return calculate_total_periods(self._courses_for_year(year))
 
     @rx.var
     def freshman_periods(self) -> int:
@@ -785,7 +595,7 @@ class PlannerState(rx.State):
             "credits": str(data.get("credits", 1.0)),
             "is_elective": data.get("is_elective", False),
             "semesters": str(data.get("semesters", 2)),
-            "grade_badges": _grade_badges(
+            "grade_badges": grade_badges(
                 data.get("is_elective", False),
                 data.get("grades", []),
                 data.get("available_grades", [])
@@ -1253,7 +1063,7 @@ class PlannerState(rx.State):
                     "credits": credits_formatted,
                     "is_elective" : data.get("is_elective", False),
                     "disabled": should_disable,
-                    "grade_badges": _grade_badges(
+                    "grade_badges": grade_badges(
                         data.get("is_elective", False),
                         data.get("grades", []),
                         data.get("available_grades", [])
