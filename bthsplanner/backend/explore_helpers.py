@@ -1,4 +1,4 @@
-from data.courses import COURSE_CATALOG, MAJORS
+from data.courses import COURSE_CATALOG, MAJORS, AP_COURSES
 
 from .helpers import grade_badges
 
@@ -27,10 +27,16 @@ def filter_explore_catalog(
             data.get("available_grades", []),
         )
 
-        # picking both Elective and Non-elective is the same as picking neither
-        if len(filters) == 1:
-            wants_elective = filters[0] == "Elective"
-            if data.get("is_elective", False) != wants_elective:
+        if filters:
+            
+            if "Elective" in filters and "Non-elective" in filters:
+                pass    
+            elif "Non-elective" in filters and data.get("is_elective"):
+                continue
+            elif "Elective" in filters and not data.get("is_elective"):
+                continue
+
+            if "AP" in filters and name not in AP_COURSES:
                 continue
 
         if grades and not any(g in badges for g in grades):
