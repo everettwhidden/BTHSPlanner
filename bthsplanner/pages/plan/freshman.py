@@ -55,8 +55,8 @@ def freshman_column():
                 PlannerState.freshman_electives,
                 lambda course: elective_card(course, "Freshman")
                 ),
-            course_card("Gym/Lunch", "Gym"),
-            course_card("Gym/Lunch", "Lunch"),                            
+            course_card("Phys Ed/Lunch", "Physical Education"),
+            course_card("Phys Ed/Lunch", "Lunch"),                            
             course_search_modal(PlannerState.freshman_periods, "Freshman"),
             width="100%", 
             spacing="3",

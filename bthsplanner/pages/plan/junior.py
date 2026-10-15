@@ -83,8 +83,8 @@ def junior_column():
                 PlannerState.junior_electives,
                 lambda course: elective_card(course, "Junior")
                 ),
-            course_card("Gym/Lunch", "Gym"),
-            course_card("Gym/Lunch", "Lunch"),
+            course_card("Phys Ed/Lunch", "Physical Education"),
+            course_card("Phys Ed/Lunch", "Lunch"),
             course_search_modal(PlannerState.junior_periods, "Junior"),
             width="100%", 
             spacing="3",

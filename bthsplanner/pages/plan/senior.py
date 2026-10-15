@@ -99,8 +99,8 @@ def senior_column():
                 PlannerState.senior_electives,
                 lambda course: elective_card(course, "Senior")
                 ),
-            course_card("Gym/Lunch", "Gym"),
-            course_card("Gym/Lunch", "Lunch"),
+            course_card("Phys Ed/Lunch", "Physical Education"),
+            course_card("Phys Ed/Lunch", "Lunch"),
             course_search_modal(PlannerState.senior_periods, "Senior"),
             width="100%", 
             spacing="3",

@@ -40,8 +40,8 @@ def sophomore_column():
                 PlannerState.sophomore_electives,
                 lambda course: elective_card(course, "Sophomore")
             ),
-            course_card("Gym/Lunch", "Gym"),
-            course_card("Gym/Lunch", "Lunch"),                        
+            course_card("Phys Ed/Lunch", "Physical Education"),
+            course_card("Phys Ed/Lunch", "Lunch"),                        
             course_search_modal(PlannerState.sophomore_periods, "Sophomore"),
             width="100%", 
             spacing="3",
