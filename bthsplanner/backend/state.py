@@ -662,17 +662,16 @@ class PlannerState(rx.State):
         return courses
     # --- Math Major Overrides and Filtering Backend ---
     @property
-    def _math_keywords(self) -> list[str]:
-        return ["Calculus", "Algebra II", "Geometry", "Pre-Calculus"]
+    def _math_overrides(self) -> list[str]:
+        return ["AP Calculus AB", "AP Calculus BC", "Multivariable Calculus", "Pre-Calculus"]
 
     @rx.var
     def junior_math_override(self) -> str:
         if self.major == "Applied Mathematics":
             return "Mathematics Major Override"
         for c in self.junior_major_courses:
-            if any(kw in c for kw in self._math_keywords):
+            if any(kw in c for kw in self._math_overrides):
                 return c
-            
         return ""
 
     @rx.var
@@ -680,19 +679,17 @@ class PlannerState(rx.State):
         if self.major == "Applied Mathematics" or self.major == "LIU Pharmacy":
             return "Mathematics Major Override"
         for c in self.senior_major_courses:
-            if any(kw in c for kw in self._math_keywords):
+            if any(kw in c for kw in self._math_overrides):
                 return c
         return ""
 
     @rx.var
     def filtered_junior_major_courses(self) -> list[str]:
-        override = self.junior_math_override
-        return [c for c in self.junior_major_courses if c != override]
+        return [c for c in self.junior_major_courses if c not in self._math_overrides]
 
     @rx.var
     def filtered_senior_major_courses(self) -> list[str]:
-        override = self.senior_math_override
-        return [c for c in self.senior_major_courses if c != override]
+        return [c for c in self.senior_major_courses if c not in self._math_overrides]
 
     
     def _courses_for_year(self, year: str) -> set:
