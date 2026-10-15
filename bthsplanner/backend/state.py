@@ -1,11 +1,9 @@
-import math
 
 import reflex as rx
 
 from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts
 
-from .constants import EXPLORE_PAGE_SIZE, PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
-from .explore_helpers import filter_explore_catalog
+from .constants import PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
 from .export import build_plan_xlsx
 from .helpers import (
     build_partner_map,
