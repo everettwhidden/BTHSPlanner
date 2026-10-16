@@ -66,7 +66,7 @@ def home_page() -> rx.Component:
                 rx.vstack(
                     rx.heading("About", font_size = "40px", margin_bottom="1rem",),
                     rx.text(
-                        "BTHS Planner is built specifically for Brooklyn Technical High School students to map out their high school career. Whether you are navigating your major courses, electives, AP requirements, our platform makes planning seamless and intuitive."
+                        "BTHS Planner is built specifically for Brooklyn Technical High School students to map out their high school career. Whether you are navigating your major courses, electives, AP requirements, this platform makes planning seamless and intuitive."
                         ,
                         font_size = "20px",
                         line_height="1.7",
