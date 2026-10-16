@@ -696,7 +696,7 @@ class PlannerState(rx.State):
         if year == "Freshman":
             return set([
                 "Design & Drafting for Production (DDP)", "English 9",
-                self.f_hist, self.f_sci, self.f_lang, "Gym", "Lunch" 
+                self.f_hist, self.f_sci, self.f_lang, "Physical Education", "Lunch" 
             ] + self.freshman_math_courses + self.freshman_electives)
 
         if year == "Sophomore":
@@ -704,7 +704,7 @@ class PlannerState(rx.State):
             lang = (self.language_base + " III") if self.lang_is_accelerated else (self.language_base + " II")
             courses = ([
                 "AP Computer Science Principles", "Health Education", self.so_eng, self.so_hist,
-                "Regents Chemistry", math, lang, "Gym", "Lunch" 
+                "Regents Chemistry", math, lang, "Physical Education", "Lunch" 
             ] + self.sophomore_electives)
             
             return set(courses)
@@ -712,7 +712,7 @@ class PlannerState(rx.State):
         if year == "Junior":
             math = self.j_math
             # Start with dropdowns and electives as a clean list
-            courses = [ self.j_his, "Gym", "Lunch"] + self.junior_electives
+            courses = [ self.j_his, "Physical Education", "Lunch"] + self.junior_electives
 
             if self.major != "LIU Pharmacy":
                 courses.append(self.j_eng)
@@ -740,7 +740,7 @@ class PlannerState(rx.State):
         if year == "Senior":
 
             math = self.sn_math if self.sn_math else "AP Calculus BC"
-            courses = [self.sn_eng, "Gym", "Lunch"] + self.senior_electives
+            courses = [self.sn_eng, "Physical Education", "Lunch"] + self.senior_electives
             
             if self.major == "Physics":
                 if math and self.sn_math_active:
