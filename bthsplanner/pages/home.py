@@ -82,11 +82,6 @@ def home_page() -> rx.Component:
                     rx.divider(border_color= border),
                     rx.spacer(),
                     rx.heading("Contact", font_size = "15px", margin_bottom = "5px",),
-                    rx.text(
-                        "everettkwhidden@gmail.com",
-                        font_size="14px",
-                        line_height="1.7",
-                    ),
                     rx.link(
                         rx.button(
                             "Feedback",
