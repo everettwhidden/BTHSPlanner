@@ -2,17 +2,7 @@ import reflex as rx
 
 import bthsplanner.theme as theme
 from data.courses import (
-    elective_color,
-    lang_color,
-    science_color,
-    math_color,
-    history_color,
-    english_color,
-    language_opts,
-    req_courses,
-    gym_lunch_color,
-    alternates_with_gym,
-    MAJORS
+    language_opts
 )
 from bthsplanner.backend import PlannerState
 from .styled_select import styled_select
