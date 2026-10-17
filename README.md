@@ -36,23 +36,10 @@ Then open http://localhost:3000.
 
 ## How it's organized
 
-```
-bthsplanner/
-  bthsplanner.py     app entry point and page routes
-  theme.py           colors and styling
-  backend/           all the logic
-    state.py           main planner state (the user's choices and plan)
-    explore_state.py   state for the Explore page (search, filters, paging)
-    dropdown.py        which options each dropdown should offer
-    explore_helpers.py filtering and sorting for Explore
-    helpers.py         small pure functions (period math, badges, etc.)
-    export.py          builds the Excel file
-    constants.py       shared constants
-  components/        reusable UI pieces (cards, filters, sidebar, modals)
-  pages/             one file per page (home, plan, explore, how it works)
-data/
-  courses/           the course catalog, majors, and course rules
-```
+- `bthsplanner/backend/`: the app's logic (planner state, dropdown rules, Explore filtering, Excel export)
+- `bthsplanner/components/`: reusable UI pieces (cards, filters, sidebar, modals)
+- `bthsplanner/pages/`: one file per page (home, plan, explore, how it works)
+- `data/courses/`: the course catalog and major requirements, as plain Python dictionaries
 
 The course catalog and major requirements live in plain Python dictionaries in `data/courses/`, so updating a course description or a major's requirements doesn't touch any app logic.
 
