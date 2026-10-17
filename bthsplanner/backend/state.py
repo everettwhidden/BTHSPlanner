@@ -1,8 +1,9 @@
 import reflex as rx
 
-from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts
+from data.courses import COURSE_CATALOG, MAJORS, double_alternates
 
-from .constants import PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
+from .catalog_search import search_electives
+from .constants import SENIOR_GOV_COURSES
 from .export import build_plan_xlsx
 from .helpers import (
     build_partner_map,
@@ -168,7 +169,6 @@ class PlannerState(rx.State):
     is_detail_open: bool = False       # Controls the visibility of the global detail modal
 
     #adnvaced language courses electives, exclude spanish because it has advanced spanish so logic is different
-    ap_lotes = ["AP Chinese Language & Culture", "AP French Language & Culture", "AP German Language & Culture", "AP Italian Language & Culture"]
     none_history_placeholders = {
     "None (free period, econ senior year)",
     "None (free period, econ junior year)",
@@ -824,139 +824,30 @@ class PlannerState(rx.State):
 
     
     def compute_filtered_catalog(self) -> list[dict]:
-        query = self.search_query.lower().strip()
-        results = []
-        
-        active_courses = set()
-        for yr in ["Freshman", "Sophomore", "Junior", "Senior"]:
-            active_courses.update(self._courses_for_year(yr))
-
-        current_grade = str(self.current_modal_grade).strip()
-
-        # Headroom AND AP limit verification routing based on active modal view
-        if current_grade == "Freshman":
-            current_periods = self.freshman_periods
-            ap_limit_reached = self.freshman_ap_count >= 3
-        elif current_grade == "Sophomore":
-            current_periods = self.sophomore_periods
-            ap_limit_reached = self.sophomore_ap_count >= 3
-        elif current_grade == "Junior":
-            current_periods = self.junior_periods
-            ap_limit_reached = self.junior_ap_count >= 3
-        else:
-            current_periods = self.senior_periods
-            ap_limit_reached = self.senior_ap_count >= 3
-
-        available_headroom = 10 - current_periods
-
-        # everything taken before the year we're looking at
-        prior_years = set()
-        for yr in ["Freshman", "Sophomore", "Junior"]:
-            if yr == current_grade:
-                break
-            prior_years |= self._courses_for_year(yr)
-
-        for name, data in COURSE_CATALOG.items():
-            
-            is_lang_opt = name in language_opts
-
-            # language I's aren't flagged as electives, so let them through separately
-            if not (data.get("is_elective", False) or is_lang_opt):
-                continue
-            if name in active_courses and not data.get("allow_multiple", False):
-                continue
-            
-            if name in ["AP Macroeconomics with Government"]:
-                if not self.chose_economics_jr:
-                    continue
-
-            if name == "Linear Algebra" and not self.took_ap_calc_bc_junior:
-                continue
-            if name == "Multivariable Calculus" and not self.took_ap_calc_bc_junior:
-                continue
-            if name == "AP Physics C: Mechanics":
-                if "AP Physics C: Electricity & Magnetism" in self._courses_for_year("Senior"):
-                    continue
-
-            if name in PHYSICS_MAJOR_SN_COURSES and self.major == "Physics":  
-                continue
-            
-            if current_grade == "Junior" and self.language_base == "Spanish":
-                if name == "AP Spanish Language & Culture"  and "Spanish III" not in self._courses_for_year("Sophomore"):
-                    continue
-                if name == "Advanced Spanish" and "Spanish III" not in self._courses_for_year("Sophomore"):
-                    continue
-
-            if current_grade == "Junior" and self.language_base == "Chinese" and not self.lang_is_accelerated:
-                if name == "AP Chinese Language & Culture":
-                    continue
-            if current_grade == "Junior" and self.language_base == "German" and not self.lang_is_accelerated:
-                if name == "AP German Language & Culture":
-                    continue
-
-            if current_grade == "Junior" and self.language_base == "Italian" and not self.lang_is_accelerated:
-                if name == "AP Italian Language & Culture":
-                    continue
-            if current_grade == "Junior" and self.language_base == "French" and not self.lang_is_accelerated:
-                if name == "AP French Language & Culture":
-                    continue
-
-            if name in self.ap_lotes and self.language_base not in name:
-                continue
-
-            if is_lang_opt:
-                # only junior/senior, and only if they already finished level III of their own language
-                if current_grade not in ("Junior", "Senior"):
-                    continue
-                if name.split()[0] == self.language_base:
-                    continue
-                if f"{self.language_base} III" not in prior_years:
-                    continue
-
-            if current_grade == "Senior" and self.language_base == "Spanish":
-                if name == "Advanced Spanish" and "Spanish III" not in self.all_courses:         
-                    continue
-                if name == "AP Spanish Language & Culture" and "Spanish III" not in self.all_courses:
-                    continue
-            
-
-            if "available_grades" in data:
-                allowed = data["available_grades"]
-                if current_grade not in allowed:
-                    continue
-                
-            else:
-                if current_grade in ["Freshman", "Sophomore"]:
-                    continue
-
-            # Unless it explicitly says 2 periods, default it to 1 period
-            raw_periods = data.get("periods", 1)
-            semesters = data.get("semesters", 2)
-            
-            
-            is_too_large = raw_periods > available_headroom
-            is_ap_course = "AP" in name
-            should_disable = is_too_large or (is_ap_course and ap_limit_reached)
-
-            if query in name.lower() or query in data.get("description", "").lower():
-                
-                credits_formatted = f"{float(data.get('credits', 1.0)):.1f}"
-
-                results.append({
-                    "name": name, 
-                    "description": data.get("description", ""),
-                    "periods": raw_periods,
-                    "semesters" : semesters,
-                    "credits": credits_formatted,
-                    "is_elective" : data.get("is_elective", False),
-                    "disabled": should_disable,
-                    "grade_badges": grade_badges(
-                        data.get("is_elective", False),
-                        data.get("grades", []),
-                        data.get("available_grades", [])
-                    ),
-                })
-        return results
+        grade = str(self.current_modal_grade).strip()
+        years = ["Freshman", "Sophomore", "Junior", "Senior"]
+        periods = {
+            "Freshman": self.freshman_periods, "Sophomore": self.sophomore_periods,
+            "Junior": self.junior_periods, "Senior": self.senior_periods,
+        }
+        ap_counts = {
+            "Freshman": self.freshman_ap_count, "Sophomore": self.sophomore_ap_count,
+            "Junior": self.junior_ap_count, "Senior": self.senior_ap_count,
+        }
+        # an unrecognized grade is treated as senior
+        year = grade if grade in years else "Senior"
+        return search_electives(
+            query=self.search_query,
+            grade=grade,
+            major=self.major,
+            language_base=self.language_base,
+            lang_is_accelerated=self.lang_is_accelerated,
+            chose_economics_jr=self.chose_economics_jr,
+            took_ap_calc_bc_junior=self.took_ap_calc_bc_junior,
+            courses_by_year={y: self._courses_for_year(y) for y in years},
+            current_periods=periods[year],
+            ap_count=ap_counts[year],
+        )
    #login 
 
     @rx.var
@@ -965,7 +856,7 @@ class PlannerState(rx.State):
     
     @rx.var
     def filtered_catalog_count(self) -> int:
-        return len(self.compute_filtered_catalog())
+        return len(self.filtered_catalog)
     @rx.var
     def dropdown_colors(self) -> dict[str, str]:
         return {name: data.get("color", "#1e2025") for name, data in COURSE_CATALOG.items()}
