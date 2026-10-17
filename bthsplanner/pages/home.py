@@ -2,7 +2,7 @@ import reflex as rx
 from data.courses import MAJORS
 
 from bthsplanner.theme import lighter_aa_blue, gradient, text, border
-from bthsplanner.backend import *
+from bthsplanner.backend import PlannerState
 from bthsplanner.components import (
     navigation_layout,
 )

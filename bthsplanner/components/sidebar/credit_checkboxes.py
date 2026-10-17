@@ -14,7 +14,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.backend import *
+from bthsplanner.backend import PlannerState
 from .styled_select import styled_select
 
 required_courses_labels = ["Major Course", "Required Course"]

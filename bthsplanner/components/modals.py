@@ -1,8 +1,7 @@
 import reflex as rx
 
 import bthsplanner.theme as theme
-from data.courses import *
-from bthsplanner.backend import *
+from bthsplanner.backend import PlannerState
 
 required_courses_labels = ["Major Course", "Required Course"]
 

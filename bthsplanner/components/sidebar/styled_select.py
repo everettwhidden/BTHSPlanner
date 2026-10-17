@@ -14,7 +14,7 @@ from data.courses import (
     alternates_with_gym,
     MAJORS
 )
-from bthsplanner.backend import *
+
 
 required_courses_labels = ["Major Course", "Required Course"]
 

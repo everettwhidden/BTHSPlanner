@@ -4,8 +4,7 @@ import reflex as rx
 
 from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts
 
-from .constants import EXPLORE_PAGE_SIZE, PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
-from .explore_helpers import filter_explore_catalog
+from .constants import PHYSICS_MAJOR_SN_COURSES, SENIOR_GOV_COURSES
 from .export import build_plan_xlsx
 from .helpers import (
     build_partner_map,
@@ -167,22 +166,6 @@ class PlannerState(rx.State):
 
     search_query: str = ""             # Live search text string
 
-
-    explore_search_query: str = ""
-
-
-    order: str = "A-Z"
-    selected_grades: list[str] = []
-    selected_majors: list[str] = []
-    selected_filters: list[str] = []
-    selected_period_length: list[str] = []
-    selected_semesters: list[str] = []
-    explore_page_num: int = 1
-
-
-
-
-
     active_modal_course: dict = {}     # Holds the course info for detail popup
     is_detail_open: bool = False       # Controls the visibility of the global detail modal
 
@@ -194,8 +177,6 @@ class PlannerState(rx.State):
     "None (free period, gov senior year)",
     "None (free period, gov junior year)",
 }
-
-
     current_modal_grade: str = "Junior"
     
     @rx.var
@@ -649,9 +630,8 @@ class PlannerState(rx.State):
     @rx.var(cache=True)
     def senior_major_courses(self) -> list[str]:
         courses = MAJORS[self.major].get("Senior", [])
-        courses = [c for c in courses if c != "AP Calculus BC or Multivariable Calculus"]
 
-        # 🎯 LIU Pharmacy: AP Biology freshman year bumps the senior AP Biology
+        # LIU Pharmacy: AP Biology freshman year bumps the senior AP Biology
         # slot to AP Physics I, or AP Physics C: Mechanics if they also took
         # AP Physics I junior year.
         if self.major == "LIU Pharmacy" and self.f_sci == "AP Biology":
@@ -667,7 +647,7 @@ class PlannerState(rx.State):
 
     @rx.var
     def junior_math_override(self) -> str:
-        if self.major == "Applied Mathematics":
+        if self.major == "Applied Mathematics" or self.major == "LIU Pharmacy":
             return "Mathematics Major Override"
         for c in self.junior_major_courses:
             if any(kw in c for kw in self._math_overrides):

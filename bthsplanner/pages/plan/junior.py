@@ -2,7 +2,7 @@ import reflex as rx
 from data.courses import MAJORS
 
 import bthsplanner.theme as theme
-from bthsplanner.backend import *
+from bthsplanner.backend import DropdownOptions, PlannerState
 from bthsplanner.components import (
     navigation_layout,
     course_card,
@@ -68,7 +68,7 @@ def junior_column():
         
     # 1. 🎯 MAJOR SEQUENCE SLOTS: Only pulls math up if a major math requirement exists
         rx.cond(
-            PlannerState.junior_math_override == "Mathematics Major Override",
+            PlannerState.junior_math_override != "",
             dropdown_card("Major", DropdownOptions.j_math_opts, PlannerState.j_math, PlannerState.change_j_math)
         ),
                                     

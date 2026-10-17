@@ -1,7 +1,7 @@
 import reflex as rx
 import bthsplanner.theme as theme
-from data.courses import *
-from bthsplanner.backend import *
+from data.courses import alternates_with_gym, elective_color
+from bthsplanner.backend import DropdownOptions, MAJOR_COURSE_COLOR, PlannerState
 
 required_courses_labels = ["Major", "Required"]
 
