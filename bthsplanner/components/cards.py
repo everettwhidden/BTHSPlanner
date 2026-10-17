@@ -163,7 +163,7 @@ def render_major_course(course: rx.Var[str]) -> rx.Component:
             rx.Var.create(alternates_with_gym).contains(course),
             rx.tooltip(
                 course_card("Major", course),
-                content = "Double period, alternates daily with Gym"
+                content = "Double period, alternates daily with Phys Ed"
             ),
         
         course_card("Major", course),

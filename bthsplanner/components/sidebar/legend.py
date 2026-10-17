@@ -47,7 +47,7 @@ def legend_list() -> rx.Component:
         legend_item("Language", lang_color),
         legend_item("Required", req_courses),
         legend_item("Elective", elective_color),
-        legend_item("PE/Lunch", gym_lunch_color),
+        legend_item("Phys Ed/Lunch", gym_lunch_color),
         columns="2",
         spacing="2",
         width="100%",

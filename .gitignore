@@ -8,3 +8,5 @@ assets/external/
 venv/
 .env
 .DS_Store
+
+reflex.lock/
