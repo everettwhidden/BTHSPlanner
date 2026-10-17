@@ -2,23 +2,13 @@ import reflex as rx
 
 import bthsplanner.theme as theme
 from data.courses import (
-    elective_color,
-    lang_color,
-    science_color,
-    math_color,
-    history_color,
-    english_color,
-    language_opts,
-    req_courses,
-    gym_lunch_color,
-    alternates_with_gym,
     MAJORS
 )
 from bthsplanner.backend import PlannerState
 
 from .styled_select import styled_select
 from .credit_checkboxes import (pre_language_checkbox, pre_credit_checkbox)
-from .legend import (legend_item, legend_list)
+from .legend import (legend_list)
 
 required_courses_labels = ["Major Course", "Required Course"]
 

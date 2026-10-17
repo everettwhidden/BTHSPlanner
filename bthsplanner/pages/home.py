@@ -1,5 +1,4 @@
 import reflex as rx
-from data.courses import MAJORS
 
 from bthsplanner.theme import lighter_aa_blue, gradient, text, border
 from bthsplanner.backend import PlannerState
@@ -7,9 +6,7 @@ from bthsplanner.components import (
     navigation_layout,
 )
 
-import reflex as rx
 
-import reflex as rx
 
 @rx.page(route="/", title="BTHS Planner", description="Brooklyn Tech's Course Planner", on_load=PlannerState.change_tab("Home"))
 def home_page() -> rx.Component:

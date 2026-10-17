@@ -1,4 +1,3 @@
-import reflex as rx
 
 hide_watermark_style = {
     "div.__reflex": {

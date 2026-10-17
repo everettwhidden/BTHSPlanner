@@ -8,11 +8,8 @@ from data.courses import (
     math_color,
     history_color,
     english_color,
-    language_opts,
     req_courses,
-    gym_lunch_color,
-    alternates_with_gym,
-    MAJORS
+    gym_lunch_color
 )
 
 

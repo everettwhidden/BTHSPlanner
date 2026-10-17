@@ -1,5 +1,3 @@
-import math
-
 import reflex as rx
 
 from data.courses import COURSE_CATALOG, MAJORS, double_alternates, language_opts

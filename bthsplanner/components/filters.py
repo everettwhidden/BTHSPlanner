@@ -1,7 +1,6 @@
 import reflex as rx
 import bthsplanner.theme as theme
 from bthsplanner.backend import ExploreState, MAJOR_NAMES
-from bthsplanner.components import styled_select
 
 required_courses_labels = ["Major Course", "Required Course"]
 
